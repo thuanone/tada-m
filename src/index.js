@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
+import { Button } from "carbon-components-react";
 
 import { Document32 } from "@carbon/icons-react";
 
@@ -20,7 +21,7 @@ const routing = (
           <div class="bx--row">
 
             <div class="bx--col">
-                <Link to="/"> <Document32 /> Home</Link>
+                <button><Document32 /> Homee </button>
             </div>
             <div class="bx--col">
               <Link to="/aPage1"> <Document32 /> aPage1</Link>
