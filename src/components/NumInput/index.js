@@ -1,2 +1,2 @@
-import NumInput from './NumInput';
-export default NumInput;
+import NumInputForm from './NumInput';
+export default NumInputForm;
