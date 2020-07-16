@@ -4,7 +4,7 @@ import React from 'react';
 const Page2 = () => {
     return(
         <div>
-            <h1>Page2</h1>
+            <h1>Thuans NumInput</h1>
         </div>
     );
 }

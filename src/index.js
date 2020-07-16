@@ -47,7 +47,7 @@ const routing = (
       </div>
     </ul>
 
-    <Route exact path="/" component={Home} />
+    <Route exact path="/home" component={Home} />
     <Route path="/aPage1" component={aPage1} />
     <Route path="/aPage2" component={aPage2} />
     <Route path="/aPage3" component={aPage3} />

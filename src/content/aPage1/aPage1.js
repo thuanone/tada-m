@@ -3,13 +3,18 @@ import React from 'react';
 class Page1 extends React.Component {
 
     state = {
-        name:''
+        name:'type something here...'
+    }
+
+    handleChange = (event) => {
+        this.setState({name: event.target.value})
     }
 
     render(){
         return(
             <div>
-                <input/>
+                <input value= {this.state.name} onChange = {this.handleChange}/>
+            <h1>{this.state.name}</h1>
             </div>
         );
     }
