@@ -1,20 +1,9 @@
 import React from "react";
 
 class NumInput extends React.Components {
-    state = {
-        value: "",
-
-    }
-
-    render() {
-        return(
-            <form>
-                <input 
-                    type="number" 
-                    value={this.state.value}
-                />
-            </form>
-        );
+    render(){
+        return <div>forms!</div>;
     }
 }
-export default NumInput;
+
+export default NumInput
