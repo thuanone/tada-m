@@ -1,9 +1,26 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
 import App from './App'
+import Users from './users'
 
 
+const routing = (
+  <Router>
+    <div>
+      <ul>
+        <li>
+          <Link to="/">App</Link>
+        </li>
+        <li>
+          <Link to="/users">Users</Link>
+        </li>
 
-ReactDOM.render(<App />, document.getElementById('root'))
-
+      </ul>
+      <Route exact path="/" component={App} />
+      <Route path="/users" component={Users} />
+    </div>
+  </Router>
+)
+ReactDOM.render(routing, document.getElementById('root'))
