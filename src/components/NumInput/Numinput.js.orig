@@ -1,5 +1,6 @@
 import React from "react";
 
+<<<<<<< HEAD
 class NumInputForm extends React.Component {
     constructor(props){
         super(props);
@@ -25,3 +26,12 @@ class NumInputForm extends React.Component {
     }
 }
 export default NumInputForm;
+=======
+class NumInput extends React.Components {
+    render(){
+        return <div>forms!</div>;
+    }
+}
+
+export default NumInput
+>>>>>>> master

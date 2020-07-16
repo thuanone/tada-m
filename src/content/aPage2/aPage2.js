@@ -1,5 +1,5 @@
 import React from 'react';
-import NumInputForm from '../../components/NumInput/Numinput'
+import NumInputForm from '../../components/NumInputThuan/Numinput'
 
 const Page2 = () => {
     return(
