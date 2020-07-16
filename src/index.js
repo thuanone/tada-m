@@ -4,7 +4,7 @@ import './index.scss';
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import { Button } from "carbon-components-react";
 
-import { Document32 } from "@carbon/icons-react";
+import { Document24 as Document} from "@carbon/icons-react";
 
 import Home from './home';
 import aPage1 from './content/aPage1';
@@ -13,36 +13,46 @@ import aPage3 from './content/aPage3';
 
 
 const routing = (
-  <Router>
-    <div>
-      <ul>
+<Router>
+  <div>
+    <ul>
+      <div class="bx--grid">
+        <div class="bx--row">
 
-        <div class="bx--grid">
-          <div class="bx--row">
-
-            <div class="bx--col">
-                <button><Document32 /> Homee </button>
-            </div>
-            <div class="bx--col">
-              <Link to="/aPage1"> <Document32 /> aPage1</Link>
-            </div>
-            <div class="bx--col">
-              <Link to="/aPage2"> <Document32 /> aPage2</Link>
-            </div>
-            <div class="bx--col">
-              <Link to="/aPage3"> <Document32 /> aPage3</Link>
-            </div>
-
+          <div class="bx--col">
+            <Link to="/home">
+              <Button><Document/> Home </Button> 
+            </Link>
           </div>
+          
+          <div class="bx--col">
+              <Link to="/aPage1"> 
+                <Button><Document /> aPage1</Button>
+              </Link>
+          </div>
+
+          <div class="bx--col">
+              <Link to="/aPage2"> 
+                <Button><Document /> aPage2</Button>
+              </Link>
+          </div>
+  
+          <div class="bx--col">
+              <Link to="/aPage3"> 
+                <Button><Document /> aPage3</Button>
+              </Link>
+          </div>
+
         </div>
-      </ul>
+      </div>
+    </ul>
 
-      <Route exact path="/" component={Home} />
-      <Route path="/aPage1" component={aPage1} />
-      <Route path="/aPage2" component={aPage2} />
-      <Route path="/aPage3" component={aPage3} />
+    <Route exact path="/" component={Home} />
+    <Route path="/aPage1" component={aPage1} />
+    <Route path="/aPage2" component={aPage2} />
+    <Route path="/aPage3" component={aPage3} />
 
-    </div>
-  </Router>
+  </div>
+</Router>
 )
 ReactDOM.render(routing, document.getElementById('root'))
