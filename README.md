@@ -1,4 +1,4 @@
 # Number Input
 Author : Ich Thuan Cong, Adam Bremer <br/>
-<h4> TASK 1 </h4> <br/>
+<h3> Tasks </h3> <br/>
 Add a README description
