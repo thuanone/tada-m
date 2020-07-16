@@ -1,11 +1,12 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
-import './index.css'
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
-import Home from './home'
-import aPage1 from './content/aPage1'
-import aPage2 from './content/aPage2'
-import aPage3 from './content/aPage3'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
+
+import Home from './home';
+import aPage1 from './content/aPage1';
+import aPage2 from './content/aPage2';
+import aPage3 from './content/aPage3';
 
 
 
