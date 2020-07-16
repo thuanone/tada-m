@@ -1,1 +1,2 @@
-import Page_ from ''
+import Page from './Page';
+export default Page;
