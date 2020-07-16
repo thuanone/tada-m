@@ -4,7 +4,7 @@ import { render } from 'react-dom';
 const Page3 = () => {
     return(
         <div>
-            <h1>Hi</h1>
+            <h1>Page3</h1>
         </div>
     );
 }
