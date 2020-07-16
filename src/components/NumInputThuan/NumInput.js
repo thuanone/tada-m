@@ -3,7 +3,12 @@ import React from "react";
 class NumInputForm extends React.Component {
     constructor(props){
         super(props);
-        this.state={value:''}
+        this.state={
+            value:'',
+            min: 0,
+            max: 1000,
+
+        }
 
         this.handleChange = this.handleChange.bind(this);
 
