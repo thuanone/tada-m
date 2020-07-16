@@ -1,9 +1,10 @@
 import React from 'react';
+import './aPage1.scss'
 
 class Page1 extends React.Component {
 
     state = {
-        name:'type something here...'
+        name:''
     }
 
     handleChange = (event) => {
@@ -12,9 +13,14 @@ class Page1 extends React.Component {
 
     render(){
         return(
-            <div>
-                <input value= {this.state.name} onChange = {this.handleChange}/>
-            <h1>{this.state.name}</h1>
+            <div className="div1">
+                <a>Input field v1</a> <br/>
+                <input 
+                    placeholder="type something here..." 
+                    value= {this.state.name} 
+                    onChange = {this.handleChange}
+                />
+            <p>{this.state.name}</p>
             </div>
         );
     }
