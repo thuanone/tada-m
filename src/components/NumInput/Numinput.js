@@ -8,12 +8,12 @@ class NumInput extends React.Components {
 
     render() {
         return(
-            <Form>
+            <form>
                 <input 
                     type="number" 
                     value={this.state.value}
                 />
-            </Form>
+            </form>
         );
     }
 }
