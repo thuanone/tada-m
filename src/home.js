@@ -7,7 +7,10 @@ class Home extends React.Component {
     return (
       <div>
         <h1>Home</h1>
-        <input type="checkbox" checked="true"/>
+        <div className="tasks">
+          <h2>Tasks</h2>
+          <input type="checkbox" checked="true"/> <a>creating a react app</a>
+        </div>
       </div>
     )
   }
