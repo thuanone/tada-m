@@ -1,2 +1,2 @@
-import Page from './Page';
+import Page from './aPage';
 export default Page;
