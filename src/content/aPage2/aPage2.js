@@ -15,10 +15,17 @@ const Page2 = () => {
     return(
         <div>
             <h1>Thuans NumInput</h1>
-            <NumInputForm 
-                {...CPU_Unit}   
-                
-            />
+            <label>
+                NumInputWithCPUType
+                <NumInputForm 
+                    {...CPU_Unit}    
+                />
+            </label>
+            <br/>
+            <label>
+                NumInputWithoutType
+                <NumInputForm />
+            </label>
         </div>
     );
 }

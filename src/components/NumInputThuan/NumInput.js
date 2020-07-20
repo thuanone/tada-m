@@ -47,13 +47,14 @@ function validateValue() {
 class NumInputForm extends React.Component {
     constructor(props){
         super(props);
+        
         this.state= {
-            value: props.value,
-            unit: props.unitAssociated,
-            minVal: props.minVal,
-            maxVals: props.maxVal,
-            stepSize: props.stepSize,
-            uppedUnits: props.uppedUnits,
+            value: (props.value ? props.value : 0),
+            unit: (props.unitAssociated ? props.unitAssociated : ['',]),
+            minVal: (props.minVal ? props.minVal : 0),
+            maxVals: (props.maxVal ? props.minVal : 100),
+            stepSize: (props.stepSize ? props.stepSize : [1,]),
+            uppedUnits: (props.uppedUnits ? props.uppedUnits : [1]),
         };
         /* Setzt alle Werte auf undefined -> wahrscheinlich, weil props.xx.y nicht existieren
         this.state={
