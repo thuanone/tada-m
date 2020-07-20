@@ -15,15 +15,16 @@ class Page1 extends React.Component {
         sec: false,
     };
 
+    
     handleChange = (event) => {
         this.setState({name: event.target.value});
     };
 
     handleRequest = (event) => {
-        var unitName = this.state.name.split(' ');
+        var inputField = this.state.name.split(' ');
         
-        if (unitList.includes(unitName[1])){
-            this.setState({unit: 'recognized unit: ' + unitName[1] })
+        if (unitList.includes(inputField[1])){
+            this.setState({unit: 'recognized unit: ' + inputField[1] })
         } 
         
         else {
@@ -31,6 +32,18 @@ class Page1 extends React.Component {
         };
 
     };
+
+    increaseNum = (event) =>{
+        var inputField = this.state.name.split(' ');
+        this.setState({name: String( parseFloat(inputField[0]) +10) + ' ' + inputField[1] 
+        })
+    }
+    decreaseNum = (event) =>{
+        var inputField = this.state.name.split(' ');
+        this.setState({name: String( parseFloat(inputField[0]) -10) + ' ' + inputField[1] 
+        })
+    }
+
 
     handleCheckUnit = (event) => {
         let value = event.target.value
@@ -56,14 +69,17 @@ class Page1 extends React.Component {
                     <input type="radio" name = "Units" onClick={this.handleCheckUnit} value = 's' />
                     <a>Seconds</a>
                 </fieldset>
-            
 
+                <button onClick={this.decreaseNum}> - </button>
                 <input className="input1"
                     placeholder="type something here..." 
                     value= {this.state.name} 
                     onChange = {this.handleChange}
                 />
+                <button onClick= {this.increaseNum}> + </button>
+
                 <button className="button1" onClick= {this.handleRequest}>send request</button>
+
                 <Tile>{this.state.unit}</Tile>
             </div>
         );
