@@ -108,6 +108,7 @@ class NumInputForm extends React.Component {
             unitError=`input is not ${unit}`;
             return false
         }
+        
         /*minValError Validation
         if(this.state.value < this.state.minVal) {
             minValError=`minimum value is ${minVal}`;
