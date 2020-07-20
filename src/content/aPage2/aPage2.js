@@ -24,7 +24,9 @@ const Page2 = () => {
             <br/>
             <label>
                 NumInputWithoutType
-                <NumInputForm />
+                <NumInputForm 
+                
+                />
             </label>
         </div>
     );
