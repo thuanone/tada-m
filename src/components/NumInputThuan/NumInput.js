@@ -60,12 +60,12 @@ class NumInputForm extends React.Component {
         }
         */
         this.state= {
-            value: (props.value ? props.value : 0),
-            unit: (props.unitAssociated ? props.unitAssociated : ['',]),
-            minVal: (props.minVal ? props.minVal : 0),
-            maxVals: (props.maxVal ? props.minVal : 100),
+            value: (props.value ? [props.value,] : [0,]),
+            unit: (props.unitAssociated ? props.unitAssociated : ['_','_']),
+            minVal: (props.minVal ? [props.minVal,] : [0,]),
+            maxVals: (props.maxVal ? [props.minVal,] : [100,]),
             stepSize: (props.stepSize ? props.stepSize : [1,]),
-            uppedUnits: (props.uppedUnits ? props.uppedUnits : [1]),
+            uppedUnits: (props.uppedUnits ? props.uppedUnits : [1,]),
             //errorMessageString, set in valdidate()
             errorMessage: "",
         };
@@ -148,15 +148,15 @@ class NumInputForm extends React.Component {
 
     render() {
         return(
-            <form /*onSubmit={}*/>
+            <form onSubmit={this.handleSubmit}>
                 <input
                     type="number" 
                     //value={displayValueWithNumber(this.state)}
                     value={this.state.value}
                     onChange={this.getValue}
                 />
-                <p>Unit:{this.state.unit[0]}</p>
-                <p>{this.state.errorMessage}</p>
+                <p>Unit: {this.state.unit[0]}</p>
+                <p>Placeholder for Error Messages: {this.state.errorMessage}</p>
                 <Button type="submit">Submit</Button>
             </form>
         );
