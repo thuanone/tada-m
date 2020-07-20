@@ -21,40 +21,45 @@ class Page1 extends React.Component {
 
     handleRequest = (event) => {
         var unitName = this.state.name.split(' ');
-        this.setState({unit: unitName[1]});
-        /*
+        
         if (unitName[1]==='GiB'){
             this.setState({unit: 'recognized unit: GiB'})
         } 
         else if (unitName[1]==='MiB'){
             this.setState({unit: 'recognized unit: MiB'})
-        }else {
+        
+        }
+        else if (unitName[1]==='vCPU'){
+            this.setState({unit: 'recognized unit: vCPU'})
+        
+        }
+        else if (unitName[1]==='s'){
+            this.setState({unit: 'recognized unit: seconds'})
+        
+        }
+        else {
             this.setState({unit: 'unknown unit'})
         };
-        */
+
     };
 
     handleCheckUnit = (event) => {
         let value = event.target.value
         if (value==='GiB'){
-            this.setState({unit: 'recognized unit: GiB', name: '0 GiB'})
+            this.setState({name: '0 GiB'})
         }
         else if (value==='MiB'){
 
-            this.setState({unit: 'recognized unit: MiB', name: '0 MiB'})
+            this.setState({name: '0 MiB'})
         }
         else if (value==='vCPU'){
 
-            this.setState({unit: 'recognized unit: vCPU', name: '0 vCPU'})
+            this.setState({ name: '0 vCPU'})
         }
         else if (value==='sec'){
 
-            this.setState({unit: 'recognized unit: seconds', name: '0 s'})
+            this.setState({ name: '0 s'})
         }
-        else {
-
-            this.setState({unit: 'unknown unit'})
-        };
     }
 
 
