@@ -48,12 +48,12 @@ class NumInputForm extends React.Component {
     constructor(props){
         super(props);
         this.state= {
-            value: this.props.value,
-            unit: this.props.unitAssociated,
-            minVal: this.props.minVal,
-            maxVals: this.props.maxVal,
-            stepSize: this.props.stepSize,
-            uppedUnits: this.props.uppedUnits,
+            value: props.value,
+            unit: props.unitAssociated,
+            minVal: props.minVal,
+            maxVals: props.maxVal,
+            stepSize: props.stepSize,
+            uppedUnits: props.uppedUnits,
         };
         /* Setzt alle Werte auf undefined -> wahrscheinlich, weil props.xx.y nicht existieren
         this.state={
