@@ -2,9 +2,9 @@ import React from 'react';
 import './aPage1.scss'
 import {Tile} from 'carbon-components-react'
 
+const unitList = ['GiB','MiB','vCPU','s'];
 
 class Page1 extends React.Component {
-    
 
     state = {
         name:'',
@@ -22,21 +22,10 @@ class Page1 extends React.Component {
     handleRequest = (event) => {
         var unitName = this.state.name.split(' ');
         
-        if (unitName[1]==='GiB'){
-            this.setState({unit: 'recognized unit: GiB'})
+        if (unitList.includes(unitName[1])){
+            this.setState({unit: 'recognized unit: ' + unitName[1] })
         } 
-        else if (unitName[1]==='MiB'){
-            this.setState({unit: 'recognized unit: MiB'})
         
-        }
-        else if (unitName[1]==='vCPU'){
-            this.setState({unit: 'recognized unit: vCPU'})
-        
-        }
-        else if (unitName[1]==='s'){
-            this.setState({unit: 'recognized unit: seconds'})
-        
-        }
         else {
             this.setState({unit: 'unknown unit'})
         };
@@ -45,21 +34,10 @@ class Page1 extends React.Component {
 
     handleCheckUnit = (event) => {
         let value = event.target.value
-        if (value==='GiB'){
-            this.setState({name: '0 GiB'})
+        if (unitList.includes(value)){
+            this.setState({name:'0 '+ value})
         }
-        else if (value==='MiB'){
 
-            this.setState({name: '0 MiB'})
-        }
-        else if (value==='vCPU'){
-
-            this.setState({ name: '0 vCPU'})
-        }
-        else if (value==='sec'){
-
-            this.setState({ name: '0 s'})
-        }
     }
 
 
@@ -75,12 +53,12 @@ class Page1 extends React.Component {
                     <a>MiB</a>
                     <input type="radio" name = "Units" onClick={this.handleCheckUnit} value = 'vCPU' />
                     <a>vCPU</a>
-                    <input type="radio" name = "Units" onClick={this.handleCheckUnit} value = 'sec' />
+                    <input type="radio" name = "Units" onClick={this.handleCheckUnit} value = 's' />
                     <a>Seconds</a>
                 </fieldset>
             
 
-                <input className="input1" 
+                <input className="input1"
                     placeholder="type something here..." 
                     value= {this.state.name} 
                     onChange = {this.handleChange}
