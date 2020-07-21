@@ -86,11 +86,7 @@ class NumInputForm extends React.Component {
     }
     getValue(event) {
         console.log(event.target.value);
-        
-        var userInput = this.state
-
         this.setState({value: event.target.value});
-
     }
     /*
     handleState() {
