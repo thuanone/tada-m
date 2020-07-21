@@ -147,7 +147,7 @@ class NumInputForm extends React.Component {
         return(
             <form onSubmit={this.handleSubmit}>
                 <input
-                    type="number" 
+                    type="text" 
                     //value={displayValueWithNumber(this.state)}
                     value={this.state.value}
                     onChange={this.getValue}
