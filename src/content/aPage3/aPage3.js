@@ -11,32 +11,33 @@ class aPage3 extends React.Component {
 
     state = {
         name:'',
-        unit:'',
-        GiB: false,
-        MiB: false,
-        vCPU: false,
-        sec: false,
-        radioNone: false,
+        unit:'please specify unit',
+        radioNone: true,
+        inputField:'',
     };
 
     
    
     handleChange = (event) => {
-        this.setState({name: event.target.value});
-        var inputField = this.state.name.split(' ');
-        
+        this.setState({ name: event.target.value,
+                        inputField: this.state.name.split(' '),
+                        unit: event.target.value});
+
+        let inputField = this.state.inputField
+/*
         if (unitList.includes(inputField[1])){
             this.setState({unit: 'recognized unit: ' + inputField[1] })
         } 
         
         else {
             this.setState({unit: 'unknown unit', radioNone:true})
-        };
+        };*/
 
     };
 
     increaseNum = (event) =>{
-        var inputField = this.state.name.split(' ');
+        let inputField = this.state.inputField
+        this.setState( {inputField: this.state.name.split(' ') });
 
         if (inputField[0] ===''){
             this.setState({unit: 'please specify unit'})
@@ -47,7 +48,7 @@ class aPage3 extends React.Component {
         }
     }
     decreaseNum = (event) =>{
-        var inputField = this.state.name.split(' ');
+        let inputField = this.state.inputField
 
         if (inputField[0] ===''){
             this.setState({unit: 'please specify unit'})
@@ -62,7 +63,8 @@ class aPage3 extends React.Component {
     handleCheckUnit = (event) => {
         let value = event.target.value
         if (unitList.includes(value)){
-            this.setState({name:'0 '+ value, radioNone: false})
+            this.setState({name:'0 '+ value, radioNone: false});
+            this.handleChange();
         }else{
             this.setState({unit: 'please specify unit', radioNone: true, name:''})
         }
@@ -99,7 +101,7 @@ class aPage3 extends React.Component {
                 />
                 <button onClick= {this.increaseNum}> + </button> <br/>
 
-                <button className="send-btn" onClick = {this.handleChange}>send request</button>
+                <button className="send-btn" onClick = {this.handleChange}> validate </button>
                 <button className='reset-btn' onClick ={this.resetVal}> reset </button>
 
                 <Tile>{this.state.unit}</Tile>

@@ -19,10 +19,10 @@ class aPage1 extends React.Component {
         radioNone: false,
     };
 
-    
+    /*
     handleChange = (event) => {
         this.setState({name: event.target.value});
-    };
+    };*/
 
     handleRequest = (event) => {
         var inputField = this.state.name.split(' ');
