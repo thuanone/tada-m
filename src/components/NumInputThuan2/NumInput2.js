@@ -40,10 +40,12 @@ class NumInputForm2 extends React.Component {
         this.handleChange = this.handleChange.bind(this);
         this.checkValue = this.checkValue.bind(this);
         this.handleState = this.getValue.bind(this);
+        this.stringMatchesSomeUnit = this.stringMatchesSomeUnit.bind(this);
 
     }
     stringMatchesSomeUnit(String) {
         let result
+
 
         for (const unit of this.initialState.unitAssociated) {
             let computedValue = String.localeCompare(unit);
@@ -82,14 +84,15 @@ class NumInputForm2 extends React.Component {
     }
 
     checkValue(userInputNumbersAsNumbers) {
-        this.setState({errorMessage:''});
 
         //errorMessages
         let wrongFormat = ``;
         let wrongFomatMessage = `wrong Format - please input as 'Value'`;//${this.initialState.unitAssociated}
 
-        let lengthArray = userInputNumbersAsNumbers.lengthArray;
+        let lengthArray = userInputNumbersAsNumbers.length;
         let numberOfString = 0;
+
+        console.log(lengthArray);
 
         if (lengthArray === 1) {
             if (isNaN(userInputNumbersAsNumbers[0])) {
@@ -139,13 +142,14 @@ class NumInputForm2 extends React.Component {
     }
 
     handleChange(event) {
+
         let userInput = this.getValue(event);
         console.log(userInput);
         let isValid = this.checkValue(userInput);
         this.setState({ value: event.target.value });
 
         if (isValid) {
-            //submit
+            this.setState({errorMessage:''});
         }
 
     }//should be used in final iteration
