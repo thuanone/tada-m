@@ -100,9 +100,8 @@ class NumInputForm extends React.Component {
         let maxValError= ``;
         let incorrectInput=``;
 
-        if (this.state.value.includes(`${unit}`)) {
+        if (!this.state.value.includes(`${unit}`)) {
             unitError=`input is not ${unit}`;
-            return false
         }
         
         /*minValError Validation
@@ -120,7 +119,10 @@ class NumInputForm extends React.Component {
             incorrectInputFormatError=`input is not in the correct format`;
         }
         */
-       
+       if (unitError) {
+           this.setState({errorMessage:unitError})
+           return false
+       }
 
         return true;
     }
@@ -133,7 +135,8 @@ class NumInputForm extends React.Component {
     
     handleSubmit = (event) => {
         event.preventDefault();
-        const isValid = this.validate(this.state.unit, this.state.minVal, this.state.maxVal);
+        const isValid = this.validate(this.state.unit[0], this.state.minVal, this.state.maxVal);
+        console.log(isValid);
         if(isValid) {
             console.log(this.state);
             //clear error message
@@ -153,7 +156,7 @@ class NumInputForm extends React.Component {
                     onChange={this.getValue}
                 />
                 <p>Unit: {this.state.unit[0]}</p>
-                <p>Placeholder for Error Messages: {this.state.errorMessage}</p>
+                <p>{this.state.errorMessage}</p>
                 <Button type="submit">Submit</Button>
             </form>
         );
