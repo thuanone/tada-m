@@ -24,6 +24,7 @@ class NumInputForm2 extends React.Component {
             uppedUnits: initialState.uppedUnits[0],
             //errorMessageString, set in valdidate()
             errorMessage: initialState.errorMessage,
+            unitAssociated: initialState.unitAssociated
         };
         /* Setzt alle Werte auf undefined -> wahrscheinlich, weil props.xx.y nicht existieren
         this.state={
@@ -47,7 +48,7 @@ class NumInputForm2 extends React.Component {
         let result
 
 
-        for (const unit of this.initialState.unitAssociated) {
+        for (const unit of this.state.unitAssociated) {
             let computedValue = String.localeCompare(unit);
             //case insensitive comparison of two strings, if equivalent returns 0
 
@@ -87,12 +88,11 @@ class NumInputForm2 extends React.Component {
 
         //errorMessages
         let wrongFormat = ``;
-        let wrongFomatMessage = `wrong Format - please input as 'Value'`;//${this.initialState.unitAssociated}
+        let wrongFomatMessage = `wrong Format - please input as 'Value' ${this.state.unitAssociated}`;//
 
         let lengthArray = userInputNumbersAsNumbers.length;
         let numberOfString = 0;
 
-        console.log(lengthArray);
 
         if (lengthArray === 1) {
             if (isNaN(userInputNumbersAsNumbers[0])) {
@@ -142,7 +142,8 @@ class NumInputForm2 extends React.Component {
     }
 
     handleChange(event) {
-
+        console.log(this.state);
+        console.log(this.initialState);
         let userInput = this.getValue(event);
         console.log(userInput);
         let isValid = this.checkValue(userInput);
