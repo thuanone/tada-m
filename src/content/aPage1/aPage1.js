@@ -7,7 +7,7 @@ const unitList = ['GiB','MiB','vCPU','s'];
 const minNum = -1
 const maxNum = 100
 
-class Page1 extends React.Component {
+class aPage1 extends React.Component {
 
     state = {
         name:'',
@@ -21,11 +21,10 @@ class Page1 extends React.Component {
 
     
     handleChange = (event) => {
-        
+        this.setState({name: event.target.value});
     };
 
     handleRequest = (event) => {
-        this.setState({name: event.target.value});
         var inputField = this.state.name.split(' ');
         
         if (unitList.includes(inputField[1])){
@@ -98,7 +97,7 @@ class Page1 extends React.Component {
                 <input className="input1"
                     placeholder="type something here..." 
                     value= {this.state.name} 
-                    onChange = {this.handleRequest}
+                    onChange = {this.handleChange}
                 />
                 <button onClick= {this.increaseNum}> + </button> <br/>
 
@@ -112,4 +111,4 @@ class Page1 extends React.Component {
 }
 
 
-export default Page1;
+export default aPage1;
