@@ -13,6 +13,7 @@ function CPU_Unit() {
         uppedUnits: false,
     }
 */
+/*
 const CPU_Unit = {   
     unitAssociated:['m','CPU'],
     value: 0,
@@ -43,6 +44,7 @@ function displayValueWithNumber(state) {
 function handleIncrement() {
     
 }
+*/
 
 class NumInputForm extends React.Component {
     constructor(props){
@@ -96,9 +98,11 @@ class NumInputForm extends React.Component {
 
     validate (unit, minVal, maxVal) {
         let unitError=``;
+        /*
         let minValError=``;
         let maxValError= ``;
         let incorrectInput=``;
+        */
 
         if (!this.state.value.includes(`${unit}`)) {
             unitError=`input is not ${unit}`;
@@ -163,9 +167,4 @@ class NumInputForm extends React.Component {
     }
 }
 
-class handleChange {
-    state(){
-
-    }
-}
 export default NumInputForm;
