@@ -1,5 +1,5 @@
 import React from 'react';
-import NumInputForm2 from '../../components/NumInputThuan2/NumInput2';
+import NumInputForm3 from '../../components/NumInputThuan3/NumInput3';
 import {NumberInput} from "carbon-components-react";
 
 const CPU_Unit= {
@@ -12,20 +12,20 @@ const CPU_Unit= {
     uppedUnits: false,
 } 
 
-const Page4 = () => {
+const Page6 = () => {
     return(
         <div>
             <h1>Page4</h1>
             <label>
                 NumInput2 mit CPUUnit
-                <NumInputForm2 
+                <NumInputForm3 
                     {...CPU_Unit}
                 />
             </label>
             <br/>
             <label>
                 NumInput2 Vanilla
-                <NumInputForm2
+                <NumInputForm3
                 
                 />
             </label>
@@ -37,4 +37,4 @@ const Page4 = () => {
     );
 }
 
-export default Page4;
+export default Page6;

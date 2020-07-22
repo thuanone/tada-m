@@ -12,6 +12,7 @@ import aPage2 from './content/aPage2';
 import aPage3 from './content/aPage3';
 import aPage4 from './content/aPage4';
 import aPage5 from './content/aPage5';
+import aPage6 from './content/aPage6';
 
 
 const routing = (
@@ -56,6 +57,12 @@ const routing = (
                 <Button><Document /> aPage5</Button>
               </Link>
           </div>
+
+          <div class="bx--col">
+              <Link to="/aPage6"> 
+                <Button><Document /> aPage6</Button>
+              </Link>
+          </div>
           
 
         </div>
@@ -68,6 +75,7 @@ const routing = (
     <Route path="/aPage3" component={aPage3} />
     <Route path="/aPage4" component={aPage4} />
     <Route path="/aPage5" component={aPage5} />
+    <Route path="/aPage6" component={aPage6} />
 
   </div>
 </Router>
