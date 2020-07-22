@@ -17,22 +17,32 @@ class aPage3 extends React.Component {
         vCPU: false,
         sec: false,
         radioNone: true,
+        inputField:'',
     };
 
-    
-    handleChange = (event) => {
+
+    validateInput = (event) => {
         this.setState({name: event.target.value});
+        this.handleRequest(event);
     }
 
     handleRequest = (event) => {
-        var inputField = this.state.name.split(' ');
-        
-        if (unitList.includes(inputField[1])){
-            this.setState({unit: 'recognized unit: ' + inputField[1] })
-        } 
-        
+        let inputField = event.target.value.split(' ');
+
+        if (inputField[0]!=='1'){ // Checks if a number comes first
+            this.setState({unit: inputField[0] + ' is not a valid number'});
+        }
         else {
-            this.setState({unit: 'unknown unit', radioNone:true})
+            if (unitList.includes( inputField[1] )){ // checks if the unit comes next
+
+                this.setState({unit: 'recognized unit: ' + inputField[1]})
+            }
+            else if (inputField[1] == ' '){
+            }
+
+            else {
+                this.setState({unit: inputField[1]+ ' is not a valid unit'})
+            }
         };
 
     };
@@ -97,7 +107,7 @@ class aPage3 extends React.Component {
                 <input className="input1"
                     placeholder="type something here..." 
                     value= {this.state.name} 
-                    onChange = {this.handleChange}
+                    onChange = {this.validateInput}
                 />
 
                 <button onClick={this.decreaseNum}> - </button>
