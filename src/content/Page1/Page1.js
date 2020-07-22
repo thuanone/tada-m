@@ -1,5 +1,5 @@
 import React from 'react';
-import './aPage1.scss'
+import './Page1.scss'
 import {Tile, RadioButton} from 'carbon-components-react'
 
 const unitList = ['GiB','MiB','vCPU','s'];
@@ -7,7 +7,7 @@ const unitList = ['GiB','MiB','vCPU','s'];
 const minNum = -1
 const maxNum = 100
 
-class aPage1 extends React.Component {
+class Page1 extends React.Component {
 
     state = {
         name:'',
@@ -111,4 +111,4 @@ class aPage1 extends React.Component {
 }
 
 
-export default aPage1;
+export default Page1;
