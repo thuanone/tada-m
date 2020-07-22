@@ -31,7 +31,9 @@ const Page6 = () => {
             </label>
             <label>
                 CarbonDesign
-                <NumberInput />
+                <NumberInput 
+                
+                />
             </label>
         </div>
     );

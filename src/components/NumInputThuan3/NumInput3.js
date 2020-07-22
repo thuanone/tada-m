@@ -1,5 +1,12 @@
 import React from "react";
-import { Button } from "carbon-components-react";
+import { 
+    Button, 
+    Tile,
+    Form,
+    FormGroup,
+    TextInput,
+
+} from "carbon-components-react";
 
 class NumInputForm3 extends React.Component {
     constructor(props) {
@@ -66,7 +73,7 @@ class NumInputForm3 extends React.Component {
 
         var userInput = this.state.value.split(' ');
         //splits string into seperate instances and puts them together in an array called userInput
-        
+
 
         for (const e of userInput) {
             if (e != '') {//this is to avoid converting an empty string to 0 and pushing it onto the array
@@ -80,7 +87,7 @@ class NumInputForm3 extends React.Component {
             }
         }//iterates over seperated strings and converts numericalStrings into a numbertype and sorts them in a new array
         console.log(userInputNumbersAsNumbers);
-        
+
         return userInputNumbersAsNumbers;
     }
 
@@ -106,23 +113,23 @@ class NumInputForm3 extends React.Component {
             let lastNumber_Index;
             let lastString_Index;
 
-            if(isNaN(userInputNumbersAsNumbers[0])) {
+            if (isNaN(userInputNumbersAsNumbers[0])) {
                 wrongFormat = wrongFomatMessage;
             }//throws error if first element is not a number
 
 
             //Validation for Strings 
             for (const [index, value] of userInputNumbersAsNumbers.entries()) {
-                if(!isNaN(value)) {
+                if (!isNaN(value)) {
                     lastNumber_Index = index;
-                    if(lastNumber_Index < lastString_Index) {
+                    if (lastNumber_Index < lastString_Index) {
                         wrongFormat = wrongFormat;
                     }//throws error if number follows after string
 
-                } else  {
+                } else {
                     numberOfString += 1;
                     lastString_Index = index;
-                    if (!this.stringMatchesSomeUnit(value)){
+                    if (!this.stringMatchesSomeUnit(value)) {
                         wrongFormat = wrongFomatMessage;
                     }
                 }//counts number of strings
@@ -134,7 +141,7 @@ class NumInputForm3 extends React.Component {
         }//throws error if there is more than 1 string
 
         if (wrongFormat) {
-            this.setState({errorMessage:wrongFormat});
+            this.setState({ errorMessage: wrongFormat });
             return false;
         }//returns 
 
@@ -150,24 +157,27 @@ class NumInputForm3 extends React.Component {
         this.setState({ value: event.target.value });
 
         if (isValid) {
-            this.setState({errorMessage:''});
+            this.setState({ errorMessage: '' });
         }
 
     }//should be used in final iteration
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <input
-                    type="text"
-                    //value={displayValueWithNumber(this.state)}
-                    value={this.state.value}
-                    onChange={this.handleChange}
-                />
-                <p>Unit: {this.state.unit}</p>
-                <p>{this.state.errorMessage}</p>
-                <Button type="submit">Submit</Button>
-            </form>
+            <Tile>
+                <form onSubmit={this.handleSubmit}>
+                    <input
+                        type="text"
+                        //value={displayValueWithNumber(this.state)}
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                    />
+                    <p>Unit: {this.state.unit}</p>
+                    <p>{this.state.errorMessage}</p>
+                    <Button type="submit">Submit</Button>
+                </form>
+            </Tile>
+            
         );
     }
 }
