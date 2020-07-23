@@ -24,15 +24,9 @@ const Page6 = () => {
             </label>
             <br/>
             <label>
-                NumInput2 Vanilla
-                <NumInputForm3
-                
-                />
-            </label>
-            <label>
-                CarbonDesign
+                CarbonDesignImport
                 <NumberInput 
-                
+
                 />
             </label>
         </div>

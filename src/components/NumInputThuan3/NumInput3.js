@@ -1,12 +1,25 @@
-import React from "react";
-import { 
-    Button, 
+
+import {
+    Button,
     Tile,
     Form,
     FormGroup,
     TextInput,
 
 } from "carbon-components-react";
+
+
+import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import classNames from 'classnames';
+import { settings } from 'carbon-components';
+import {
+  WarningFilled16,
+  CaretDownGlyph,
+  CaretUpGlyph,
+} from '@carbon/icons-react';
+
+
 
 class NumInputForm3 extends React.Component {
     constructor(props) {
@@ -164,7 +177,7 @@ class NumInputForm3 extends React.Component {
 
     render() {
         return (
-            <Tile>
+            <div>
                 <form onSubmit={this.handleSubmit}>
                     <input
                         type="text"
@@ -174,10 +187,71 @@ class NumInputForm3 extends React.Component {
                     />
                     <p>Unit: {this.state.unit}</p>
                     <p>{this.state.errorMessage}</p>
-                    <Button type="submit">Submit</Button>
                 </form>
-            </Tile>
+                
+                <div class="bx--number bx--number--helpertext">
+                    <label></label>
+                    <div class="bx--number__input-wrapper">
+                        <input
+                            type="text"
+                            //value={displayValueWithNumber(this.state)}
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                        />
+                        <div class="bx-number__controls">
+                            <button
+                                class="bx-number__controls-btn up-icon"
+                                type="button"
+                                title="Increment number"
+                                aria-label="Increment number"
+                                aria-live="polite"
+                                aria-atomic="true"
+                            >
+                                <svg
+                                    focusable="false"
+                                    preserveAspectRatio="xMidYMid meet"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    width="8"
+                                    height="4"
+                                    viewBox="0 0 8 4"
+                                    aria-hidden="true"
+                                    class="up-icon"
+                                >
+                                    <path d="M0 4L4 0 8 4z"></path>
+                                </svg>
+                            </button>
+                            <button
+                                class="bx--number__control-btn down-icon"
+                                type="button"
+                                title="Decrement number"
+                                aria-label="Decrement number"
+                                aria-live="polite"
+                                aria-atomic="true"
+                            >
+                                <svg
+                                    focusable="false"
+                                    preserveAspectRatio="xMidYMid meet"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="currentColor"
+                                    width="8"
+                                    height="4"
+                                    viewBox="0 0 8 4"
+                                    aria-hidden="true"
+                                    class="down-icon"
+                                >
+                                    <path d="M8 0L4 4 0 0z"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
             
+
+
         );
     }
 }
