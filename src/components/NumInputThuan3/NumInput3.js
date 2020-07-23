@@ -1,23 +1,4 @@
-import React, { Component } from 'react';
-import {
-    Button,
-    Tile,
-    Form,
-    FormGroup,
-    TextInput,
-
-} from "carbon-components-react";
-
-
-import PropTypes from 'prop-types';
-
-import classNames from 'classnames';
-import { settings } from 'carbon-components';
-import {
-    WarningFilled16,
-    CaretDownGlyph,
-    CaretUpGlyph,
-} from '@carbon/icons-react';
+import React from 'react';
 
 
 
@@ -63,16 +44,33 @@ class NumInputForm3 extends React.Component {
         this.handleState = this.getValue.bind(this);
         this.stringMatchesSomeUnit = this.stringMatchesSomeUnit.bind(this);
 
+        this.numInDecrement = this.numInDecrement.bind(this);
+        this.handleButtonClicks = this.handleButtonClicks.bind(this);
+
     }
+    
+    handleButtonClicks() {
+
+    }
+
+    numInDecrement (Increment) {
+        let stepSize = this.state.stepSize;
+
+
+        if (Increment) {
+            console.log('Increment');
+        }
+        else {
+            console.log('Decrement');
+        }
+    }
+
     stringMatchesSomeUnit(String) {
-        let result
-
-
         for (const unit of this.state.unitAssociated) {
             let computedValue = String.localeCompare(unit);
             //case insensitive comparison of two strings, if equivalent returns 0
 
-            if (computedValue == 0) {
+            if (computedValue === 0) {
                 return true;
             }//returns true only if one element of the array matches with the string
         }
@@ -99,7 +97,6 @@ class NumInputForm3 extends React.Component {
                 userInputNumbersAsNumbers.push(eParsed);
             }
         }//iterates over seperated strings and converts numericalStrings into a numbertype and sorts them in a new array
-        console.log(userInputNumbersAsNumbers);
 
         return userInputNumbersAsNumbers;
     }
@@ -136,7 +133,7 @@ class NumInputForm3 extends React.Component {
                 if (!isNaN(value)) {
                     lastNumber_Index = index;
                     if (lastNumber_Index < lastString_Index) {
-                        wrongFormat = wrongFormat;
+                        wrongFormat = wrongFomatMessage;
                     }//throws error if number follows after string
 
                 } else {
@@ -166,10 +163,9 @@ class NumInputForm3 extends React.Component {
     }
 
     handleChange(event) {
-        console.log(this.state);
-        console.log(this.initialState);
+
         let userInput = this.getValue(event);
-        console.log(userInput);
+
         let isValidFormat = this.checkValueFormat(userInput);
         this.setState({ value: event.target.value });
 
@@ -198,7 +194,10 @@ class NumInputForm3 extends React.Component {
                                         />
                                         <div class="bx--number__controls">
                                             <button class="bx--number__control-btn up-icon" type="button" title="Increment number"
-                                                aria-label="Increment number" aria-live="polite" aria-atomic="true">
+                                                aria-label="Increment number" aria-live="polite" aria-atomic="true"
+                                                
+                                                onClick={() => this.numInDecrement(true)}
+                                                >
                                                 <svg focusable="false" preserveAspectRatio="xMidYMid meet"
                                                     style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"
                                                     aria-hidden="true" class="up-icon">
@@ -206,7 +205,10 @@ class NumInputForm3 extends React.Component {
                                                 </svg>
                                             </button>
                                             <button class="bx--number__control-btn down-icon" type="button" title="Decrement number"
-                                                aria-label="Decrement number" aria-live="polite" aria-atomic="true">
+                                                aria-label="Decrement number" aria-live="polite" aria-atomic="true"
+                                                
+                                                onClick={() => this.numInDecrement(false)}
+                                                >
                                                 <svg focusable="false" preserveAspectRatio="xMidYMid meet"
                                                     style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8"
                                                     height="4" viewBox="0 0 8 4" aria-hidden="true" class="down-icon">
