@@ -53,10 +53,11 @@ class NumInputForm4 extends React.Component {
         let userInput = this.getValue(event);
         let isValidFormat = this.checkValueFormat(userInput);
         let number;
+        
 
         if (isValidFormat) {
             number = this.getNumber(userInput);
-            this.onClickInDecrement(event.target.isIncrement, number)
+            this.onClickInDecrement('isUndefined', number)
         }
         return;
     }
@@ -215,8 +216,8 @@ class NumInputForm4 extends React.Component {
                                                 aria-label="Increment number" aria-live="polite" aria-atomic="true"
                                                 
                                                 id="incrementButton"
-                                                isIncrement={true}
-                                                onClick={this.handleButtonClicks}
+                                                isincrement={true}
+                                                onClick={(e) => this.handleButtonClicks()}
                                                 >
                                                 <svg focusable="false" preserveAspectRatio="xMidYMid meet"
                                                     style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"
@@ -228,8 +229,8 @@ class NumInputForm4 extends React.Component {
                                                 aria-label="Decrement number" aria-live="polite" aria-atomic="true"
                                                 
                                                 id="decrementButton"
-                                                isIncrement={false}
-                                                onClick={this.handleButtonClicks}
+                                                isincrement={false}
+                                                onClick={(e) => this.handleButtonClicks()}
                                                 >
                                                 <svg focusable="false" preserveAspectRatio="xMidYMid meet"
                                                     style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8"
