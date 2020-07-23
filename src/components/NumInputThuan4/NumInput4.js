@@ -6,13 +6,13 @@ class NumInputForm4 extends React.Component {
     constructor(props) {
         super(props);
         const initialState = {
-            value: (props.value ? props.value : ``),
+            value: (props.value ? props.value : `0`),
             unitAssociated: (props.unitAssociated ? props.unitAssociated : ['',]),
             minVal: (props.minVal ? props.minVal : 0),
             maxVal: (props.maxVal ? props.minVal : 100),
             standardStepSizes: (props.standardStepSizes ? props.standardStepSizes : [1,]),
             standardChunks: (props.standardChunks ? props.standardChunks : [10,100,]),
-            unitInUse: (props.unitInUse? props.unitInUse : 0),
+            unitInUse: (props.unitInUse ? props.unitInUse : 0),
             //errorMessageString, set in valdidate()
             errorMessage: '',
         }
@@ -22,8 +22,8 @@ class NumInputForm4 extends React.Component {
             unit: initialState.unitAssociated[0],
             minVal: initialState.minVal,
             maxVal: initialState.maxVal,
-            standardStepSizes: initialState.standardStepSizes[0],
-            standardChunks: initialState.standardChunks[0],
+            standardStepSizes: initialState.standardStepSizes,
+            standardChunks: initialState.standardChunks,
             unitInUse: initialState.unitInUse,
             //errorMessageString, set in valdidate()
             errorMessage: initialState.errorMessage,
@@ -36,7 +36,7 @@ class NumInputForm4 extends React.Component {
         this.handleState = this.getValue.bind(this);
         this.stringMatchesSomeUnit = this.stringMatchesSomeUnit.bind(this);
 
-        this.numInDecrement = this.numInDecrement.bind(this);
+        this.onClickInDecrement = this.onClickInDecrement.bind(this);
         this.handleButtonClicks = this.handleButtonClicks.bind(this);
         this.getNumber = this.getNumber.bind(this);
 
@@ -45,20 +45,28 @@ class NumInputForm4 extends React.Component {
     getNumber(userInputNumbersAsNumbers) {
         userInputNumbersAsNumbers.pop();
         let fullNumber = Number(userInputNumbersAsNumbers.join(''));
-        console.log(fullNumber);
         return fullNumber;
-    }
+    }//gets a valid valid array with numbers as its elements and one string as a last element
+    //concatenates converted number-strings and returns them as a number
     
-    handleButtonClicks() {
+    handleButtonClicks(event) {
+        let userInput = this.getValue(event);
+        let isValidFormat = this.checkValueFormat(userInput);
+        let number;
 
+        if (isValidFormat) {
+            number = this.getNumber(userInput);
+            this.onClickInDecrement(event.target.isIncrement, number)
+        }
+        return;
     }
 
-    numInDecrement(Increment) {
+    onClickInDecrement(Increment, number) {
         if (Increment) {
-            console.log('Increment');
+            this.setState({value: `${number + this.state.standardStepSizes[this.state.unitInUse]}`});
         }
         else {
-            console.log('Decrement');
+            this.setState({value: `${number - this.state.standardStepSizes[this.state.unitInUse]}`});
         } 
     }
 
@@ -153,19 +161,11 @@ class NumInputForm4 extends React.Component {
             wrongFormat = wrongFomatMessage;
         }//throws error if there is more than 1 string
 
+
         if (indexUnitUsed - 1 === 0 && !Number.isInteger(this.getNumber(userInputNumbersAsNumbers))) {
             wrongFormat = wrongNumberTypeMessage;
-            
-        }
-        /*
-        if (wrongFormat==="") {
-            let fullNumber = this.getNumber(userInputNumbersAsNumbers);
-            if (!isInteger(fullNumber)) {
-                wrongFormat = `invalid input: please provide integers for ${this.state}`;
-            }
-        }
-        */
-        console.log(!Number.isInteger(this.getNumber(userInputNumbersAsNumbers)));
+        }//checks if is integer for base unit //muss noch erweitert werden??
+        
 
         if (wrongFormat) {
             this.setState({ errorMessage: wrongFormat });
@@ -215,7 +215,8 @@ class NumInputForm4 extends React.Component {
                                                 aria-label="Increment number" aria-live="polite" aria-atomic="true"
                                                 
                                                 id="incrementButton"
-                                                onClick={() => this.numInDecrement(true)}
+                                                isIncrement={true}
+                                                onClick={this.handleButtonClicks}
                                                 >
                                                 <svg focusable="false" preserveAspectRatio="xMidYMid meet"
                                                     style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"
@@ -227,7 +228,8 @@ class NumInputForm4 extends React.Component {
                                                 aria-label="Decrement number" aria-live="polite" aria-atomic="true"
                                                 
                                                 id="decrementButton"
-                                                onClick={() => this.numInDecrement(false)}
+                                                isIncrement={false}
+                                                onClick={this.handleButtonClicks}
                                                 >
                                                 <svg focusable="false" preserveAspectRatio="xMidYMid meet"
                                                     style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8"
