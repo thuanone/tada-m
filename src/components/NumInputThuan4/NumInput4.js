@@ -2,7 +2,7 @@ import React from 'react';
 
 
 
-class NumInputForm3 extends React.Component {
+class NumInputForm4 extends React.Component {
     constructor(props) {
         super(props);
         const initialState = {
@@ -232,4 +232,4 @@ class NumInputForm3 extends React.Component {
     }
 }
 
-export default NumInputForm3;
+export default NumInputForm4;
