@@ -181,12 +181,15 @@ class NumInputForm3 extends React.Component {
                 <div>
                     <label>
                         CarbonDesignImport.NumberInput_HTMLCopy
-                        <div class="bx--form-item">
+                        <div class="bx--form-item bx--text-input-wrapper">
                             <div class="bx--number bx--number--helpertext">
                                 <label class="bx--label"> </label>
 
-                                <div>
-                                    <input type="Number" pattern="[0-9]*" step="1"
+                                <div class="bx--text-input__field-outer-wrapper">
+                                    <div class="bx--text-input__field-wrapper">
+                                    <input
+                                        class="bx--text-input bx--text__input" 
+                                        type="text"
                                         aria-label="Numeric input field with increment and decrement buttons" 
 
                                         value={this.state.value} 
@@ -209,6 +212,7 @@ class NumInputForm3 extends React.Component {
                                                 <path d="M8 0L4 4 0 0z"></path>
                                             </svg>
                                         </button>
+                                    </div>
                                     </div>
                                 </div>
 
