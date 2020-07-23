@@ -44,7 +44,7 @@ class NumInputForm3 extends React.Component {
             uppedUnits: initialState.uppedUnits[0],
             //errorMessageString, set in valdidate()
             errorMessage: initialState.errorMessage,
-            unitAssociated: initialState.unitAssociated
+            unitAssociated: initialState.unitAssociated,
         };
         /* Setzt alle Werte auf undefined -> wahrscheinlich, weil props.xx.y nicht existieren
         this.state={
@@ -59,7 +59,7 @@ class NumInputForm3 extends React.Component {
 
         this.getValue = this.getValue.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.checkValue = this.checkValue.bind(this);
+        this.checkValueFormat = this.checkValueFormat.bind(this);
         this.handleState = this.getValue.bind(this);
         this.stringMatchesSomeUnit = this.stringMatchesSomeUnit.bind(this);
 
@@ -104,7 +104,7 @@ class NumInputForm3 extends React.Component {
         return userInputNumbersAsNumbers;
     }
 
-    checkValue(userInputNumbersAsNumbers) {
+    checkValueFormat(userInputNumbersAsNumbers) {
 
         //errorMessages
         let wrongFormat = ``;
@@ -156,9 +156,13 @@ class NumInputForm3 extends React.Component {
         if (wrongFormat) {
             this.setState({ errorMessage: wrongFormat });
             return false;
-        }//returns 
+        }//returns false if format not as specified
+        else {
+            this.setState({errorMessage: ``});
+            return true;
+        }//returns true no error flag is triggered is as specified and resets errorMessage to ``
+        
 
-        return true; //returns true if there is no error
     }
 
     handleChange(event) {
@@ -166,12 +170,9 @@ class NumInputForm3 extends React.Component {
         console.log(this.initialState);
         let userInput = this.getValue(event);
         console.log(userInput);
-        let isValid = this.checkValue(userInput);
+        let isValidFormat = this.checkValueFormat(userInput);
         this.setState({ value: event.target.value });
 
-        if (isValid) {
-            this.setState({ errorMessage: '' });
-        }
 
     }//should be used in final iteration
 
