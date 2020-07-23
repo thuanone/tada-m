@@ -1,6 +1,6 @@
 import React from 'react';
 import NumInputForm3 from '../../components/NumInputThuan3/NumInput3';
-import {NumberInput} from "carbon-components-react";
+import {NumberInput, TextInput} from "carbon-components-react";
 
 const CPU_Unit= {
     unitAssociated:['m','CPU'],
@@ -15,19 +15,22 @@ const CPU_Unit= {
 const Page6 = () => {
     return(
         <div>
-            <h1>Page4</h1>
+            <h1>Page6</h1>
             <label>
                 NumInput2 mit CPUUnit
                 <NumInputForm3 
                     {...CPU_Unit}
                 />
             </label>
+            <hr />
+            <label>
+                CarbonNumberInput
+                <NumberInput />
+            </label>
             <br/>
             <label>
-                CarbonDesignImport
-                <NumberInput 
-
-                />
+                CarbonTextInput
+                <TextInput />
             </label>
         </div>
     );

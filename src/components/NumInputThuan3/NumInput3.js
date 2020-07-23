@@ -1,4 +1,4 @@
-
+import React, { Component } from 'react';
 import {
     Button,
     Tile,
@@ -10,13 +10,13 @@ import {
 
 
 import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+
 import classNames from 'classnames';
 import { settings } from 'carbon-components';
 import {
-  WarningFilled16,
-  CaretDownGlyph,
-  CaretUpGlyph,
+    WarningFilled16,
+    CaretDownGlyph,
+    CaretUpGlyph,
 } from '@carbon/icons-react';
 
 
@@ -178,80 +178,47 @@ class NumInputForm3 extends React.Component {
     render() {
         return (
             <div>
-                <form onSubmit={this.handleSubmit}>
-                    <input
-                        type="text"
-                        //value={displayValueWithNumber(this.state)}
-                        value={this.state.value}
-                        onChange={this.handleChange}
-                    />
-                    <p>Unit: {this.state.unit}</p>
-                    <p>{this.state.errorMessage}</p>
-                </form>
-                
-                <div class="bx--number bx--number--helpertext">
-                    <label></label>
-                    <div class="bx--number__input-wrapper">
-                        <input
-                            type="text"
-                            //value={displayValueWithNumber(this.state)}
-                            value={this.state.value}
-                            onChange={this.handleChange}
-                        />
-                        <div class="bx-number__controls">
-                            <button
-                                class="bx-number__controls-btn up-icon"
-                                type="button"
-                                title="Increment number"
-                                aria-label="Increment number"
-                                aria-live="polite"
-                                aria-atomic="true"
-                            >
-                                <svg
-                                    focusable="false"
-                                    preserveAspectRatio="xMidYMid meet"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    width="8"
-                                    height="4"
-                                    viewBox="0 0 8 4"
-                                    aria-hidden="true"
-                                    class="up-icon"
-                                >
-                                    <path d="M0 4L4 0 8 4z"></path>
-                                </svg>
-                            </button>
-                            <button
-                                class="bx--number__control-btn down-icon"
-                                type="button"
-                                title="Decrement number"
-                                aria-label="Decrement number"
-                                aria-live="polite"
-                                aria-atomic="true"
-                            >
-                                <svg
-                                    focusable="false"
-                                    preserveAspectRatio="xMidYMid meet"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="currentColor"
-                                    width="8"
-                                    height="4"
-                                    viewBox="0 0 8 4"
-                                    aria-hidden="true"
-                                    class="down-icon"
-                                >
-                                    <path d="M8 0L4 4 0 0z"></path>
-                                </svg>
-                            </button>
+                <div>
+                    <label>
+                        CarbonDesignImport.NumberInput_HTMLCopy
+                        <div class="bx--form-item">
+                            <div class="bx--number bx--number--helpertext">
+                                <label class="bx--label"> </label>
+
+                                <div>
+                                    <input type="Number" pattern="[0-9]*" step="1"
+                                        aria-label="Numeric input field with increment and decrement buttons" 
+
+                                        value={this.state.value} 
+                                        onChange={this.handleChange}
+                                        />
+                                    <div class="bx--number__controls">
+                                        <button class="bx--number__control-btn up-icon" type="button" title="Increment number"
+                                            aria-label="Increment number" aria-live="polite" aria-atomic="true">
+                                            <svg focusable="false" preserveAspectRatio="xMidYMid meet"
+                                                style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"
+                                                aria-hidden="true" class="up-icon">
+                                                <path d="M0 4l4-4 4 4z"></path>
+                                            </svg>
+                                        </button>
+                                        <button class="bx--number__control-btn down-icon" type="button" title="Decrement number"
+                                            aria-label="Decrement number" aria-live="polite" aria-atomic="true">
+                                            <svg focusable="false" preserveAspectRatio="xMidYMid meet"
+                                                style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8"
+                                                height="4" viewBox="0 0 8 4" aria-hidden="true" class="down-icon">
+                                                <path d="M8 0L4 4 0 0z"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
-
-                    </div>
+                        <p>Unit: {this.state.unit}</p>
+                        <p>{this.state.errorMessage}</p>
+                    </label>
                 </div>
-
             </div>
-            
-
-
         );
     }
 }
