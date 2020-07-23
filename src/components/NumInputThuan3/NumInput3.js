@@ -187,32 +187,32 @@ class NumInputForm3 extends React.Component {
 
                                 <div class="bx--text-input__field-outer-wrapper">
                                     <div class="bx--text-input__field-wrapper">
-                                    <input
-                                        class="bx--text-input bx--text__input" 
-                                        type="text"
-                                        aria-label="Numeric input field with increment and decrement buttons" 
+                                        <input
+                                            class="bx--text-input bx--text__input"
+                                            type="text"
+                                            aria-label="Numeric input field with increment and decrement buttons"
 
-                                        value={this.state.value} 
-                                        onChange={this.handleChange}
+                                            value={this.state.value}
+                                            onChange={this.handleChange}
                                         />
-                                    <div class="bx--number__controls">
-                                        <button class="bx--number__control-btn up-icon" type="button" title="Increment number"
-                                            aria-label="Increment number" aria-live="polite" aria-atomic="true">
-                                            <svg focusable="false" preserveAspectRatio="xMidYMid meet"
-                                                style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"
-                                                aria-hidden="true" class="up-icon">
-                                                <path d="M0 4l4-4 4 4z"></path>
-                                            </svg>
-                                        </button>
-                                        <button class="bx--number__control-btn down-icon" type="button" title="Decrement number"
-                                            aria-label="Decrement number" aria-live="polite" aria-atomic="true">
-                                            <svg focusable="false" preserveAspectRatio="xMidYMid meet"
-                                                style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8"
-                                                height="4" viewBox="0 0 8 4" aria-hidden="true" class="down-icon">
-                                                <path d="M8 0L4 4 0 0z"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
+                                        <div class="bx--number__controls">
+                                            <button class="bx--number__control-btn up-icon" type="button" title="Increment number"
+                                                aria-label="Increment number" aria-live="polite" aria-atomic="true">
+                                                <svg focusable="false" preserveAspectRatio="xMidYMid meet"
+                                                    style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"
+                                                    aria-hidden="true" class="up-icon">
+                                                    <path d="M0 4l4-4 4 4z"></path>
+                                                </svg>
+                                            </button>
+                                            <button class="bx--number__control-btn down-icon" type="button" title="Decrement number"
+                                                aria-label="Decrement number" aria-live="polite" aria-atomic="true">
+                                                <svg focusable="false" preserveAspectRatio="xMidYMid meet"
+                                                    style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8"
+                                                    height="4" viewBox="0 0 8 4" aria-hidden="true" class="down-icon">
+                                                    <path d="M8 0L4 4 0 0z"></path>
+                                                </svg>
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 

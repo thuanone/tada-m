@@ -24,7 +24,8 @@ class NumInputForm2 extends React.Component {
             uppedUnits: this.initialState.uppedUnits[0],
             //errorMessageString, set in valdidate()
             errorMessage: this.initialState.errorMessage,
-            unitAssociated: this.initialState.unitAssociated
+            unitAssociated: this.initialState.unitAssociated,
+            numberValue: 0, 
         };
         /* Setzt alle Werte auf undefined -> wahrscheinlich, weil props.xx.y nicht existieren
         this.state={
@@ -39,7 +40,7 @@ class NumInputForm2 extends React.Component {
 
         this.getValue = this.getValue.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.checkValue = this.checkValue.bind(this);
+        this.checkValueFormat = this.checkValueFormat.bind(this);
         this.handleState = this.getValue.bind(this);
         this.stringMatchesSomeUnit = this.stringMatchesSomeUnit.bind(this);
 
@@ -84,7 +85,7 @@ class NumInputForm2 extends React.Component {
         return userInputNumbersAsNumbers;
     }
 
-    checkValue(userInputNumbersAsNumbers) {
+    checkValueFormat(userInputNumbersAsNumbers) {
 
         //errorMessages
         let wrongFormat = ``;
@@ -129,6 +130,7 @@ class NumInputForm2 extends React.Component {
 
             }//iterates over 
         }
+
         if (numberOfString > 1) {
             wrongFormat = wrongFomatMessage;
         }//throws error if there is more than 1 string
@@ -136,7 +138,10 @@ class NumInputForm2 extends React.Component {
         if (wrongFormat) {
             this.setState({errorMessage:wrongFormat});
             return false;
-        }//returns 
+        }//returns false if there is any formatError
+        else if (wrongFormat= ``){
+            this.setState({errorMessage:''});
+        }
 
         return true; //returns true if there is no error
     }
@@ -146,12 +151,8 @@ class NumInputForm2 extends React.Component {
         console.log(this.initialState);
         let userInput = this.getValue(event);
         console.log(userInput);
-        let isValid = this.checkValue(userInput);
+        let formatCorrect = this.checkValueFormat(userInput);
         this.setState({ value: event.target.value });
-
-        if (isValid) {
-            this.setState({errorMessage:''});
-        }
 
     }//should be used in final iteration
 
