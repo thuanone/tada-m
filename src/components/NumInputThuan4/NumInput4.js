@@ -10,8 +10,9 @@ class NumInputForm4 extends React.Component {
             unitAssociated: (props.unitAssociated ? props.unitAssociated : ['',]),
             minVal: (props.minVal ? props.minVal : 0),
             maxVal: (props.maxVal ? props.minVal : 100),
-            stepSize: (props.stepSize ? props.stepSize : [1,]),
-            uppedUnits: (props.uppedUnits ? props.uppedUnits : [1]),
+            standardStepSizes: (props.standardStepSizes ? props.standardStepSizes : [1,]),
+            standardChunks: (props.standardChunks ? props.standardChunks : [10,100,]),
+            unitInUse: (props.unitInUse? props.unitInUse : 0),
             //errorMessageString, set in valdidate()
             errorMessage: '',
         }
@@ -21,22 +22,13 @@ class NumInputForm4 extends React.Component {
             unit: initialState.unitAssociated[0],
             minVal: initialState.minVal,
             maxVal: initialState.maxVal,
-            stepSize: initialState.stepSize[0],
-            uppedUnits: initialState.uppedUnits[0],
+            standardStepSizes: initialState.standardStepSizes[0],
+            standardChunks: initialState.standardChunks[0],
+            unitInUse: initialState.unitInUse,
             //errorMessageString, set in valdidate()
             errorMessage: initialState.errorMessage,
             unitAssociated: initialState.unitAssociated,
         };
-        /* Setzt alle Werte auf undefined -> wahrscheinlich, weil props.xx.y nicht existieren
-        this.state={
-            value: props.value,
-            unit: props.unitAssociated,
-            minVal: props.minVal,
-            maxVal: props.maxVal,
-            stepSize: props.stepSize,
-            uppedUnits: props.uppedUnits,
-        };
-        */
 
         this.getValue = this.getValue.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -46,33 +38,38 @@ class NumInputForm4 extends React.Component {
 
         this.numInDecrement = this.numInDecrement.bind(this);
         this.handleButtonClicks = this.handleButtonClicks.bind(this);
+        this.getNumber = this.getNumber.bind(this);
 
+    }
+
+    getNumber(userInputNumbersAsNumbers) {
+        userInputNumbersAsNumbers.pop();
+        let fullNumber = Number(userInputNumbersAsNumbers.join(''));
+        console.log(fullNumber);
+        return fullNumber;
     }
     
     handleButtonClicks() {
 
     }
 
-    numInDecrement (Increment) {
-        let stepSize = this.state.stepSize;
-
-
+    numInDecrement(Increment) {
         if (Increment) {
             console.log('Increment');
         }
         else {
             console.log('Decrement');
-        }
+        } 
     }
 
     stringMatchesSomeUnit(String) {
-        for (const unit of this.state.unitAssociated) {
+        for (const [index, unit] of this.state.unitAssociated.entries()) {
             let computedValue = String.localeCompare(unit);
             //case insensitive comparison of two strings, if equivalent returns 0
 
             if (computedValue === 0) {
-                return true;
-            }//returns true only if one element of the array matches with the string
+                return (index+1);
+            }//returns truthy only if one element of the array matches with the string
         }
         return false;
     }//if no element matches then string is not in array
@@ -105,10 +102,13 @@ class NumInputForm4 extends React.Component {
 
         //errorMessages
         let wrongFormat = ``;
-        let wrongFomatMessage = `wrong Format - please input as 'Value' ${this.state.unitAssociated}`;//
+        let wrongFomatMessage = `wrong Format - please input as 'Value' ${this.state.unitAssociated}`;
+        let wrongNumberTypeMessage = `invalid input: please use integers for ${this.state.unitAssociated[0]}`;
 
         let lengthArray = userInputNumbersAsNumbers.length;
         let numberOfString = 0;
+
+        let indexUnitUsed;
 
 
         if (lengthArray === 1) {
@@ -122,6 +122,7 @@ class NumInputForm4 extends React.Component {
 
             let lastNumber_Index;
             let lastString_Index;
+            
 
             if (isNaN(userInputNumbersAsNumbers[0])) {
                 wrongFormat = wrongFomatMessage;
@@ -130,16 +131,18 @@ class NumInputForm4 extends React.Component {
 
             //Validation for Strings 
             for (const [index, value] of userInputNumbersAsNumbers.entries()) {
-                if (!isNaN(value)) {
+                if (!isNaN(value)) {//if is number
                     lastNumber_Index = index;
                     if (lastNumber_Index < lastString_Index) {
                         wrongFormat = wrongFomatMessage;
                     }//throws error if number follows after string
 
-                } else {
+                } else {// if is not number
                     numberOfString += 1;
                     lastString_Index = index;
-                    if (!this.stringMatchesSomeUnit(value)) {
+                    indexUnitUsed = this.stringMatchesSomeUnit(value);
+
+                    if (!indexUnitUsed) {
                         wrongFormat = wrongFomatMessage;
                     }
                 }//counts number of strings
@@ -150,17 +153,32 @@ class NumInputForm4 extends React.Component {
             wrongFormat = wrongFomatMessage;
         }//throws error if there is more than 1 string
 
+        if (indexUnitUsed - 1 === 0 && !Number.isInteger(this.getNumber(userInputNumbersAsNumbers))) {
+            wrongFormat = wrongNumberTypeMessage;
+            
+        }
+        /*
+        if (wrongFormat==="") {
+            let fullNumber = this.getNumber(userInputNumbersAsNumbers);
+            if (!isInteger(fullNumber)) {
+                wrongFormat = `invalid input: please provide integers for ${this.state}`;
+            }
+        }
+        */
+        console.log(!Number.isInteger(this.getNumber(userInputNumbersAsNumbers)));
+
         if (wrongFormat) {
             this.setState({ errorMessage: wrongFormat });
             return false;
         }//returns false if format not as specified
-        else {
-            this.setState({errorMessage: ``});
-            return true;
-        }//returns true no error flag is triggered is as specified and resets errorMessage to ``
-        
-
-    }
+        /*
+        else if (indexUnitUsed - 1 === 0 && !Number.isInteger(this.getNumber(userInputNumbersAsNumbers))) {
+            wrongFormat = wrongNumberTypeMessage;
+            
+        }*/
+        this.setState({errorMessage: ``});
+        return true;
+    }//returns true no error flag is triggered is as specified and resets errorMessage to ``
 
     handleChange(event) {
 

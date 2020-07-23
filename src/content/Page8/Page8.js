@@ -2,14 +2,15 @@ import React from 'react';
 import NumInputForm4 from '../../components/NumInputThuan4/NumInput4';
 import {NumberInput, TextInput} from "carbon-components-react";
 
-const CPU_Unit= {
-    unitAssociated:['m','CPU'],
+const Memory_Unit= {
+    unitAssociated:['mb','gb'],
     value: 0,
     minVal: 0,
     maxVal: 10,
-    stepSize:[0.25,0.5,1,],
-    nextUnitIncrement:[0.25,0.50,0.75,1.0,1.25,1.5],
-    uppedUnits: false,
+    standardStepSizes:[1,0.25],
+    standardChunks:[128, 0.5],
+    unitInUse: 0,
+
 } 
 
 const Page8 = () => {
@@ -19,7 +20,7 @@ const Page8 = () => {
             <label>
                 NumInput4 mit CPUUnit
                 <NumInputForm4 
-                    {...CPU_Unit}
+                    {...Memory_Unit}
                 />
             </label>
             <hr />
