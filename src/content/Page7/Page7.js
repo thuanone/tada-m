@@ -1,7 +1,6 @@
 import React from 'react';
 import './Page7.scss'
 
-import {Tile, RadioButton} from 'carbon-components-react'
 
 const unitList = ['GiB','MiB','vCPU','s'];
 
@@ -31,7 +30,7 @@ class Page7 extends React.Component {
     handleRequest = (event) => {
         let inputField = event.target.value.split(' ');
 
-        if (parseFloat(inputField[0])!==1 ){ // Checks if a number comes first
+        if (isNaN( parseFloat(inputField[0]) ) ){ // Checks if a number comes first
             this.setState({unit: inputField[0] + ' is not a valid number'});
         }
         else {
