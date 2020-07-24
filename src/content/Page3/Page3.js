@@ -29,13 +29,14 @@ class Page3 extends React.Component {
     handleRequest = (event) => {
         let inputField = event.target.value.split(' ');
 
-        if (inputField[0]!=='1'){ // Checks if a number comes first
+        if (parseFloat(inputField[0])!==1 ){ // Checks if a number comes first
             this.setState({unit: inputField[0] + ' is not a valid number'});
         }
         else {
             if (unitList.includes( inputField[1] )){ // checks if the unit comes next
 
-                this.setState({unit: 'recognized unit: ' + inputField[1]})
+                this.setState({unit: 'recognized unit: ' + inputField[1]});
+                this.handleCheckUnit(event);
             }
             else if (inputField[1] == ' '){
             }
