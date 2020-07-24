@@ -92,64 +92,54 @@ class Page7 extends React.Component {
     render(){
         return(
             <div>
+                <p>Choose Unit</p> 
+
+                <fieldset>
+                    <input className='radiobtn' type="radio" name = "Units" onClick={this.handleCheckUnit} value ='GiB' checked ={this.state.GiB}/>
+                    <a>GiB</a>
+                    <input className='radiobtn' type="radio" name = "Units" onClick={this.handleCheckUnit} value = 'MiB' checked ={this.state.MiB}/>
+                    <a>MiB</a>
+                    <input className='radiobtn' type="radio" name = "Units" onClick={this.handleCheckUnit} value = 'vCPU' checked ={this.state.vCPU}/>
+                    <a>vCPU</a>
+                    <input className='radiobtn' type="radio" name = "Units" onClick={this.handleCheckUnit} value = 's' checked ={this.state.sec}/>
+                    <a>Seconds</a>
+                    <input className='radiobtn0' type="radio" name = "Units" onClick={this.handleCheckUnit} value = 'none' checked ={this.state.radioNone}/>
+                    <a>none</a>
+                </fieldset>
+
                 <div class="bx--form-item bx--text-input-wrapper">
                     <label for="test2" class="bx--label">
-                        Text Input label
+                        NumberInput vA
                     </label>
-                <div class="bx--text-input__field-outer-wrapper">
-                    <div class="bx--text-input__field-wrapper">
-                        <input id="test2" placeholder="Placeholder text" type="text" class="bx--text-input bx--text__input" title="Placeholder text">
-                        </input>
-                    </div>
-                    <div class="bx--form__helper-text">
-                        Optional helper text.
-                    </div>
-                </div>
-            </div>
-            <p>Choose Unit</p> 
+                    <div class="bx--text-input__field-outer-wrapper">
+                        <div class="bx--text-input__field-wrapper">
+                            <div class="bx--number__input-wrapper">
 
-            <fieldset>
-                <input className='radiobtn' type="radio" name = "Units" onClick={this.handleCheckUnit} value ='GiB' checked ={this.state.GiB}/>
-                <a>GiB</a>
-                <input className='radiobtn' type="radio" name = "Units" onClick={this.handleCheckUnit} value = 'MiB' checked ={this.state.MiB}/>
-                <a>MiB</a>
-                <input className='radiobtn' type="radio" name = "Units" onClick={this.handleCheckUnit} value = 'vCPU' checked ={this.state.vCPU}/>
-                <a>vCPU</a>
-                <input className='radiobtn' type="radio" name = "Units" onClick={this.handleCheckUnit} value = 's' checked ={this.state.sec}/>
-                <a>Seconds</a>
-                <input className='radiobtn0' type="radio" name = "Units" onClick={this.handleCheckUnit} value = 'none' checked ={this.state.radioNone}/>
-                <a>none</a>
-            </fieldset>
+                                <input type="text" class="bx--text-input bx--text__input" 
+                                    id="test2" 
+                                    placeholder="type something here..." 
+                                    value= {this.state.name} 
+                                    onChange = {this.validateInput}>
+                                </input>
 
-            
-            <div class="bx--form-item">
-                <div class="bx--number bx--number--helpertext">
-                    <label  class="bx--label">
-                        Number Input label
-                    </label>
-                    <div class="bx--number__input-wrapper">
+                                <div class="bx--number__controls">
 
-                        
+                                    <button class="bx--number__control-btn up-icon" type="button" onClick={this.increaseNum} title="Increment number" aria-label="Increment number" aria-live="polite" aria-atomic="true">
+                                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="8" height="4" viewBox="0 0 8 4" aria-hidden="true" class="up-icon">
+                                            <path d="M0 4L4 0 8 4z"></path>
+                                        </svg>
+                                    </button>
 
-                            <div class="bx--number__controls">
-                                <button class="bx--number__control-btn up-icon" type="button" onClick={this.decreaseNum} title="Increment number" aria-label="Increment number" aria-live="polite" aria-atomic="true">
-                                    <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="8" height="4" viewBox="0 0 8 4" aria-hidden="true" class="up-icon">
-                                        <path d="M0 4L4 0 8 4z"></path>
-                                    </svg>
-                                </button>
-                                <button class="bx--number__control-btn down-icon" type="button" onClick= {this.increaseNum} title="Decrement number" aria-label="Decrement number" aria-live="polite" aria-atomic="true">
-                                    <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="8" height="4" viewBox="0 0 8 4" aria-hidden="true" class="down-icon">
-                                        <path d="M8 0L4 4 0 0z"></path>
-                                    </svg>
-                                </button>
-                            </div>
+                                    <button class="bx--number__control-btn down-icon" type="button" onClick= {this.decreaseNum} title="Decrement number" aria-label="Decrement number" aria-live="polite" aria-atomic="true">
+                                        <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="8" height="4" viewBox="0 0 8 4" aria-hidden="true" class="down-icon">
+                                            <path d="M8 0L4 4 0 0z"></path>
+                                        </svg>
+                                    </button>
 
-                            <input type="number" 
-                            placeholder="type something here..." 
-                            value= {this.state.name} 
-                            onChange = {this.validateInput}>
-                        </input>
-                    </div>
+                                </div>
+                             </div>
+                         </div>
+
                     <div class="bx--form__helper-text">
                         {this.state.unit}
                     </div>
@@ -159,7 +149,8 @@ class Page7 extends React.Component {
 
                 </div>
             </div>
-            </div>
+            
+        </div>
         );
     }
 }
