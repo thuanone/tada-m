@@ -78,6 +78,7 @@ class NumInputForm4 extends React.Component {
             if (computedValue === 0) {
                 return (index+1);
             }//returns truthy only if one element of the array matches with the string
+            //+1 is to prevent faulty
         }
         return false;
     }//matches String to strings in unitAssociated and returns true/false if String matches one unit

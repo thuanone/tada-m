@@ -3,7 +3,7 @@ import { Button } from 'carbon-components-react';
 
 
 
-class NumInputForm4 extends React.Component {
+class NumInputForm5 extends React.Component {
     constructor(props) {
         super(props);
         const initialState = {
@@ -12,7 +12,7 @@ class NumInputForm4 extends React.Component {
             minVal: (props.minVal ? props.minVal : 0),
             maxVal: (props.maxVal ? props.minVal : 100),
             standardStepSizes: (props.standardStepSizes ? props.standardStepSizes : [1,]),
-            standardChunks: (props.standardChunks ? props.standardChunks : [10,100,]),
+            standardChunks: (props.standardChunks ? props.standardChunks : [10, 100,]),
             unitInUse: (props.unitInUse ? props.unitInUse : 0),
             //errorMessageString, set in valdidate()
             errorMessage: '',
@@ -32,57 +32,32 @@ class NumInputForm4 extends React.Component {
             stepSize: initialState.standardStepSizes[0],
         };
 
-        this.getValue = this.getValue.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.checkValueFormat = this.checkValueFormat.bind(this);
-        this.handleState = this.getValue.bind(this);
-        this.stringMatchesSomeUnit = this.stringMatchesSomeUnit.bind(this);
-
-
-        this.getNumber = this.getNumber.bind(this);
-
-    }
-
-
-    onClick(string, event) {
-        let userInput = this.getValue(event);
-        console.log(userInput);
-        let isValidFormat = this.checkValueFormat(userInput);
-        if (!isValidFormat){
-            return 0;
-        }
-        let number = this.getNumber(userInput);
-        console.log(number);
-        if (string === 'Increment') {
-            console.log('Increment');
-            //let incrementedNumber = number + this.state.stepSize;
-        } else if (string === 'Decrement') {
-            console.log('Decrement');
-        }
+        this.onClick = this.onClick.bind(this);
+        this.userInputToArray = this.userInputToArray.bind(this);
     }
 
     getNumber(userInputNumbersAsNumbers) {
-        if (userInputNumbersAsNumbers.length > 1) {
-            userInputNumbersAsNumbers.pop();
-        }
-        let fullNumber = Number(userInputNumbersAsNumbers.join(''));
-        return fullNumber;
+
+        //let fullNumber = Number(userInputNumbersAsNumbers.join(''));
+        return;
     }//gets a valid valid array with numbers as its elements and one string as a last element
     //concatenates converted number-strings and returns them as a number
 
     stringMatchesSomeUnit(String) {
         for (const [index, unit] of this.state.unitAssociated.entries()) {
+            console.log(unit, String);
             let computedValue = String.localeCompare(unit);
             //case insensitive comparison of two strings, if equivalent returns 0
 
             if (computedValue === 0) {
-                return (index+1);
+                return (index + 1);
             }//returns truthy only if one element of the array matches with the string
         }
         return false;
-    }//matches String to strings in unitAssociated and returns true/false if String matches one unit
+    }//matches String to strings in unitAssociated and returns index/false if String matches one unit
 
-    getValue(event) {
+    userInputToArray(event) {
         let userInputNumbersAsNumbers = [];//parsed and converted event.array is put here
 
         var userInput = this.state.value.split(' ');
@@ -104,86 +79,122 @@ class NumInputForm4 extends React.Component {
         return userInputNumbersAsNumbers;
     }//converts input into an array of numbers and strings and returns said array
 
-    checkValueFormat(userInputNumbersAsNumbers) {
-
-        //errorMessages
-        let wrongFormat = ``;
+    checkFormat(userInputAsArray) {
+        //error messages
+        let isError = ``;
         let wrongFomatMessage = `wrong Format - please input as 'Value' ${this.state.unitAssociated}`;
         let wrongNumberTypeMessage = `invalid input: please use integers for ${this.state.unitAssociated[0]}`;
 
-        let lengthArray = userInputNumbersAsNumbers.length;
-        let numberOfString = 0;
 
-        let indexUnitUsed;
+        //helpingVariables
+        let numberOfStrings = 0;
+        let lengthOfInputArray = userInputAsArray.length;
+        let lastNumber_Index;
+        let lastString_Index;
+        let previousString_Index;
+        let unitsInUse = new Set();
+        let number_Position = [];
+        let string_Position = [];
 
 
-        if (lengthArray === 1) {
-            if (isNaN(userInputNumbersAsNumbers[0])) {
-                wrongFormat = wrongFomatMessage;
+
+        if (lengthOfInputArray === 1) {
+            if (isNaN(userInputAsArray[0])) {
+                isError = `input has to start with a number`;
             }
-        }//throws error if only input is String
-        //missing: if only number then --> please specify unit
+        }//validation for first input
 
-        if (lengthArray >= 2) {
+        if (lengthOfInputArray >= 2) {
 
-            let lastNumber_Index;
-            let lastString_Index;
-            
+            if (isNaN(userInputAsArray[0])) {
+                isError = `input has to start with a number`
+            }//error: first element of input is not a number
 
-            if (isNaN(userInputNumbersAsNumbers[0])) {
-                wrongFormat = wrongFomatMessage;
-            }//throws error if first element is not a number
-
-
-            //Validation for Strings 
-            for (const [index, value] of userInputNumbersAsNumbers.entries()) {
-                if (!isNaN(value)) {//if is number
+            for (const [index, value] of userInputAsArray.entries()) {
+                if (!isNaN(value)) {
                     lastNumber_Index = index;
-                    if (lastNumber_Index < lastString_Index) {
-                        wrongFormat = wrongFomatMessage;
-                    }//throws error if number follows after string
+                    number_Position.push(index);
 
-                } else {// if is not number
-                    numberOfString += 1;
+                }//numbers
+
+                else {//strings
+                    numberOfStrings += 1;
                     lastString_Index = index;
-                    indexUnitUsed = this.stringMatchesSomeUnit(value);
-
-                    if (!indexUnitUsed) {
-                        wrongFormat = wrongFomatMessage;
+                    string_Position.push(index);
+                    
+                    if (numberOfStrings === 1) {
+                        previousString_Index = index;
                     }
-                }//counts number of strings
+                    if (numberOfStrings > 1) {
+                        if (lastString_Index - previousString_Index < 2) {
+                            isError = `successive strings`;
+                        }
+                        previousString_Index = index;
+                    }//error: two strings in succession -> unit + unit
 
-            }//iterates over 
+                    let unitAssociatedMatch_IndexIncr = this.stringMatchesSomeUnit(value);
+                    //is 0 if value doesnt match a string in unitAssociated
+                    //if value matches a unit, returns its index in unitsAssociated
+
+                    if (unitAssociatedMatch_IndexIncr) {
+                        if (unitsInUse.has(unitAssociatedMatch_IndexIncr -1)) {
+                            isError = `${value} is already used`;
+                        } else {
+                            unitsInUse.add(unitAssociatedMatch_IndexIncr -1);
+                        }
+                    }//checks if a unit is used twice 
+                    else {
+                        isError = `${value} is invalid unit`;
+                    }//checks if string is valid unit
+
+
+                }//strings
+            }
+        }//iterative validation for arrays equal and greater than 2
+
+        if (isError) {
+            this.setState({ errorMessage: isError });
+
+            let reportCard = {
+                isValid: false,
+                number_Position: number_Position,
+                string_Position: string_Position,
+            };
+            console.log(reportCard);
+            return reportCard;
         }
-        if (numberOfString > 1) {
-            wrongFormat = wrongFomatMessage;
-        }//throws error if there is more than 1 string
 
+        this.setState({ errorMessage: `` });
+        let reportCard = {
+            isValid: true,
+            number_Position: number_Position,
+            string_Position: string_Position,
+        }
+        //console.log(reportCard);
+        return reportCard;
+    }
 
-        if (indexUnitUsed - 1 === 0 && !Number.isInteger(this.getNumber(userInputNumbersAsNumbers))) {
-            wrongFormat = wrongNumberTypeMessage;
-        }//checks if is integer for base unit //muss noch erweitert werden??
-        
-
-        if (wrongFormat) {
-            this.setState({ errorMessage: wrongFormat });
-            return false;
-        }//returns false if format not as specified
-        /*
-        else if (indexUnitUsed - 1 === 0 && !Number.isInteger(this.getNumber(userInputNumbersAsNumbers))) {
-            wrongFormat = wrongNumberTypeMessage;
-            
-        }*/
-        this.setState({errorMessage: ``});
-        return true;
-    }//validates inputs format and raises error flags if there are mistakes
+    onClick(string, event) {
+        let userInput = this.userInputToArray(event);
+        let reportCard = this.checkFormat(userInput);
+        if (!reportCard.isValid) {
+            return 0;
+        }
+        let number = this.getNumber(userInput);
+        if (string === 'Increment') {
+            console.log('Increment');
+            //let incrementedNumber = number + this.state.stepSize;
+        } else if (string === 'Decrement') {
+            console.log('Decrement');
+        }
+    }
 
     handleChange(event) {
 
-        let userInput = this.getValue(event);
+        let userInput = this.userInputToArray(event);
 
-        let isValidFormat = this.checkValueFormat(userInput);
-        console.log(isValidFormat);
+        let reportCard = this.checkFormat(userInput);
+        //console.log(`outside ${reportCard}`);
         this.setState({ value: event.target.value });
 
 
@@ -216,11 +227,11 @@ class NumInputForm4 extends React.Component {
                                         <div class="bx--number__controls">
                                             <button class="bx--number__control-btn up-icon" type="button" title="Increment number"
                                                 aria-label="Increment number" aria-live="polite" aria-atomic="true"
-                                                
+
                                                 id="incrementButton"
                                                 isincrement={true}
                                                 onClick={() => this.onClick('Increment')}
-                                                >
+                                            >
                                                 <svg focusable="false" preserveAspectRatio="xMidYMid meet"
                                                     style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"
                                                     aria-hidden="true" class="up-icon">
@@ -229,11 +240,11 @@ class NumInputForm4 extends React.Component {
                                             </button>
                                             <button class="bx--number__control-btn down-icon" type="button" title="Decrement number"
                                                 aria-label="Decrement number" aria-live="polite" aria-atomic="true"
-                                                
+
                                                 id="decrementButton"
                                                 isincrement={false}
                                                 onClick={() => this.onClick('Decrement')}
-                                                >
+                                            >
                                                 <svg focusable="false" preserveAspectRatio="xMidYMid meet"
                                                     style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8"
                                                     height="4" viewBox="0 0 8 4" aria-hidden="true" class="down-icon">
@@ -255,4 +266,4 @@ class NumInputForm4 extends React.Component {
     }
 }
 
-export default NumInputForm4;
+export default NumInputForm5;

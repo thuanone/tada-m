@@ -1,5 +1,5 @@
 import React from 'react';
-import NumInputForm4 from '../../components/NumInputThuan4/NumInput4';
+import NumInputForm5 from '../../components/NumInputThuan5/NumInput5';
 import {NumberInput, TextInput} from "carbon-components-react";
 
 const Memory_Unit= {
@@ -19,7 +19,7 @@ const Page10 = () => {
             <h1>Page10</h1>
             <label>
                 NumInput4 mit CPUUnit
-                <NumInputForm4 
+                <NumInputForm5 
                     {...Memory_Unit}
                 />
             </label>
