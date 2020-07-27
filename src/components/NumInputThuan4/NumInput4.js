@@ -57,7 +57,7 @@ class NumInputForm4 extends React.Component {
 
         if (isValidFormat) {
             number = this.getNumber(userInput);
-            this.onClickInDecrement('isUndefined', number)
+            this.onClickInDecrement('isUndefinedProbably', number)
         }
         return;
     }
@@ -93,7 +93,7 @@ class NumInputForm4 extends React.Component {
 
 
         for (const e of userInput) {
-            if (e != '') {//this is to avoid converting an empty string to 0 and pushing it onto the array
+            if (e !== '') {//this is to avoid converting an empty string to 0 and pushing it onto the array
                 let eParsed = Number(e);
                 //converting checks if instance is a valid number or nor
 
@@ -186,6 +186,7 @@ class NumInputForm4 extends React.Component {
         let userInput = this.getValue(event);
 
         let isValidFormat = this.checkValueFormat(userInput);
+        console.log(isValidFormat);
         this.setState({ value: event.target.value });
 
 
