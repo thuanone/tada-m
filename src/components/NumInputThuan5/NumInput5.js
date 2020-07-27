@@ -1,8 +1,9 @@
 import React from 'react';
+import { Button } from 'carbon-components-react';
 
 
 
-class NumInputForm5 extends React.Component {
+class NumInputForm4 extends React.Component {
     constructor(props) {
         super(props);
         const initialState = {
@@ -28,6 +29,7 @@ class NumInputForm5 extends React.Component {
             //errorMessageString, set in valdidate()
             errorMessage: initialState.errorMessage,
             unitAssociated: initialState.unitAssociated,
+            stepSize: initialState.standardStepSizes[0],
         };
 
         this.getValue = this.getValue.bind(this);
@@ -36,40 +38,37 @@ class NumInputForm5 extends React.Component {
         this.handleState = this.getValue.bind(this);
         this.stringMatchesSomeUnit = this.stringMatchesSomeUnit.bind(this);
 
-        this.onClickInDecrement = this.onClickInDecrement.bind(this);
-        this.handleButtonClicks = this.handleButtonClicks.bind(this);
+
         this.getNumber = this.getNumber.bind(this);
 
     }
 
+
+    onClick(string, event) {
+        let userInput = this.getValue(event);
+        console.log(userInput);
+        let isValidFormat = this.checkValueFormat(userInput);
+        if (!isValidFormat){
+            return 0;
+        }
+        let number = this.getNumber(userInput);
+        console.log(number);
+        if (string === 'Increment') {
+            console.log('Increment');
+            //let incrementedNumber = number + this.state.stepSize;
+        } else if (string === 'Decrement') {
+            console.log('Decrement');
+        }
+    }
+
     getNumber(userInputNumbersAsNumbers) {
-        userInputNumbersAsNumbers.pop();
+        if (userInputNumbersAsNumbers.length > 1) {
+            userInputNumbersAsNumbers.pop();
+        }
         let fullNumber = Number(userInputNumbersAsNumbers.join(''));
         return fullNumber;
     }//gets a valid valid array with numbers as its elements and one string as a last element
     //concatenates converted number-strings and returns them as a number
-    
-    handleButtonClicks(event) {
-        let userInput = this.getValue(event);
-        let isValidFormat = this.checkValueFormat(userInput);
-        let number;
-        
-
-        if (isValidFormat) {
-            number = this.getNumber(userInput);
-            this.onClickInDecrement('isUndefinedProbably', number)
-        }
-        return;
-    }
-
-    onClickInDecrement(Increment, number) {
-        if (Increment) {
-            this.setState({value: `${number + this.state.standardStepSizes[this.state.unitInUse]}`});
-        }
-        else {
-            this.setState({value: `${number - this.state.standardStepSizes[this.state.unitInUse]}`});
-        } 
-    }
 
     stringMatchesSomeUnit(String) {
         for (const [index, unit] of this.state.unitAssociated.entries()) {
@@ -81,9 +80,7 @@ class NumInputForm5 extends React.Component {
             }//returns truthy only if one element of the array matches with the string
         }
         return false;
-    }//if no element matches then string is not in array
-
-
+    }//matches String to strings in unitAssociated and returns true/false if String matches one unit
 
     getValue(event) {
         let userInputNumbersAsNumbers = [];//parsed and converted event.array is put here
@@ -105,7 +102,7 @@ class NumInputForm5 extends React.Component {
         }//iterates over seperated strings and converts numericalStrings into a numbertype and sorts them in a new array
 
         return userInputNumbersAsNumbers;
-    }
+    }//converts input into an array of numbers and strings and returns said array
 
     checkValueFormat(userInputNumbersAsNumbers) {
 
@@ -179,7 +176,7 @@ class NumInputForm5 extends React.Component {
         }*/
         this.setState({errorMessage: ``});
         return true;
-    }//returns true no error flag is triggered is as specified and resets errorMessage to ``
+    }//validates inputs format and raises error flags if there are mistakes
 
     handleChange(event) {
 
@@ -195,6 +192,10 @@ class NumInputForm5 extends React.Component {
     render() {
         return (
             <div>
+                <Button onClick={this.onClick} onMouseDown={this.onMouseDown}>
+                    hello
+                </Button>
+                <input type="number"></input>
                 <div>
                     <label>
                         CarbonDesignImport.NumberInput_HTMLCopy
@@ -218,7 +219,7 @@ class NumInputForm5 extends React.Component {
                                                 
                                                 id="incrementButton"
                                                 isincrement={true}
-                                                onClick={(e) => this.handleButtonClicks()}
+                                                onClick={() => this.onClick('Increment')}
                                                 >
                                                 <svg focusable="false" preserveAspectRatio="xMidYMid meet"
                                                     style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"
@@ -231,7 +232,7 @@ class NumInputForm5 extends React.Component {
                                                 
                                                 id="decrementButton"
                                                 isincrement={false}
-                                                onClick={(e) => this.handleButtonClicks()}
+                                                onClick={() => this.onClick('Decrement')}
                                                 >
                                                 <svg focusable="false" preserveAspectRatio="xMidYMid meet"
                                                     style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8"
@@ -254,4 +255,4 @@ class NumInputForm5 extends React.Component {
     }
 }
 
-export default NumInputForm5;
+export default NumInputForm4;
