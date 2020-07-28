@@ -101,7 +101,7 @@ class NumInputForm5 extends React.Component {
         let lastNumber_Index;
         let lastString_Index;
         let previousString_Index;
-        let unitsInUse = new Set();
+        let unitsInUse = [];
         let number_Position = [];
         let string_Position = [];
 
@@ -165,12 +165,13 @@ class NumInputForm5 extends React.Component {
                     
 
                     if (unitAssociatedMatch_IndexIsIncremented) {
-                        if (unitsInUse.has(unitAssociatedMatch_IndexIsIncremented - 1)) {
+                        if (unitsInUse.includes(unitAssociatedMatch_IndexIsIncremented - 1)) {
                             isError = `${value} is already used`;
-                        } else {
-                            unitsInUse.add(unitAssociatedMatch_IndexIsIncremented - 1);
-                        }
-                    }//checks if a unit is used twice 
+                        }//error: unit has been used already 
+                        else {
+                            unitsInUse.push(unitAssociatedMatch_IndexIsIncremented - 1);
+                        }//add unit to set of 
+                    }
                     else {
                         isError = `${value} is invalid unit`;
                     }//checks if string is valid unit
