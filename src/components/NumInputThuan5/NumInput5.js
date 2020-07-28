@@ -1,7 +1,15 @@
 import React from 'react';
 import { Button } from 'carbon-components-react';
 
-
+const time_Unit = {
+    value: `0`,
+    unitAssociated: ['s', 'min', 'h', 'day/s', 'week/s'],
+    conversionRate: [1, 60, 3600, 86400, 604800],
+    minVal: 1,
+    maxVal: undefined,
+    standardStepSizes: [1, 1, 1, 1, 1],
+    standardChunks: [10,10,1,1,4],//chosen arbitrarily
+}
 
 class NumInputForm5 extends React.Component {
     constructor(props) {
@@ -13,7 +21,8 @@ class NumInputForm5 extends React.Component {
             maxVal: (props.maxVal ? props.minVal : 100),
             standardStepSizes: (props.standardStepSizes ? props.standardStepSizes : [1,]),
             standardChunks: (props.standardChunks ? props.standardChunks : [10, 100,]),
-            unitInUse: (props.unitInUse ? props.unitInUse : 0),
+            unitInUse_ptr: (props.unitInUse_ptr ? props.unitInUse_ptr : 0),
+
             //errorMessageString, set in valdidate()
             errorMessage: '',
         }
@@ -25,7 +34,7 @@ class NumInputForm5 extends React.Component {
             maxVal: initialState.maxVal,
             standardStepSizes: initialState.standardStepSizes,
             standardChunks: initialState.standardChunks,
-            unitInUse: initialState.unitInUse,
+            unitInUse_ptr: initialState.unitInUse_ptr,
             //errorMessageString, set in valdidate()
             errorMessage: initialState.errorMessage,
             unitAssociated: initialState.unitAssociated,
@@ -46,7 +55,6 @@ class NumInputForm5 extends React.Component {
 
     stringMatchesSomeUnit(String) {
         for (const [index, unit] of this.state.unitAssociated.entries()) {
-            console.log(unit, String);
             let computedValue = String.localeCompare(unit);
             //case insensitive comparison of two strings, if equivalent returns 0
 
@@ -60,7 +68,7 @@ class NumInputForm5 extends React.Component {
     userInputToArray(event) {
         let userInputNumbersAsNumbers = [];//parsed and converted event.array is put here
 
-        var userInput = this.state.value.split(' ');
+        let userInput = this.state.value.split(' ');
         //splits string into seperate instances and puts them together in an array called userInput
 
 
@@ -95,6 +103,7 @@ class NumInputForm5 extends React.Component {
         let unitsInUse = new Set();
         let number_Position = [];
         let string_Position = [];
+        
 
 
 
@@ -160,7 +169,7 @@ class NumInputForm5 extends React.Component {
                 number_Position: number_Position,
                 string_Position: string_Position,
             };
-            console.log(reportCard);
+            console.log(`Error ${reportCard}`);
             return reportCard;
         }
 
@@ -170,7 +179,7 @@ class NumInputForm5 extends React.Component {
             number_Position: number_Position,
             string_Position: string_Position,
         }
-        //console.log(reportCard);
+        console.log(`noError ${reportCard}`);
         return reportCard;
     }
 
@@ -194,7 +203,7 @@ class NumInputForm5 extends React.Component {
         let userInput = this.userInputToArray(event);
 
         let reportCard = this.checkFormat(userInput);
-        //console.log(`outside ${reportCard}`);
+        console.log(reportCard);
         this.setState({ value: event.target.value });
 
 
