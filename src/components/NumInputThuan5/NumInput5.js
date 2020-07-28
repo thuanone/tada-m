@@ -8,7 +8,7 @@ const time_Unit = {
     minVal: 1,
     maxVal: undefined,
     standardStepSizes: [1, 1, 1, 1, 1],
-    standardChunks: [10,10,1,1,4],//chosen arbitrarily
+    standardChunks: [10, 10, 1, 1, 4],//chosen arbitrarily
 }
 
 class NumInputForm5 extends React.Component {
@@ -103,7 +103,7 @@ class NumInputForm5 extends React.Component {
         let unitsInUse = new Set();
         let number_Position = [];
         let string_Position = [];
-        
+
 
 
 
@@ -130,10 +130,22 @@ class NumInputForm5 extends React.Component {
                     numberOfStrings += 1;
                     lastString_Index = index;
                     string_Position.push(index);
-                    
+
+                    let unitAssociatedMatch_IndexIncr = this.stringMatchesSomeUnit(value);
+                    //is 0 if value doesnt match a string in unitAssociated
+                    //if value matches a unit, returns its index in unitsAssociated
+
                     if (numberOfStrings === 1) {
                         previousString_Index = index;
+                        if (
+                            lengthOfInputArray > 1 && 
+                            unitAssociatedMatch_IndexIncr - 1 === 0 && 
+                            !Number.isInteger(userInputAsArray[lastNumber_Index])
+                            ) {
+                                isError = `please use non-decimals with ${this.state.unitAssociated[this.state.unitInUse_ptr]}`
+                            }
                     }
+
                     if (numberOfStrings > 1) {
                         if (lastString_Index - previousString_Index < 2) {
                             isError = `successive strings`;
@@ -141,15 +153,11 @@ class NumInputForm5 extends React.Component {
                         previousString_Index = index;
                     }//error: two strings in succession -> unit + unit
 
-                    let unitAssociatedMatch_IndexIncr = this.stringMatchesSomeUnit(value);
-                    //is 0 if value doesnt match a string in unitAssociated
-                    //if value matches a unit, returns its index in unitsAssociated
-
                     if (unitAssociatedMatch_IndexIncr) {
-                        if (unitsInUse.has(unitAssociatedMatch_IndexIncr -1)) {
+                        if (unitsInUse.has(unitAssociatedMatch_IndexIncr - 1)) {
                             isError = `${value} is already used`;
                         } else {
-                            unitsInUse.add(unitAssociatedMatch_IndexIncr -1);
+                            unitsInUse.add(unitAssociatedMatch_IndexIncr - 1);
                         }
                     }//checks if a unit is used twice 
                     else {
@@ -169,7 +177,6 @@ class NumInputForm5 extends React.Component {
                 number_Position: number_Position,
                 string_Position: string_Position,
             };
-            console.log(`Error ${reportCard}`);
             return reportCard;
         }
 
@@ -179,7 +186,6 @@ class NumInputForm5 extends React.Component {
             number_Position: number_Position,
             string_Position: string_Position,
         }
-        console.log(`noError ${reportCard}`);
         return reportCard;
     }
 
@@ -203,7 +209,6 @@ class NumInputForm5 extends React.Component {
         let userInput = this.userInputToArray(event);
 
         let reportCard = this.checkFormat(userInput);
-        console.log(reportCard);
         this.setState({ value: event.target.value });
 
 
