@@ -10,7 +10,7 @@ const Memory_Unit= {
     standardStepSizes:[1,0.25],
     standardChunks:[128, 0.5],
     unitInUsePTR: 0,
-    allowMultipleUnits: false, 
+    allowMultipleUnits: true, 
 
 } 
 
@@ -19,7 +19,7 @@ const Page10 = () => {
         <div>
             <h1>Page10</h1>
             <label>
-                NumInput4 mit CPUUnit
+                NumInput5 mit CPUUnit
                 <NumInputForm5 
                     {...Memory_Unit}
                 />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'carbon-components-react';
 
+/*
 const time_Unit = {
     value: `0`,
     unitAssociated: ['s', 'min', 'h', 'day/s', 'week/s'],
@@ -10,6 +11,7 @@ const time_Unit = {
     standardStepSizes: [1, 1, 1, 1, 1],
     standardChunks: [10, 10, 1, 1, 4],//chosen arbitrarily
 }
+*/
 
 class NumInputForm5 extends React.Component {
     constructor(props) {
@@ -91,8 +93,8 @@ class NumInputForm5 extends React.Component {
     checkFormat(userInputAsArray) {
         //error messages
         let isError = ``;
-        let wrongFomatMessage = `wrong Format - please input as 'Value' ${this.state.unitAssociated}`;
-        let wrongNumberTypeMessage = `invalid input: please use integers for ${this.state.unitAssociated[0]}`;
+        //let wrongFomatMessage = `wrong Format - please input as 'Value' ${this.state.unitAssociated}`;
+        //let wrongNumberTypeMessage = `invalid input: please use integers for ${this.state.unitAssociated[0]}`;
 
 
         //helpingVariables
@@ -162,15 +164,23 @@ class NumInputForm5 extends React.Component {
                     else if (this.state.allowMultipleUnits === false && numberOfStrings > 1) {
                         isError = `please use one unit only`
                     }//error if only 1 unit: multiple strings detected
-                    
+
 
                     if (unitAssociatedMatch_IndexIsIncremented) {
-                        if (unitsInUse.includes(unitAssociatedMatch_IndexIsIncremented - 1)) {
+                        let unitAssociatedMatch_Index = unitAssociatedMatch_IndexIsIncremented - 1;
+                        if (unitsInUse.includes(unitAssociatedMatch_Index)) {
                             isError = `${value} is already used`;
                         }//error: unit has been used already 
-                        else {
-                            unitsInUse.push(unitAssociatedMatch_IndexIsIncremented - 1);
-                        }//add unit to set of 
+                        else {// if not pushed index onto array
+                            unitsInUse.push(unitAssociatedMatch_Index);
+                            if (
+                                this.state.allowMultipleUnits &&
+                                unitsInUse.length > 1 &&
+                                unitsInUse[numberOfStrings - 2] < unitAssociatedMatch_Index
+                            ) {
+                                isError = `please specify bigger units first`;
+                            }//error format: 10 small unit big unit  
+                        }
                     }
                     else {
                         isError = `${value} is invalid unit`;
@@ -221,6 +231,7 @@ class NumInputForm5 extends React.Component {
         let userInput = this.userInputToArray(event);
 
         let reportCard = this.checkFormat(userInput);
+
         this.setState({ value: event.target.value });
 
 
