@@ -21,21 +21,22 @@ class NumInputForm5 extends React.Component {
             maxVal: (props.maxVal ? props.minVal : 100),
             standardStepSizes: (props.standardStepSizes ? props.standardStepSizes : [1,]),
             standardChunks: (props.standardChunks ? props.standardChunks : [10, 100,]),
-            unitInUse_ptr: (props.unitInUse_ptr ? props.unitInUse_ptr : 0),
+            unitInUsePTR: (props.unitInUsePTR ? props.unitInUsePTR : 0),
+            allowMultipleUnits: (props.allowMultipleUnits ? props.allowMultipleUnits : false),
 
             //errorMessageString, set in valdidate()
             errorMessage: '',
         }
         this.state = {
             value: initialState.value,
-            numberValue: 0,
-            unit: initialState.unitAssociated[0],
             minVal: initialState.minVal,
             maxVal: initialState.maxVal,
             standardStepSizes: initialState.standardStepSizes,
             standardChunks: initialState.standardChunks,
-            unitInUse_ptr: initialState.unitInUse_ptr,
+            unitInUsePTR: initialState.unitInUsePTR,
+            allowMultipleUnits: initialState.allowMultipleUnits,
             //errorMessageString, set in valdidate()
+            //unitInUse: initialState.unitAssociated[initialState.unitInUsePTR],
             errorMessage: initialState.errorMessage,
             unitAssociated: initialState.unitAssociated,
             stepSize: initialState.standardStepSizes[0],
@@ -83,7 +84,7 @@ class NumInputForm5 extends React.Component {
                 userInputNumbersAsNumbers.push(eParsed);
             }
         }//iterates over seperated strings and converts numericalStrings into a numbertype and sorts them in a new array
-
+        console.log(userInputNumbersAsNumbers);
         return userInputNumbersAsNumbers;
     }//converts input into an array of numbers and strings and returns said array
 
@@ -124,6 +125,11 @@ class NumInputForm5 extends React.Component {
                     lastNumber_Index = index;
                     number_Position.push(index);
 
+                    if (!this.state.allowMultipleUnits && lastNumber_Index > lastString_Index) {
+                        isError = `please use only one unit`;
+                    }//error if only 1 unit: 10 unit 10;;
+                    //two errors bundled in one
+
                 }//numbers
 
                 else {//strings
@@ -131,33 +137,38 @@ class NumInputForm5 extends React.Component {
                     lastString_Index = index;
                     string_Position.push(index);
 
-                    let unitAssociatedMatch_IndexIncr = this.stringMatchesSomeUnit(value);
+                    let unitAssociatedMatch_IndexIsIncremented = this.stringMatchesSomeUnit(value);
                     //is 0 if value doesnt match a string in unitAssociated
                     //if value matches a unit, returns its index in unitsAssociated
 
                     if (numberOfStrings === 1) {
                         previousString_Index = index;
+
                         if (
-                            lengthOfInputArray > 1 && 
-                            unitAssociatedMatch_IndexIncr - 1 === 0 && 
+                            lengthOfInputArray > 1 &&
+                            unitAssociatedMatch_IndexIsIncremented - 1 === 0 &&
                             !Number.isInteger(userInputAsArray[lastNumber_Index])
-                            ) {
-                                isError = `please use non-decimals with ${this.state.unitAssociated[this.state.unitInUse_ptr]}`
-                            }
+                        ) {
+                            isError = `please use non-decimals with ${this.state.unitAssociated[this.state.unitInUsePTR]}`
+                        }//error: decimal is used with most simplest unit - unitAssociated[0]
                     }
 
-                    if (numberOfStrings > 1) {
+                    if (this.state.allowMultipleUnits === true && numberOfStrings > 1) {
                         if (lastString_Index - previousString_Index < 2) {
                             isError = `successive strings`;
                         }
                         previousString_Index = index;
-                    }//error: two strings in succession -> unit + unit
+                    }//error if allowed multiple units: two strings in succession -> unit + unit
+                    else if (this.state.allowMultipleUnits === false && numberOfStrings > 1) {
+                        isError = `please use one unit only`
+                    }//error if only 1 unit: multiple strings detected
+                    
 
-                    if (unitAssociatedMatch_IndexIncr) {
-                        if (unitsInUse.has(unitAssociatedMatch_IndexIncr - 1)) {
+                    if (unitAssociatedMatch_IndexIsIncremented) {
+                        if (unitsInUse.has(unitAssociatedMatch_IndexIsIncremented - 1)) {
                             isError = `${value} is already used`;
                         } else {
-                            unitsInUse.add(unitAssociatedMatch_IndexIncr - 1);
+                            unitsInUse.add(unitAssociatedMatch_IndexIsIncremented - 1);
                         }
                     }//checks if a unit is used twice 
                     else {
@@ -271,7 +282,7 @@ class NumInputForm5 extends React.Component {
 
                             </div>
                         </div>
-                        <p>Unit: {this.state.unit}</p>
+                        <p>Unit: {this.state.unitAssociated[this.state.unitInUsePTR]}</p>
                         <p>{this.state.errorMessage}</p>
                     </label>
                 </div>
