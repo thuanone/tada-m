@@ -158,6 +158,8 @@ class NumInputForm5 extends React.Component {
         //let wrongNumberTypeMessage = `invalid input: please use integers for ${this.state.unitAssociated[0]}`;
 
 
+        console.log(userInputAsArray);
+
         //helpingVariables
         let numberOfStrings = 0;
         let lengthOfInputArray = userInputAsArray.length;
@@ -167,7 +169,7 @@ class NumInputForm5 extends React.Component {
         let unitsInUse = [];
         let number_Position = [];
         let string_Position = [];
-
+        
 
 
 
