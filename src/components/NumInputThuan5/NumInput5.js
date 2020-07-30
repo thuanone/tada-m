@@ -10,6 +10,7 @@ const time_Unit = {
     maxVal: undefined,
     standardStepSizes: [1, 1, 1, 1, 1],
     standardChunks: [10, 10, 1, 1, 4],//chosen arbitrarily
+    
 }
 */
 
@@ -22,25 +23,30 @@ class NumInputForm5 extends React.Component {
             minVal: (props.minVal ? props.minVal : 0),
             maxVal: (props.maxVal ? props.minVal : 100),
             standardStepSizes: (props.standardStepSizes ? props.standardStepSizes : [1,]),
-            standardChunks: (props.standardChunks ? props.standardChunks : [10, 100,]),
+            standardChunks: (props.standardChunks ? props.standardChunks : [1, 10,]),
             unitInUsePTR: (props.unitInUsePTR ? props.unitInUsePTR : 0),
             allowMultipleUnits: (props.allowMultipleUnits ? props.allowMultipleUnits : false),
+            conversionToBiggerSize: (props.conversionToBiggerSize ? props.conversionToBiggerSize : [1,]),
 
             //errorMessageString, set in valdidate()
             errorMessage: '',
         }
         this.state = {
             value: initialState.value,
+            unitAssociated: initialState.unitAssociated,
             minVal: initialState.minVal,
             maxVal: initialState.maxVal,
             standardStepSizes: initialState.standardStepSizes,
             standardChunks: initialState.standardChunks,
             unitInUsePTR: initialState.unitInUsePTR,
             allowMultipleUnits: initialState.allowMultipleUnits,
+            conversionToBiggerSize: initialState.conversionToBiggerSize,
+            userInputAsArray: [],
+
             //errorMessageString, set in valdidate()
             //unitInUse: initialState.unitAssociated[initialState.unitInUsePTR],
             errorMessage: initialState.errorMessage,
-            unitAssociated: initialState.unitAssociated,
+
             stepSize: initialState.standardStepSizes[0],
 
             reportCard: {
@@ -48,26 +54,75 @@ class NumInputForm5 extends React.Component {
                 number_Position: [],
                 string_Position: [],
                 userInputAsArray: [],
-            }, 
+            },
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.onClick = this.onClick.bind(this);
         this.userInputToArray = this.userInputToArray.bind(this);
+
+        this.submit = this.submit.bind(this);
     }
 
     componentDidMount = () => {
-        let userInputAsArray = this.userInputToArray()
+        let userInputAsArray = this.userInputToArray(this.state.value);
+        this.checkFormat(userInputAsArray);
         //checkForm
         //
     }
 
-    getNumber(reportCard) {
-        if (this.state.allowMultipleUnits) {
-            return;
-        } else if (reportCard.string_Position === [] && reportCard.number_Position === []) {
-            return 0;
+    increment() {
+        if (this.state.reportCard.isValid) {//state.value is valid format
+            let toggle = 0;
+            let number = this.getNumber();
+
+
+            if (this.state.allowMultipleUnits) {//if allowed multiple units
+                return;
+            }
+            else {//for single units
+
+                if (toggle < 1) {
+                    let newNumber = number + this.state.standardStepSizes[this.state.unitInUsePTR];
+
+                    if (this.state.reportCard.string_Position.length === 0) {
+                        this.setState({ value: `${newNumber}` });
+                    }
+                    else {
+                        console.log('reached');
+                        this.setState({ value: `${newNumber} mb` });
+                        //${this.state.unitAssociated[this.state.unitInUsePTR]}
+                    }
+                }
+
+            }
+
         }
+        else {//state.value is invalid format
+            this.setState({ errorMessage: `is invalid input` });
+        }
+    }
+
+    decrement() {
+
+    }
+
+    getNumber() {
+        if (this.state.allowMultipleUnits) {//multiples allowed
+            return;
+        }
+        else {// 1 unit only
+            if (isNaN(Number(this.state.value))) {////multiples not allowed and value String contains NaN
+                if (this.state.reportCard.isValid) {//if is valid format
+                    let copy = [...this.state.reportCard.userInputAsArray]; //would pop alter this state?
+                    copy.pop();
+                    return Number(copy.join(''));
+                }
+            } else {//multiples not allowed and value String is number only
+                return Number(this.state.value);
+            }
+        }
+
         //let fullNumber = Number(userInputNumbersAsNumbers.join(''));
     }//gets a valid valid array with numbers as its elements and one string as a last element
     //concatenates converted number-strings and returns them as a number
@@ -84,26 +139,12 @@ class NumInputForm5 extends React.Component {
         return false;
     }//matches String to strings in unitAssociated and returns index/false if String matches one unit
 
-    userInputToArray() {
-        let userInputNumbersAsNumbers = [];//parsed and converted event.array is put here
+    userInputToArray(userInput = ``) {
+        const regex = /[a-z]+|[0-9]+/gi;
 
-        let userInput = this.state.value.split(' ');
-        //splits string into seperate instances and puts them together in an array called userInput
-
-
-        for (const e of userInput) {
-            if (e !== '') {//this is to avoid converting an empty string to 0 and pushing it onto the array
-                let eParsed = Number(e);
-                //converting checks if instance is a valid number or nor
-
-                if (isNaN(eParsed)) {
-                    eParsed = e;
-                }//non-number strings are set back to their original state before being pushed onto the array
-                userInputNumbersAsNumbers.push(eParsed);
-            }
-        }//iterates over seperated strings and converts numericalStrings into a numbertype and sorts them in a new array
-        return userInputNumbersAsNumbers;
-    }//converts input into an array of numbers and strings and returns said array
+        let userInputAsArray = userInput.match(regex);
+        return userInputAsArray;
+    }
 
     checkFormat(userInputAsArray) {
         //error messages
@@ -128,13 +169,13 @@ class NumInputForm5 extends React.Component {
         if (lengthOfInputArray === 1) {
             if (isNaN(userInputAsArray[0])) {
                 isError = `input has to start with a number`;
-            } 
-            
+            }
+
             else {
-                const [index, value] = userInputAsArray.entries();
+                const [[index, value]] = userInputAsArray.entries();
                 number_Position.push(index);
             }
-            
+
         }//validation for first input
 
         if (lengthOfInputArray >= 2) {
@@ -212,68 +253,80 @@ class NumInputForm5 extends React.Component {
         }//iterative validation for arrays equal and greater than 2
 
         if (isError) {
-            this.setState({ errorMessage: isError });
-
-            let reportCard = {
-                isValid: false,
-                number_Position: number_Position,
-                string_Position: string_Position,
-                userInputAsArray: userInputAsArray,
-            };
-            return reportCard;
+            this.setState(
+                {
+                    errorMessage: isError,
+                    reportCard: {
+                        isValid: false,
+                        number_Position: number_Position,
+                        string_Position: string_Position,
+                        userInputAsArray: userInputAsArray,
+                    }
+                }
+            );
+            return false;
         }
 
-        this.setState({ errorMessage: `` });
-        let reportCard = {
-            isValid: true,
-            number_Position: number_Position,
-            string_Position: string_Position,
-            userInputAsArray: userInputAsArray,
-        }
-        return reportCard;
+        this.setState(
+            {
+                errorMessage: ``,
+                reportCard: {
+                    isValid: true,
+                    number_Position: number_Position,
+                    string_Position: string_Position,
+                    userInputAsArray: userInputAsArray,
+                }
+            }
+        );
+        return true;
     }
 
     onClick(string, event) {
         let userInput = this.userInputToArray();
-        let reportCard = this.checkFormat(userInput);
-        console.log(reportCard);
+        this.checkFormat(userInput);
 
-        if (!reportCard.isValid) {
-            this.setState({errorMessage: `input format invalid`});
-        } else if (this.state.allowMultipleUnits) {
-            
-        } else if (!this.state.allowMultipleUnits) {
 
-        }
+        if (!this.state.reportCard.isValid) {
+            this.setState({ errorMessage: `input format invalid` });
+        }//throws error if input is invalid
 
         if (string === 'Increment') {
-            console.log('Increment');
-            //let incrementedNumber = number + this.state.stepSize;
-        } else if (string === 'Decrement') {
-            console.log('Decrement');
+            this.increment();
+        }
+        else if (string === 'Decrement') {
+            let number = this.getNumber();
+            let newNumber = number - this.state.stepSize;
+            this.setState({ value: `${newNumber}` });
         }
     }
 
     handleChange(event) {
 
-        console.log(event);
-        let userInput = this.userInputToArray(event);
+        let userInput = event.target.value;
+        
+    
+        let userInputAsArray = this.userInputToArray(userInput);
+        this.checkFormat(userInputAsArray);
 
-        let reportCard = this.checkFormat(userInput);
-        //console.log(reportCard.number_Position, reportCard.string_Position);
-        this.setState({ value: event.target.value });
+        this.setState({
+            value: event.target.value,
+            userInputAsArray: userInputAsArray,
+        });
+        //this.checkFormat(userInput);      
+
 
 
     }//should be used in final iteration
 
+    submit() {
+        alert(JSON.stringify(this.state, null, 4));
+    }
+
     render() {
         return (
             <div>
-                <Button onClick={this.onClick} onMouseDown={this.onMouseDown}>
-                    hello
-                </Button>
-                <input type="number"></input>
                 <div>
+                    <Button onClick={this.submit}></Button>
                     <label>
                         CarbonDesignImport.NumberInput_HTMLCopy
                         <div class="bx--form-item bx--text-input-wrapper">
@@ -333,3 +386,30 @@ class NumInputForm5 extends React.Component {
 }
 
 export default NumInputForm5;
+
+/**
+ *
+ * userInputToArray() {
+        let userInputNumbersAsNumbers = [];//parsed and converted event.array is put here
+
+
+        let userInput = this.state.value.split(' ');
+        console.log(userInput);
+        //splits string into seperate instances and puts them together in an array called userInput
+
+
+        for (const e of userInput) {
+            if (e !== '') {//this is to avoid converting an empty string to 0 and pushing it onto the array
+                let eParsed = Number(e);
+                //converting checks if instance is a valid number or nor
+
+                if (isNaN(eParsed)) {
+                    eParsed = e;
+                }//non-number strings are set back to their original state before being pushed onto the array
+                userInputNumbersAsNumbers.push(eParsed);
+            }
+        }//iterates over seperated strings and converts numericalStrings into a numbertype and sorts them in a new array
+        this.setState({userInputAsArray: userInputNumbersAsNumbers});
+        return userInputNumbersAsNumbers;
+    }//converts input into an array of numbers and strings and returns said array
+ */
