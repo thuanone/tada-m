@@ -139,10 +139,15 @@ class NumInputForm5 extends React.Component {
         return false;
     }//matches String to strings in unitAssociated and returns index/false if String matches one unit
 
-    userInputToArray(userInput = ``) {
+    userInputToArray(userInput) {
         const regex = /[a-z]+|[0-9]+/gi;
+        let userInputAsArray = [];
+        
+        if (userInput === ``) {
+            return [];
+        }
 
-        let userInputAsArray = userInput.match(regex);
+        userInputAsArray = userInput.match(regex);
         return userInputAsArray;
     }
 
