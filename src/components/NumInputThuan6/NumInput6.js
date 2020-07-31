@@ -14,7 +14,7 @@ const time_Unit = {
 }
 */
 
-class NumInputForm5 extends React.Component {
+class NumInputForm6 extends React.Component {
     constructor(props) {
         super(props);
         const initialState = {
@@ -394,7 +394,7 @@ class NumInputForm5 extends React.Component {
     }
 }
 
-export default NumInputForm5;
+export default NumInputForm6;
 
 /**
  *
