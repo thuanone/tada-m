@@ -99,6 +99,7 @@ class NumInputForm6 extends React.Component {
             let parsedNewValueReversed = `${newNumber}`.match(numbersAndWhiteSpaceOnly).reverse();
             let parsedUnit = oldValue.match(unit);
             let indexOfOldValue = 0;
+
             let newValueArrayReversed = [];
 
             for (const x of parsedNewValueReversed) {
@@ -176,7 +177,7 @@ class NumInputForm6 extends React.Component {
         else {
             const numbersOnly = /[0-9]+/gm;
             let number = this.state.value.match(numbersOnly).join();
-            return number
+            return number;
         }
     }
 
@@ -200,7 +201,21 @@ class NumInputForm6 extends React.Component {
         }//if this.state.value is an empty string >> emtpy array is returned
         //else match returns null
 
-        let userInputAsArray = userInput.match(regex);
+        let userInputAsArrayStrings = userInput.match(regex);
+        let userInputAsArray = [];
+
+        for (const e of userInputAsArrayStrings) {
+            if (e !== '') {//this is to avoid converting an empty string to 0 and pushing it onto the array
+                let eParsed = Number(e);
+                //converting checks if instance is a valid number or nor
+
+                if (isNaN(eParsed)) {
+                    eParsed = e;
+                }//non-number strings are set back to their original state before being pushed onto the array
+                userInputAsArray.push(eParsed);
+            }
+        }//iterates over seperated strings and converts numericalStrings into a numbertype and sorts them in a new array
+
         return userInputAsArray;
     }/**
      * This function receives a String and returns its contents separated into letters and numbers as an Array
