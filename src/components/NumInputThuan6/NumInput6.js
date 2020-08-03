@@ -104,7 +104,7 @@ class NumInputForm6 extends React.Component {
      * @param {Array} newValueArrayReversed 
      * @param {String} newValue new string to replace this.state.value
      * @return {String} newValue
-     */
+     */ 
     matchToOriginal(newNumber, newUnit, oldValue) {
         if (newUnit) {
             return;
@@ -424,7 +424,7 @@ class NumInputForm6 extends React.Component {
 
 
             if (buttonID === 'Increment') {
-                newNumber = this.increment(userInputAsArray, this.state.value);
+                newNumber = this.increment(userInputAsArray,);
                 newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
             }//Increment
             else if (buttonID === 'Decrement') {
