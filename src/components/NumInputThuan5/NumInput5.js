@@ -143,7 +143,7 @@ class NumInputForm5 extends React.Component {
     userInputToArray(userInput) {
         const regex = /[a-z]+|[0-9]+/gi;
         let userInputAsArray = [];
-        
+
         if (userInput === '') {
             return [];
         }
@@ -170,7 +170,7 @@ class NumInputForm5 extends React.Component {
         let unitsInUse = [];
         let number_Position = [];
         let string_Position = [];
-        
+
 
 
 
@@ -312,8 +312,8 @@ class NumInputForm5 extends React.Component {
     handleChange(event) {
 
         let userInput = event.target.value;
-        
-    
+
+
         let userInputAsArray = this.userInputToArray(userInput);
         this.checkFormat(userInputAsArray);
 
@@ -328,7 +328,19 @@ class NumInputForm5 extends React.Component {
     }//should be used in final iteration
 
     submit() {
-        alert(JSON.stringify(this.state, null, 4));
+        const regex = /[a-z]+|[0-9]+/gi;
+        let userInput = this.state.value;
+        let userInputAsArray = [];
+
+        if (userInput === '') {
+            return [];
+        }
+
+        userInputAsArray = userInput.match(regex);
+        console.log(userInput);
+        console.log(userInputAsArray);
+        return userInputAsArray;
+
     }
 
     render() {
