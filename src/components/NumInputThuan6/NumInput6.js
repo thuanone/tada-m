@@ -175,24 +175,31 @@ class NumInputForm6 extends React.Component {
         return;
     }
 
-    getNumber(userInputAsArray) {
+    getNumber(placeholder) {
         if (this.props.allowMultipleUnits) {
             return;
         }
         else {
-            const numbersOnly = /[0-9]+|\s/gm;
+            const numbersOnly = /[0-9]|\s/gm;
             let numbersAndWhiteSpaceMatch = this.state.value.match(numbersOnly);
+            //has to be changed to this.state.value later on, onClick function only
 
             if (numbersAndWhiteSpaceMatch === null) {
                 return 0;
-            }
-            let numbersAndWhiteSpace = numbersAndWhiteSpaceMatch.join('');
-            if (!isNaN(Number(numbersAndWhiteSpace))) {
-                console.log(Number(numbersAndWhiteSpace));
-                console.log('isnumber')
-            } else if (isNaN(Number(numbersAndWhiteSpace))) {
-                console.log(Number(numbersAndWhiteSpace),!Number(numbersAndWhiteSpace));
-                console.log('isNaN');
+            } 
+            else {
+                let numberArray = [];
+                let number;
+                console.log(numbersAndWhiteSpaceMatch);
+                for (const e of numbersAndWhiteSpaceMatch) {
+                    if (e === ' ') {
+                        continue;
+                    } else {
+                        numberArray.push(e);
+                    }
+                }
+                number = numberArray.join('');
+                return Number(number);
             }
         }
     }/**
@@ -421,7 +428,6 @@ class NumInputForm6 extends React.Component {
 
         let userInputAsArray = this.userInputToArray(userInput);
         this.checkFormat(userInputAsArray);
-        console.log('getNumber',this.getNumber(userInput));
         this.setState({
             value: event.target.value,
             userInputAsArray: userInputAsArray,
