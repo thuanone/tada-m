@@ -86,6 +86,25 @@ class NumInputForm6 extends React.Component {
     }
     */
 
+    /**MATCH_TO_ORIGINAL__onClickOnly
+     * 
+     * this functions takes a number, a bool called newUnit and this.state.value called oldvalue
+     * and replaces the numerical value of this.state.value with the newnumber and returns a string in the same format as old value
+     * e.g. increment --> (1001, false, '1 000 mb') >> returns '1 001 mb'
+     * e.g  increment --> (1001, false, '1000mb') >> returns '1001mb'
+     * e.g. increment --> (1, true, '1023 mb') >> should return 1 gb
+     * -----------------------------
+     * @param {Number} newNumber new value for this.state.value
+     * @param {Boolean} newUnit bool for if a conversion has happened in increment()/decrement()
+     * @param {String} oldValue this.state.value to copy its format
+     * @param {Array} parsedOldValueReversed this.state.value matched with a regex and parsed individually into an array
+     * @param {Array} parsedNewValueReversed number parsed into individual string ziffer
+     * @param {Array} parsedUnit unit of valid this.state.value parsed as a block into an arrray
+     * @param {Number} indexOfOldValue counter for matching logic to recreate oldValues format
+     * @param {Array} newValueArrayReversed 
+     * @param {String} newValue new string to replace this.state.value
+     * @return {String} newValue
+     */
     matchToOriginal(newNumber, newUnit, oldValue) {
         if (newUnit) {
             return;
@@ -119,23 +138,20 @@ class NumInputForm6 extends React.Component {
             
             return newValue;
         }
-    }/**
-     * 
-     * 
-     * 
-     * @param {Number} newNumber
-     * @param {Boolean} newUnit
-     * @param {String} oldValue
-     * @param {Array} userInputAsArray
-     * @param {Array} parsedOldValueReversed
-     * @param {Array} parsedNewValueReversed
-     * @param {Array} parsedUnit
-     * @param {Number} indexOfOldValue
-     * @param {Array} newValueArrayReversed
-     * @param {String} newValue
-     * @return {String} newValue
-     */
+    }
 
+    /**INCREMENT__onClickOnly
+     * receives userInput as an Array and extracts its number from it
+     * then creates a new number from the old value plus a standardIncrement or an equivalent in a bigger unit Size
+     * returns a tuple with the newValue and a true/false depending on whether or not the newValue is an incremnt or a conversion
+     * ------------
+     * 
+     * @param {Array} userInputAsArray : userInput as an Array
+     * @param {Number} number : relevant number from userInputAsAnArray
+     * @param {Array} newNumber : either an incremented number or number in proportion to its one bigger unit
+     * @returns {Array} newNumber : a tuple consisting of the new value and a conversion flag
+     * 
+     */
     increment(userInputAsArray) {
         let number = this.getNumber(this.state.value);
         let newNumber;
@@ -158,23 +174,21 @@ class NumInputForm6 extends React.Component {
                 return [newNumber, false];
             }//if not conversion-ready will simply increment the old value by a standardSized increment
         }
-    }/**
-     * receives userInput as an Array and extracts its number from it
-     * then creates a new number from the old value plus a standardIncrement or an equivalent in a bigger unit Size
-     * returns a tuple with the newValue and a true/false depending on whether or not the newValue is an incremnt or a conversion
-     * ------------
-     * 
-     * @param {Array} userInputAsArray : userInput as an Array
-     * @param {Number} number : relevant number from userInputAsAnArray
-     * @param {Array} newNumber : either an incremented number or number in proportion to its one bigger unit
-     * @returns {Array} newNumber : a tuple consisting of the new value and a conversion flag
-     * 
-     */
+    }
 
     decrement() {
         return;
     }
 
+
+    /**GET_NUMBER
+     * this functions gets this.state.value and returns the number inside the string
+     * 
+     * @param {Array} numbersAndWhiteSpaceMatch this.state.value's numbers and whitespaces parsed invidually into an Array
+     * @param {Array} numberArray numbersAndWhiteSpaceMatch without its whitespaces
+     * @param {Number} number number
+     * @return {Number} number 
+     */
     getNumber(placeholder) {
         if (this.props.allowMultipleUnits) {
             return;
@@ -202,11 +216,15 @@ class NumInputForm6 extends React.Component {
                 return Number(number);
             }
         }
-    }/**
-     * 
-     * @param {Number} number 
-     */
+    }
 
+
+    /**STRING_MATCHES_SOME_UNIT
+     * this function takes a string and checks whether or not it is a valid unit in unitAssociated
+     * -----------------
+     * @param {String} string String to be tested if its a string
+     * @param {Number} computedValue result of String.prototype.localeCompare() [0:equivalent, -1/+1: ineuqivalent]
+     */
     stringMatchesSomeUnit(string) {
         for (const [index, unit] of this.state.unitAssociated.entries()) {
             let computedValue = string.localeCompare(unit);
@@ -219,6 +237,16 @@ class NumInputForm6 extends React.Component {
         return false;
     }
 
+
+    /**USER_INPUT_TO_ARRAY
+     * This function receives a String and returns its contents separated into letters and numbers as an Array
+     * excluding anything else like whitespaces or dots/commas etc.
+     * ---------------
+     * @param {String} userInput here: passed in is this.state.value 
+     * @param {Array} userInputAsArrayStrings
+     * @param {Array} userInputAsAnArray
+     * @returns {Array} userInputAsArray input string is returned seperated in (non decimal) numbers, strings and whitespaces
+     */
     userInputToArray(userInput/*this.state.value*/) {
         const regex = /[a-z]+|[0-9]+|\s/gi;
 
@@ -243,15 +271,7 @@ class NumInputForm6 extends React.Component {
         }//iterates over seperated strings and converts numericalStrings into a numbertype and sorts them in a new array
         console.log(userInputAsArrayStrings,userInputAsArray);
         return userInputAsArray;
-    }/**
-     * This function receives a String and returns its contents separated into letters and numbers as an Array
-     * excluding anything else like whitespaces or dots/commas etc.
-     * ---------------
-     * @param {String} userInput here: passed in is this.state.value 
-     * @param {Array} userInputAsArrayStrings
-     * @param {Array} userInputAsAnArray
-     * @returns {Array} userInputAsArray input string is returned seperated in (non decimal) numbers, strings and whitespaces
-     */
+    }
 
     checkFormat(userInputAsArray) {
         //error messages
