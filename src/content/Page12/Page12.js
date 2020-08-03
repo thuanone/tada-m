@@ -10,7 +10,8 @@ const Memory_Unit= {
     standardStepSizes:[1,0.25],
     standardChunks:[128, 0.5],
     unitInUsePTR: 0,
-    allowMultipleUnits: true, 
+    allowMultipleUnits: false,
+    conversionToBiggerSize: [1024,1]
 
 } 
 
