@@ -77,45 +77,59 @@ class NumInputForm6 extends React.Component {
         this.matchToOriginal = this.matchToOriginal.bind(this);
 
     }
-
+    /*
     componentDidMount = () => {
         let userInputAsArray = this.userInputToArray(this.state.value);
         this.checkFormat(userInputAsArray);
         //checkForm
         //
     }
+    */
 
     matchToOriginal(newNumber, newUnit, oldValue) {
         if (newUnit) {
             return;
         }
         else {
+            //regex
             const numbersAndWhiteSpaceOnly = /[0-9]|\s/gi;
             const unit = /[a-z]+/gi;
+
             let parsedOldValueReversed = oldValue.match(numbersAndWhiteSpaceOnly).reverse();
             let parsedNewValueReversed = `${newNumber}`.match(numbersAndWhiteSpaceOnly).reverse();
             let parsedUnit = oldValue.match(unit);
-            
             let indexOfOldValue = 0;
-            let newValueArrayReversed = []
-            for (const x of parsedOldValueReversed) {
+            let newValueArrayReversed = [];
+
+            for (const x of parsedNewValueReversed) {
                 if (parsedOldValueReversed[indexOfOldValue] === ' ') {
                     newValueArrayReversed.push(' ');
+                    indexOfOldValue += 1;
                     newValueArrayReversed.push(x);
                 } else {
                     newValueArrayReversed.push(x);
                 }
-                indexOfOldValue +=1;
+                indexOfOldValue += 1;
             }
-
-
+            let newValue = newValueArrayReversed.reverse().concat(parsedUnit).join();
+            return newValue;
         }
-        const regex = /[a-z]+|[0-9]+|\s/gi;
-        let parsed = this.state.value.match(regex);
-        let arrayNewNumber = Array.from(`${newNumber}`);
-        
-
-    }
+    }/**
+     * 
+     * 
+     * 
+     * @param {Number} newNumber
+     * @param {Boolean} newUnit
+     * @param {String} oldValue
+     * @param {Array} userInputAsArray
+     * @param {Array} parsedOldValueReversed
+     * @param {Array} parsedNewValueReversed
+     * @param {Array} parsedUnit
+     * @param {Number} indexOfOldValue
+     * @param {Array} newValueArrayReversed
+     * @param {String} newValue
+     * @return {String} newValue
+     */
 
     increment(userInputAsArray) {
         let number = this.getNumber(userInputAsArray);
@@ -155,15 +169,31 @@ class NumInputForm6 extends React.Component {
         return;
     }
 
-    getNumber() {
-
+    getNumber(userInputAsArray) {
+        if (this.props.allowMultipleUnits) {
+            return;
+        }
+        else {
+            const numbersOnly = /[0-9]+/gm;
+            let number = this.state.value.match(numbersOnly).join();
+            return number
+        }
     }
 
-    stringMatchesSomeUnit() {
+    stringMatchesSomeUnit(string) {
+        for (const [index, unit] of this.state.unitAssociated.entries()) {
+            let computedValue = string.localeCompare(unit);
+            //case insensitive comparison of two strings, if equivalent returns 0
+
+            if (computedValue === 0) {
+                return (index + 1);
+            }//returns truthy only if one element of the array matches with the string
+        }
+        return false;
     }
 
     userInputToArray(userInput/*this.state.value*/) {
-        const regex = /[a-z]+|[0-9]+|/gi;
+        const regex = /[a-z]+|[0-9]+/gi;
 
         if (userInput === '') {
             return [];
@@ -321,10 +351,10 @@ class NumInputForm6 extends React.Component {
 
         let userInputAsArray = this.userInputToArray(this.state.value);//parse userInput into an Array
         console.log(this.state.value);
+        console.log(userInputAsArray);
         let reportCard = this.checkFormat(userInputAsArray);//check input if it it is valid and returns a report 
 
         if (!reportCard.isValid) {
-            this.setState({ errorMessage: 'input format invalid' });
             return;
         }//throws error for invalid input format and doesnt change input value 
         else {
@@ -333,6 +363,7 @@ class NumInputForm6 extends React.Component {
 
 
             if (buttonID === 'Increment') {
+                console.log('Increment');
                 newNumber = this.increment(userInputAsArray, this.state.value);
                 newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
             }//Increment
@@ -357,7 +388,7 @@ class NumInputForm6 extends React.Component {
 
         let userInputAsArray = this.userInputToArray(userInput);
         this.checkFormat(userInputAsArray);
-        
+
         this.setState({
             value: event.target.value,
             userInputAsArray: userInputAsArray,
