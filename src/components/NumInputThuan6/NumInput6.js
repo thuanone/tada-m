@@ -267,7 +267,7 @@ class NumInputForm6 extends React.Component {
         let userInputAsArrayStrings = userInput.match(regex);
         let userInputAsArray = [];
 
-        if(userInputAsArrayStrings === null) {
+        if (userInputAsArrayStrings === null) {
             return [];
         }
 
@@ -397,26 +397,22 @@ class NumInputForm6 extends React.Component {
         }//iterative validation for arrays equal and greater than 2
 
         if (isError) {
-            reportCard = {isValid: false, isError: isError}
+            reportCard = { isValid: false, isError: isError }
             return reportCard;
         }
 
-        reportCard = {isValid: true, isError: ''}
+        reportCard = { isValid: true, isError: '' }
         return reportCard;
     }
 
     onClick(buttonID) {
-
-
-
         if (!this.state.isValid) {
             return;
         }//throws error for invalid input format and doesnt change input value 
         else {
             let newNumber = [];
             let newValue;
-
-
+            
             if (buttonID === 'Increment') {
                 newNumber = this.increment();
                 newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
@@ -424,14 +420,9 @@ class NumInputForm6 extends React.Component {
             else if (buttonID === 'Decrement') {
                 newNumber = this.decrement();
                 newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
-
             }//Decrement
 
-            this.setState(
-                {
-                    value: newValue,
-                }
-            );
+            this.setState({ value: newValue, });
         }
     }
 
@@ -439,6 +430,7 @@ class NumInputForm6 extends React.Component {
         let userInput = event.target.value;
         let userInputAsArray = this.userInputToArray(userInput);
         let reportCard = this.checkFormat(userInputAsArray);
+
         this.setState({
             value: event.target.value,
             isValid: reportCard.isValid,
