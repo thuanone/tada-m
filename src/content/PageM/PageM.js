@@ -1,7 +1,6 @@
 import React from 'react';
-import './PageM.scss';
-import NumInputMerge1 from '../../components/NumInputMerge1/NumInputMerge1';
-
+import NumInputMerge1 from '../../components/NumInputMerge1/NumInputMerge1'
+import {NumberInput, TextInput} from "carbon-components-react";
 
 const Memory_Unit= {
     value: 0,
@@ -19,17 +18,16 @@ const Memory_Unit= {
 const PageM = () => {
     return(
         <div>
-
             <h1>PageM</h1>
 
             <label>
-                NumInput Merge
+                NumberInput Merge
+                <NumInputMerge1 
+                    {...Memory_Unit}
+                />
             </label>
 
-            <NumInputMerge1 
-                {...Memory_Unit}
-            />
-            
+        
         </div>
     );
 }
