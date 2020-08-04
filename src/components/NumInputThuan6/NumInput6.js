@@ -145,7 +145,7 @@ class NumInputForm6 extends React.Component {
     increment() {
         let number = this.getNumber(this.state.value);
         let newNumber;
-
+        console.log(this.props.conversionToBiggerSize[this.state.unitInUsePTR]);
         if (this.props.allowMultipleUnits) {
             return;
         }//increment latter part 

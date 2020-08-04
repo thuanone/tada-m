@@ -6,9 +6,9 @@ const onClickFunctions = {
         if (
             state.unitInUsePTR < props.unitAssociated.length &&
             number < props.conversionToBiggerSize[state.unitInUsePTR] &&
-            number + props.unitAssociated[state.unitInUsePTR] >= props.conversionToBiggerSize[state.unitInUsePTR]
+            number + props.unitAssociated[state.unitInUsePTR] === props.conversionToBiggerSize[state.unitInUsePTR]
         ) {
-            newNumber = number % props.conversionToBiggerSize[state.unitInUsePTR];
+            newNumber = (number + props.unitAssociated[state.unitInUsePTR]) / props.conversionToBiggerSize[state.unitInUsePTR];
             return [newNumber, true];
         }//checks if number turns from a nonStandardUpperUnit(<1) to a standardUpperUnit(>=), and will convert if so
         else {
@@ -29,7 +29,7 @@ const onClickFunctions = {
             return [newNumber, true];
         }//checks if number turns from a nonStandardUpperUnit(<1) to a standardUpperUnit(>=), and will convert if so
         else {
-            newNumber = number + props.standardStepSizes[state.unitInUsePTR];
+            newNumber = number - props.standardStepSizes[state.unitInUsePTR];
             return [newNumber, false];
         }//if not conversion-ready will simply increment the old value by a standardSized increment
     },
