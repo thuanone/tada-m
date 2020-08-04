@@ -111,7 +111,7 @@ class NumInputForm6 extends React.Component {
         }
         else {
             //regex
-            const numbersAndWhiteSpaceOnly = /[0-9]|\s/gi;
+            const numbersAndWhiteSpaceOnly = /-?[0-9]|\s/gi;
             const unit = /[a-z]+/gi;
 
             let parsedOldValueReversed = oldValue.match(numbersAndWhiteSpaceOnly).reverse();
@@ -180,6 +180,7 @@ class NumInputForm6 extends React.Component {
         let number = this.getNumber(this.state.value);
         let newNumber;
 
+        console.log('decrement');
         console.log(number);
         if (this.props.allowMultipleUnits) {
             return;
@@ -195,6 +196,7 @@ class NumInputForm6 extends React.Component {
             }//checks if number turns from a nonStandardUpperUnit(<1) to a standardUpperUnit(>=), and will convert if so
             else {
                 newNumber = number - this.props.standardStepSizes[this.state.unitInUsePTR];
+                console.log('calc',newNumber, number, this.props.standardStepSizes[this.state.unitInUsePTR])
                 return [newNumber, false];
             }//if not conversion-ready will simply increment the old value by a standardSized increment
         }
@@ -214,7 +216,7 @@ class NumInputForm6 extends React.Component {
             return;
         }
         else {
-            const numbersOnly = /[0-9]|\s/gm;
+            const numbersOnly = /-?[0-9]|\s/gm;
             let numbersAndWhiteSpaceMatch = this.state.value.match(numbersOnly);
             //has to be changed to this.state.value later on, onClick function only
 
@@ -231,9 +233,6 @@ class NumInputForm6 extends React.Component {
                     } else {
                         numberArray.push(e);
                     }
-                }
-                if (this.state.value[0] === '-') {
-                    number = '-' + numberArray.join('');
                 }
                 number = numberArray.join('');
                 return Number(number);
@@ -457,6 +456,7 @@ class NumInputForm6 extends React.Component {
             else if (buttonID === 'Decrement') {
                 newNumber = this.decrement(userInputAsArray, this.state.value);
                 newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
+                console.log('newNum newVal',newNumber, newValue)
             }//Decrement
 
             this.setState(
