@@ -19,18 +19,16 @@ const Memory_Unit= {
 const PageM = () => {
     return(
         <div>
-            <h1>Page12</h1>
+
+            <h1>PageM</h1>
 
             <label>
-                NumInputMerge1
+                NumInput Merge
             </label>
 
-                <NumInputMerge1 
-                    {...Memory_Unit}
-                />
-
-                <NumInputMerge1 />
-
+            <NumInputMerge1 
+                {...Memory_Unit}
+            />
             
         </div>
     );

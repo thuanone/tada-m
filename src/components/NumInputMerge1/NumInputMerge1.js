@@ -456,69 +456,77 @@ class NumInputMerge1 extends React.Component {
 
 
     }//should be used in final iteration
-
-
-    render() {  
-        return (
+    render(){
+        return(
             <div>
-                <div>
+                
 
-                    <label>
-                        CarbonDesignImport.NumberInput_HTMLCopy
-                        <div class="bx--form-item bx--text-input-wrapper">
-                            <div class="bx--number bx--number--helpertext">
-                                <label class="bx--label"> </label>
-
-                                <div class="bx--text-input__field-outer-wrapper">
-                                    <div class="bx--text-input__field-wrapper">
-                                        <input
-                                            class="bx--text-input bx--text__input"
-                                            type="text"
-                                            aria-label="Numeric input field with increment and decrement buttons"
-
-                                            value={this.state.value}
-                                            onChange={this.handleChange}
-                                        />
-                                        <div class="bx--number__controls">
-                                            <button class="bx--number__control-btn up-icon" type="button" title="Increment number"
-                                                aria-label="Increment number" aria-live="polite" aria-atomic="true"
-
-                                                id="incrementButton"
-                                                isincrement={true}
-                                                onClick={() => this.onClick('Increment')}
-                                            >
-                                                <svg focusable="false" preserveAspectRatio="xMidYMid meet"
-                                                    style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"
-                                                    aria-hidden="true" class="up-icon">
-                                                    <path d="M0 4l4-4 4 4z"></path>
-                                                </svg>
-                                            </button>
-                                            <button class="bx--number__control-btn down-icon" type="button" title="Decrement number"
-                                                aria-label="Decrement number" aria-live="polite" aria-atomic="true"
-
-                                                id="decrementButton"
-                                                isincrement={false}
-                                                onClick={() => this.onClick('Decrement')}
-                                            >
-                                                <svg focusable="false" preserveAspectRatio="xMidYMid meet"
-                                                    style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8"
-                                                    height="4" viewBox="0 0 8 4" aria-hidden="true" class="down-icon">
-                                                    <path d="M8 0L4 4 0 0z"></path>
-                                                </svg>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </div>
-                        <p>Unit: {this.state.unitAssociated[this.state.unitInUsePTR]}</p>
-                        <p>{this.state.errorMessage}</p>
+                
+                <div class="bx--form-item bx--text-input-wrapper">
+                    <label  class="bx--label">
+                        NumberInputMerge v1
                     </label>
+                    <div class="bx--text-input__field-outer-wrapper">
+                        <div class="bx--text-input__field-wrapper">
+                            <div class="bx--number__input-wrapper">
+                                
+                                <input
+                                    class="bx--text-input bx--text__input"
+                                    type="text"
+                                    placeholder="type something here..." 
+                                    aria-label="Numeric input field with increment and decrement buttons"
+
+                                    value={this.state.value}
+                                    onChange={this.handleChange}
+                                />
+
+            
+
+                                <div class="bx--number__controls">
+
+                                    <button class="bx--number__control-btn up-icon" type="button" title="Increment number" aria-label="Increment number" aria-live="polite" aria-atomic="true"
+                                        id="incrementButton"
+                                        isincrement={true}
+                                        onClick={() => this.onClick('Increment')}>
+                                            <svg focusable="false" preserveAspectRatio="xMidYMid meet"
+                                                style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"
+                                                aria-hidden="true" class="up-icon">
+                                                <path d="M0 4l4-4 4 4z"></path>
+                                            </svg>
+                                    </button>
+
+                                    <button class="bx--number__control-btn down-icon" type="button" title="Decrement number" aria-label="Decrement number" aria-live="polite" aria-atomic="true"
+                                        id="decrementButton"
+                                        isincrement={false}
+                                        onClick={() => this.onClick('Decrement')}>
+                                            <svg focusable="false" preserveAspectRatio="xMidYMid meet"
+                                                style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8"
+                                                height="4" viewBox="0 0 8 4" aria-hidden="true" class="down-icon">
+                                                <path d="M8 0L4 4 0 0z"></path>
+                                            </svg>
+                                    </button>
+
+                                </div>
+                             </div>
+                         </div>
+
+                    <div class="bx--form__helper-text">
+                        Unit: {this.state.unitAssociated[this.state.unitInUsePTR]}
+                    </div>
+
+                    <div class="bx--form__helper-text">
+                        {this.state.errorMessage}
+                    </div>
+
+
                 </div>
             </div>
+            
+        </div>
         );
     }
 }
+
+
 
 export default NumInputMerge1;
