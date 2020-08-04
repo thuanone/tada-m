@@ -121,9 +121,6 @@ class NumInputForm6 extends React.Component {
 
             let newValueArrayReversed = [];
 
-            console.log(parsedOldValueReversed, parsedNewValueReversed, parsedUnit);
-            console.log(newNumber, parsedUnit);
-
             for (const x of parsedNewValueReversed) {
                 if (parsedOldValueReversed[indexOfOldValue] === ' ') {
                     newValueArrayReversed.push(' ');
@@ -156,7 +153,6 @@ class NumInputForm6 extends React.Component {
         let number = this.getNumber(this.state.value);
         let newNumber;
 
-        console.log(number);
         if (this.props.allowMultipleUnits) {
             return;
         }//increment latter part 
@@ -180,8 +176,6 @@ class NumInputForm6 extends React.Component {
         let number = this.getNumber(this.state.value);
         let newNumber;
 
-        console.log('decrement');
-        console.log(number);
         if (this.props.allowMultipleUnits) {
             return;
         }//increment latter part 
@@ -196,7 +190,7 @@ class NumInputForm6 extends React.Component {
             }//checks if number turns from a nonStandardUpperUnit(<1) to a standardUpperUnit(>=), and will convert if so
             else {
                 newNumber = number - this.props.standardStepSizes[this.state.unitInUsePTR];
-                console.log('calc',newNumber, number, this.props.standardStepSizes[this.state.unitInUsePTR])
+
                 return [newNumber, false];
             }//if not conversion-ready will simply increment the old value by a standardSized increment
         }
@@ -226,7 +220,7 @@ class NumInputForm6 extends React.Component {
             else {
                 let numberArray = [];
                 let number;
-                console.log(numbersAndWhiteSpaceMatch);
+
                 for (const e of numbersAndWhiteSpaceMatch) {
                     if (e === ' ') {
                         continue;
@@ -295,7 +289,7 @@ class NumInputForm6 extends React.Component {
                 userInputAsArray.push(eParsed);
             }
         }//iterates over seperated strings and converts numericalStrings into a numbertype and sorts them in a new array
-        console.log(userInputAsArrayStrings, userInputAsArray);
+
         return userInputAsArray;
     }
 
@@ -456,7 +450,7 @@ class NumInputForm6 extends React.Component {
             else if (buttonID === 'Decrement') {
                 newNumber = this.decrement(userInputAsArray, this.state.value);
                 newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
-                console.log('newNum newVal',newNumber, newValue)
+
             }//Decrement
 
             this.setState(
