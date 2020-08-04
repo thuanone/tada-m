@@ -45,14 +45,7 @@ class NumInputMerge1 extends React.Component {
         this.matchToOriginal = this.matchToOriginal.bind(this);
 
     }
-    /*
-    componentDidMount = () => {
-        let userInputAsArray = this.userInputToArray(this.state.value);
-        this.checkFormat(userInputAsArray);
-        //checkForm
-        //
-    }
-    */
+    
 
     /**MATCH_TO_ORIGINAL__onClickOnly
      * 
