@@ -1,19 +1,5 @@
 import React from 'react';
 
-
-/*
-const time_Unit = {
-    value: `0`,
-    unitAssociated: ['s', 'min', 'h', 'day/s', 'week/s'],
-    conversionRate: [1, 60, 3600, 86400, 604800],
-    minVal: 1,
-    maxVal: undefined,
-    standardStepSizes: [1, 1, 1, 1, 1],
-    standardChunks: [10, 10, 1, 1, 4],//chosen arbitrarily
-    hj
-}
-*/
-
 class NumInputMerge1 extends React.Component {
     constructor(props) {
         super(props);
@@ -104,7 +90,7 @@ class NumInputMerge1 extends React.Component {
      * @param {Array} newValueArrayReversed 
      * @param {String} newValue new string to replace this.state.value
      * @return {String} newValue
-     */ 
+     */
     matchToOriginal(newNumber, newUnit, oldValue) {
         if (newUnit) {
             return;
@@ -135,7 +121,7 @@ class NumInputMerge1 extends React.Component {
                 indexOfOldValue += 1;
             }
             let newValue = newValueArrayReversed.reverse().concat(parsedUnit).join('');
-            
+
             return newValue;
         }
     }
@@ -177,7 +163,27 @@ class NumInputMerge1 extends React.Component {
     }
 
     decrement() {
-        return;
+        let number = this.getNumber(this.state.value);
+        let newNumber;
+
+        console.log(number);
+        if (this.props.allowMultipleUnits) {
+            return;
+        }//increment latter part 
+        else {
+            if (
+                this.state.unitInUsePTR < this.props.unitAssociated.length &&
+                number < this.props.conversionToBiggerSize[this.state.unitInUsePTR] &&
+                number + this.props.unitAssociated[this.state.unitInUsePTR] >= this.props.conversionToBiggerSize[this.state.unitInUsePTR]
+            ) {
+                newNumber = number % this.props.conversionToBiggerSize[this.state.unitInUsePTR];
+                return [newNumber, true];
+            }//checks if number turns from a nonStandardUpperUnit(<1) to a standardUpperUnit(>=), and will convert if so
+            else {
+                newNumber = number - this.props.standardStepSizes[this.state.unitInUsePTR];
+                return [newNumber, false];
+            }//if not conversion-ready will simply increment the old value by a standardSized increment
+        }
     }
 
 
@@ -200,7 +206,7 @@ class NumInputMerge1 extends React.Component {
 
             if (numbersAndWhiteSpaceMatch === null) {
                 return 0;
-            } 
+            }
             else {
                 let numberArray = [];
                 let number;
@@ -211,6 +217,9 @@ class NumInputMerge1 extends React.Component {
                     } else {
                         numberArray.push(e);
                     }
+                }
+                if (this.state.value[0] === '-') {
+                    number = '-' + numberArray.join('');
                 }
                 number = numberArray.join('');
                 return Number(number);
@@ -258,6 +267,10 @@ class NumInputMerge1 extends React.Component {
         let userInputAsArrayStrings = userInput.match(regex);
         let userInputAsArray = [];
 
+        if(userInputAsArrayStrings === null) {
+            return [];
+        }
+
         for (const e of userInputAsArrayStrings) {
             if (e !== ' ') {//this is to avoid converting an empty string to 0 and pushing it onto the array
                 let eParsed = Number(e);
@@ -269,7 +282,7 @@ class NumInputMerge1 extends React.Component {
                 userInputAsArray.push(eParsed);
             }
         }//iterates over seperated strings and converts numericalStrings into a numbertype and sorts them in a new array
-        console.log(userInputAsArrayStrings,userInputAsArray);
+        console.log(userInputAsArrayStrings, userInputAsArray);
         return userInputAsArray;
     }
 
@@ -411,9 +424,9 @@ class NumInputMerge1 extends React.Component {
     onClick(buttonID) {
 
         let userInputAsArray = this.userInputToArray(this.state.value);//parse userInput into an Array
-        
+
         let reportCard = this.checkFormat(userInputAsArray);//check input if it it is valid and returns a report 
-        
+
 
         if (!reportCard) {
             return;
@@ -456,38 +469,35 @@ class NumInputMerge1 extends React.Component {
 
 
     }//should be used in final iteration
-    render(){
-        return(
-            <div>
-                
 
-                
+
+    render() {
+        return (
+            <div>
+                <label class="bx--label"> 
+                    NumInputMerge v1
+                </label>
+
                 <div class="bx--form-item bx--text-input-wrapper">
-                    <label  class="bx--label">
-                        NumberInputMerge v1
-                    </label>
-                    <div class="bx--text-input__field-outer-wrapper">
-                        <div class="bx--text-input__field-wrapper">
-                            <div class="bx--number__input-wrapper">
-                                
+                    <div class="bx--number bx--number--helpertext">
+
+                        <div class="bx--text-input__field-outer-wrapper">
+                            <div class="bx--text-input__field-wrapper">
                                 <input
                                     class="bx--text-input bx--text__input"
                                     type="text"
-                                    placeholder="type something here..." 
                                     aria-label="Numeric input field with increment and decrement buttons"
 
                                     value={this.state.value}
                                     onChange={this.handleChange}
                                 />
 
-            
-
                                 <div class="bx--number__controls">
 
                                     <button class="bx--number__control-btn up-icon" type="button" title="Increment number" aria-label="Increment number" aria-live="polite" aria-atomic="true"
                                         id="incrementButton"
                                         isincrement={true}
-                                        onClick={() => this.onClick('Increment')}>
+                                        onMouseDown={() => this.onClick('Increment')}>
                                             <svg focusable="false" preserveAspectRatio="xMidYMid meet"
                                                 style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8" height="4" viewBox="0 0 8 4"
                                                 aria-hidden="true" class="up-icon">
@@ -499,34 +509,31 @@ class NumInputMerge1 extends React.Component {
                                         id="decrementButton"
                                         isincrement={false}
                                         onClick={() => this.onClick('Decrement')}>
+                        
                                             <svg focusable="false" preserveAspectRatio="xMidYMid meet"
                                                 style={{ willChange: "transform" }} xmlns="http://www.w3.org/2000/svg" width="8"
                                                 height="4" viewBox="0 0 8 4" aria-hidden="true" class="down-icon">
                                                 <path d="M8 0L4 4 0 0z"></path>
                                             </svg>
                                     </button>
-
                                 </div>
-                             </div>
-                         </div>
-
-                    <div class="bx--form__helper-text">
-                        Unit: {this.state.unitAssociated[this.state.unitInUsePTR]}
+                            </div>
+                        </div>
                     </div>
-
-                    <div class="bx--form__helper-text">
-                        {this.state.errorMessage}
-                    </div>
-
-
                 </div>
+
+                <div class="bx--form__helper-text">
+                    Unit: {this.state.unitAssociated[this.state.unitInUsePTR]}
+                </div>
+
+                <div class="bx--form__helper-text">
+                    {this.state.errorMessage}
+                </div>
+
             </div>
             
-        </div>
         );
     }
 }
-
-
 
 export default NumInputMerge1;
