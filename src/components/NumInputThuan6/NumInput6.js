@@ -50,6 +50,7 @@ class NumInputForm6 extends React.Component {
             allowMultipleUnits: initialState.allowMultipleUnits,
             conversionToBiggerSize: initialState.conversionToBiggerSize,
             userInputAsArray: [],
+            isValid: true,
 
 
             //errorMessageString, set in valdidate()
@@ -77,14 +78,6 @@ class NumInputForm6 extends React.Component {
         this.matchToOriginal = this.matchToOriginal.bind(this);
 
     }
-    /*
-    componentDidMount = () => {
-        let userInputAsArray = this.userInputToArray(this.state.value);
-        this.checkFormat(userInputAsArray);
-        //checkForm
-        //
-    }
-    */
 
     /**MATCH_TO_ORIGINAL__onClickOnly
      * 
@@ -149,7 +142,7 @@ class NumInputForm6 extends React.Component {
      * @returns {Array} newNumber : a tuple consisting of the new value and a conversion flag
      * 
      */
-    increment(userInputAsArray) {
+    increment() {
         let number = this.getNumber(this.state.value);
         let newNumber;
 
@@ -197,7 +190,7 @@ class NumInputForm6 extends React.Component {
     }
 
 
-    /**GET_NUMBER
+    /**GET_NUMBER__onClickOnly
      * this functions gets this.state.value and returns the number inside the string
      * 
      * @param {Array} numbersAndWhiteSpaceMatch this.state.value's numbers and whitespaces parsed invidually into an Array
@@ -205,7 +198,7 @@ class NumInputForm6 extends React.Component {
      * @param {Number} number number
      * @return {Number} number 
      */
-    getNumber(placeholder) {
+    getNumber() {
         if (this.props.allowMultipleUnits) {
             return;
         }
@@ -309,6 +302,10 @@ class NumInputForm6 extends React.Component {
         let unitsInUse = [];
         let number_Position = [];
         let string_Position = [];
+        let reportCard = {
+            isValid: true,
+            isError: '',
+        }
 
 
 
@@ -400,42 +397,19 @@ class NumInputForm6 extends React.Component {
         }//iterative validation for arrays equal and greater than 2
 
         if (isError) {
-            this.setState(
-                {
-                    errorMessage: isError,
-                    reportCard: {
-                        isValid: false,
-                        number_Position: number_Position,
-                        string_Position: string_Position,
-                        userInputAsArray: userInputAsArray,
-                    }
-                }
-            );
-            return false;
+            reportCard = {isValid: false, isError: isError}
+            return reportCard;
         }
 
-        this.setState(
-            {
-                errorMessage: ``,
-                reportCard: {
-                    isValid: true,
-                    number_Position: number_Position,
-                    string_Position: string_Position,
-                    userInputAsArray: userInputAsArray,
-                }
-            }
-        );
-        return true;
+        reportCard = {isValid: true, isError: ''}
+        return reportCard;
     }
 
     onClick(buttonID) {
 
-        let userInputAsArray = this.userInputToArray(this.state.value);//parse userInput into an Array
-
-        let reportCard = this.checkFormat(userInputAsArray);//check input if it it is valid and returns a report 
 
 
-        if (!reportCard) {
+        if (!this.state.isValid) {
             return;
         }//throws error for invalid input format and doesnt change input value 
         else {
@@ -444,11 +418,11 @@ class NumInputForm6 extends React.Component {
 
 
             if (buttonID === 'Increment') {
-                newNumber = this.increment(userInputAsArray,);
+                newNumber = this.increment();
                 newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
             }//Increment
             else if (buttonID === 'Decrement') {
-                newNumber = this.decrement(userInputAsArray, this.state.value);
+                newNumber = this.decrement();
                 newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
 
             }//Decrement
@@ -456,22 +430,19 @@ class NumInputForm6 extends React.Component {
             this.setState(
                 {
                     value: newValue,
-                    reportCard: reportCard,
                 }
             );
         }
     }
 
     handleChange(event) {
-
         let userInput = event.target.value;
-
-
         let userInputAsArray = this.userInputToArray(userInput);
-        this.checkFormat(userInputAsArray);
+        let reportCard = this.checkFormat(userInputAsArray);
         this.setState({
             value: event.target.value,
-            userInputAsArray: userInputAsArray,
+            isValid: reportCard.isValid,
+            errorMessage: reportCard.isError,
         });
 
 
