@@ -17,6 +17,7 @@ import Page7 from './content/Page7';
 import Page8 from './content/Page8';
 import Page10 from './content/Page10';
 import Page12 from './content/Page12';
+import PageM from './content/PageM';
 
 const routing = (
 <Router>
@@ -90,6 +91,12 @@ const routing = (
                 <Button><Document /> Page12</Button>
               </Link>
           </div>
+
+          <div class="bx--col">
+              <Link to="/PageM"> 
+                <Button><Document /> PageM</Button>
+              </Link>
+          </div>
           
 
         </div>
@@ -108,6 +115,7 @@ const routing = (
 
     <Route path="/Page10" component={Page10} />
     <Route path="/Page12" component={Page12} />
+    <Route path="/PageM" component={PageM} />
 
   </div>
 </Router>
