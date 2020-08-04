@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'carbon-components-react';
+
 
 /*
 const time_Unit = {
@@ -316,7 +316,7 @@ class NumInputForm6 extends React.Component {
             }
 
             else {
-                const [[index, value]] = userInputAsArray.entries();
+                const [[index,/**value */]] = userInputAsArray.entries();
                 number_Position.push(index);
             }
 
@@ -412,7 +412,7 @@ class NumInputForm6 extends React.Component {
         else {
             let newNumber = [];
             let newValue;
-            
+
             if (buttonID === 'Increment') {
                 newNumber = this.increment();
                 newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
