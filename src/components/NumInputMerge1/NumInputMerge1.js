@@ -3,7 +3,7 @@ import React from 'react';
 class NumInputMerge1 extends React.Component {
     constructor(props) {
         super(props);
-        const initialState = {
+        this.state = {
             //actively used properties 
             value: (props.value ? props.value : `0`),
             unitInUsePTR: (props.unitInUsePTR ? props.unitInUsePTR : 0),
@@ -15,32 +15,10 @@ class NumInputMerge1 extends React.Component {
             maxVal: (props.maxVal ? props.minVal : 100),
             standardStepSizes: (props.standardStepSizes ? props.standardStepSizes : [1,]),
             standardChunks: (props.standardChunks ? props.standardChunks : [1, 10,]),
+
             allowMultipleUnits: (props.allowMultipleUnits ? props.allowMultipleUnits : false),
             conversionToBiggerSize: (props.conversionToBiggerSize ? props.conversionToBiggerSize : [1,]),
-
-
-            //errorMessageString, set in valdidate()
-        }
-        this.state = {
-            value: initialState.value,
-            unitInUsePTR: initialState.unitInUsePTR,
-            errorMessage: initialState.errorMessage,
-
-            //toBe abolished
-            unitAssociated: initialState.unitAssociated,
-            minVal: initialState.minVal,
-            maxVal: initialState.maxVal,
-            standardStepSizes: initialState.standardStepSizes,
-            standardChunks: initialState.standardChunks,
-
-            allowMultipleUnits: initialState.allowMultipleUnits,
-            conversionToBiggerSize: initialState.conversionToBiggerSize,
             userInputAsArray: [],
-
-
-            //errorMessageString, set in valdidate()
-            //unitInUse: initialState.unitAssociated[initialState.unitInUsePTR],
-
 
             reportCard: {
                 isValid: true,
@@ -48,7 +26,11 @@ class NumInputMerge1 extends React.Component {
                 string_Position: [],
                 userInputAsArray: [],
             },
-        };
+
+
+            //errorMessageString, set in valdidate()
+        }
+        
 
         this.handleChange = this.handleChange.bind(this);
         this.onClick = this.onClick.bind(this);
