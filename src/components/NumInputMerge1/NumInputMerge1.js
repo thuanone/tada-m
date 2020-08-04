@@ -111,7 +111,7 @@ class NumInputMerge1 extends React.Component {
         }
         else {
             //regex
-            const numbersAndWhiteSpaceOnly = /[0-9]|\s/gi;
+            const numbersAndWhiteSpaceOnly = /-?[0-9]|\s/gi;
             const unit = /[a-z]+/gi;
 
             let parsedOldValueReversed = oldValue.match(numbersAndWhiteSpaceOnly).reverse();
@@ -194,7 +194,7 @@ class NumInputMerge1 extends React.Component {
             return;
         }
         else {
-            const numbersOnly = /[0-9]|\s/gm;
+            const numbersOnly = /-?[0-9]|\s/gm;
             let numbersAndWhiteSpaceMatch = this.state.value.match(numbersOnly);
             //has to be changed to this.state.value later on, onClick function only
 
