@@ -22,5 +22,8 @@ const state = {
 
 console.log(state, props);
 test('increments a number', () => {
-    expect(onClick.increment(1, state, props)).toBe(Number);
+    expect(onClick.increment(1, state, props))
+    .toEqual(
+        expect.arrayContaining([expect.any(Number), expect.any(Boolean)])
+    );
 });
