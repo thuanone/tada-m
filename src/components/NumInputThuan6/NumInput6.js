@@ -142,52 +142,57 @@ class NumInputForm6 extends React.Component {
      * @returns {Array} newNumber : a tuple consisting of the new value and a conversion flag
      * 
      */
-    increment(state, props) {
-        let number = this.getNumber(state.value);
+    increment(number, unitInUsePTR, maxVal, allowMultipleUnits, unitAssociated, conversionToBiggerSize, standardStepSizes) {
+
         let newNumber;
-        if (props.allowMultipleUnits) {
+
+        if (allowMultipleUnits) {
             return;
         }//increment latter part 
         else {
             if (
-                state.unitInUsePTR < props.unitAssociated.length &&
-                number < props.conversionToBiggerSize[state.unitInUsePTR] &&
-                number + props.unitAssociated[state.unitInUsePTR] >= props.conversionToBiggerSize[state.unitInUsePTR]
+                unitInUsePTR < unitAssociated.length &&
+                number < conversionToBiggerSize[unitInUsePTR] &&
+                number + unitAssociated[unitInUsePTR] >= conversionToBiggerSize[unitInUsePTR]
             ) {
-                newNumber = number % props.conversionToBiggerSize[state.unitInUsePTR];
+                newNumber = number % conversionToBiggerSize[unitInUsePTR];
+
                 return [newNumber, true];
             }//checks if number turns from a nonStandardUpperUnit(<1) to a standardUpperUnit(>=), and will convert if so
             else {
-                newNumber = number + props.standardStepSizes[state.unitInUsePTR];
+                newNumber = number + standardStepSizes[unitInUsePTR];
+                if (newNumber > maxVal) {
+                    return [number, false];
+                }
                 return [newNumber, false];
             }//if not conversion-ready will simply increment the old value by a standardSized increment
         }
     }
 
-    decrement() {
-        let number = this.getNumber(this.state.value);
-        let newNumber;
+    decrement(number, unitInUsePTR, minVal, allowMultipleUnits, unitAssociated, conversionToBiggerSize, standardStepSizes) {
 
-        if (this.props.allowMultipleUnits) {
+        let newNumber;
+        if (allowMultipleUnits) {
             return;
         }//increment latter part 
         else {
             if (
-                this.state.unitInUsePTR < this.props.unitAssociated.length &&
-                number < this.props.conversionToBiggerSize[this.state.unitInUsePTR] &&
-                number + this.props.unitAssociated[this.state.unitInUsePTR] >= this.props.conversionToBiggerSize[this.state.unitInUsePTR]
+                unitInUsePTR < unitAssociated.length &&
+                number < conversionToBiggerSize[unitInUsePTR] &&
+                number + unitAssociated[unitInUsePTR] >= conversionToBiggerSize[unitInUsePTR]
             ) {
-                newNumber = number % this.props.conversionToBiggerSize[this.state.unitInUsePTR];
+                newNumber = number % conversionToBiggerSize[unitInUsePTR];
                 return [newNumber, true];
             }//checks if number turns from a nonStandardUpperUnit(<1) to a standardUpperUnit(>=), and will convert if so
             else {
-                newNumber = number - this.props.standardStepSizes[this.state.unitInUsePTR];
-
+                newNumber = number - standardStepSizes[unitInUsePTR];
+                if (newNumber < minVal) {
+                    return [number, false];
+                }
                 return [newNumber, false];
             }//if not conversion-ready will simply increment the old value by a standardSized increment
         }
     }
-
 
     /**GET_NUMBER__onClickOnly
      * this functions gets this.state.value and returns the number inside the string
@@ -197,13 +202,13 @@ class NumInputForm6 extends React.Component {
      * @param {Number} number number
      * @return {Number} number 
      */
-    getNumber() {
-        if (this.props.allowMultipleUnits) {
+    getNumber(value, allowMultipleUnits) {
+        if (allowMultipleUnits) {
             return;
         }
         else {
             const numbersOnly = /-?[0-9]/gm;
-            let numbersAndWhiteSpaceMatch = this.state.value.match(numbersOnly);
+            let numbersAndWhiteSpaceMatch = value.match(numbersOnly);
             //has to be changed to this.state.value later on, onClick function only
 
             if (numbersAndWhiteSpaceMatch === null) {
@@ -410,16 +415,32 @@ class NumInputForm6 extends React.Component {
             return;
         }//throws error for invalid input format and doesnt change input value 
         else {
-            let newNumber = [];
+            const {
+                propsvalue,
+                unitAssociated,
+                minVal,
+                maxVal,
+                standardStepSizes,
+                standardChunks,
+                propsunitInUsePTR,
+                allowMultipleUnits,
+                conversionToBiggerSize
+            } = this.props;
+            const { value, unitInUsePTR } = this.state;
             let newValue;
+            let number = this.getNumber(value, allowMultipleUnits);
 
             if (buttonID === 'Increment') {
-                newNumber = this.increment(this.state, this.props);
-                newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
+                let [newNumber, wasConverted] = this.increment(
+                    number, unitInUsePTR, maxVal, allowMultipleUnits, unitAssociated, conversionToBiggerSize, standardStepSizes
+                );
+                newValue = this.matchToOriginal(newNumber, wasConverted, this.state.value);
             }//Increment
             else if (buttonID === 'Decrement') {
-                newNumber = this.decrement();
-                newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
+                let [newNumber, wasConverted] = this.decrement(
+                    number, unitInUsePTR, minVal, allowMultipleUnits, unitAssociated, conversionToBiggerSize, standardStepSizes
+                );
+                newValue = this.matchToOriginal(newNumber, wasConverted, this.state.value);
             }//Decrement
 
             this.setState({ value: newValue, });
