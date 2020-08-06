@@ -4,7 +4,7 @@ import NumInputMerge1 from '../../components/NumInputMerge1/NumInputMerge1'
 
 const Memory_Unit= {
     value: 0,
-    unitList:['mb','gb'],
+    unitList:['MB','GB'],
     minVal: 0,
     maxVal: 10,
     standardStepSizes:[1,0.25],
