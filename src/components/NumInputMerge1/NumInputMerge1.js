@@ -21,7 +21,7 @@ class NumInputMerge1 extends React.Component {
   }
   increment(number, unitInUsePTR, standardStepSizes) {
     
-      let NewNumber = number + standardStepSizes[unitInUsePTR]
+      let NewNumber = (number) + (standardStepSizes[unitInUsePTR])
       return NewNumber
   }
 
@@ -33,23 +33,22 @@ class NumInputMerge1 extends React.Component {
   convert(number, unitInUsePTR,conversionToBiggerSize){
     if (number === conversionToBiggerSize[unitInUsePTR]){
       unitInUsePTR =+ 1
-      this.setState({unitInUsePTR: unitInUsePTR })
       number = conversionToBiggerSize[unitInUsePTR]
-      return number
+      return [number, true]
     }
-    return number
+    return [number, false]
   }
 
   getNumber(value) {
 
-      const numbersOnly = /-?[0-9]|/gm
+      const numbersOnly = /-?[0-9]|./gm
       let numbersMatch = value.match(numbersOnly)
 
       if (numbersMatch === null) {
         return 0
       }
       let number = numbersMatch.join('')
-      return Number(number) 
+      return parseFloat(number) 
   }
 
   unitMatch(string,unitList) {
@@ -118,7 +117,13 @@ class NumInputMerge1 extends React.Component {
           this.props.standardStepSizes,
         )
       }
-      newNumber = this.convert(newNumber, unitInUsePTR,conversionToBiggerSize)
+      let bool;
+      let returnConvert = this.convert(newNumber, unitInUsePTR,conversionToBiggerSize)
+      newNumber =  returnConvert[0]
+      bool = returnConvert[1]
+      if (bool){
+        this.setState({unitInUsePTR: unitInUsePTR + 1 })
+      }
 
       this.setState({
         value: String(newNumber) + ' ' + unitList[unitInUsePTR]
