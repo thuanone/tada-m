@@ -5,14 +5,7 @@ import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import { Button } from "carbon-components-react";
 
 import { Document24 as Document} from "@carbon/icons-react";
-import {
-  Content,
-  SideNav,
-  SideNavItems,
-  SideNavLink,
-  SideNavMenu,
-  SideNavMenuItem
-} from "carbon-components-react/lib/components/UIShell";
+
 
 
 import Home from './home';
@@ -122,7 +115,7 @@ const routing = (
       </div>
     </ul>
 
-    <Route exact path="/home" content={Home} />
+    <Route exact path="/home" component={Home} />
     <Route path="/Page1" component={Page1} />
     <Route path="/Page2" component={Page2} />
     <Route path="/Page3" component={Page3} />
