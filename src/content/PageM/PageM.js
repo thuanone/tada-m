@@ -4,7 +4,7 @@ import {NumberInput, TextInput} from "carbon-components-react";
 
 const Memory_Unit= {
     value: 0,
-    unitAssociated:['mb','gb'],
+    unitList:['mb','gb'],
     minVal: 0,
     maxVal: 10,
     standardStepSizes:[1,0.25],
