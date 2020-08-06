@@ -98,9 +98,33 @@ class NumInputForm6 extends React.Component {
      * @param {String} newValue new string to replace this.state.value
      * @return {String} newValue
      */
-    matchToOriginal(newNumber, newUnit, oldValue) {
+    matchToOriginal(newNumber, newUnit, oldValue, unitAssociated, unitInUsePTR) {
         if (newUnit) {
-            return;
+            const numbersAndWhiteSpaceOnly = /-?[0-9]|\s/gi;
+            const unit = /[a-z]+/gi;
+            const newUnit = unitAssociated[unitInUsePTR+1];
+            console.log(unitAssociated, unitInUsePTR,unitAssociated[unitInUsePTR+1], newUnit )
+
+            let parsedOldValueReversed = oldValue.match(numbersAndWhiteSpaceOnly).reverse();
+            let parsedNewValueReversed = `${newNumber}`.match(numbersAndWhiteSpaceOnly).reverse();
+            let parsedUnit = newUnit.match(unit);
+            let indexOfOldValue = 0;
+
+            let newValueArrayReversed = [];
+
+            for (const x of parsedNewValueReversed) {
+                if (parsedOldValueReversed[indexOfOldValue] === ' ') {
+                    newValueArrayReversed.push(' ');
+                    indexOfOldValue += 1;
+                    newValueArrayReversed.push(x);
+                } else {
+                    newValueArrayReversed.push(x);
+                }
+                indexOfOldValue += 1;
+            }
+            let newValue = newValueArrayReversed.reverse().concat(parsedUnit).join('');
+
+            return newValue;
         }
         else {
             //regex
@@ -151,10 +175,9 @@ class NumInputForm6 extends React.Component {
         else {
             if (
                 state.unitInUsePTR < props.unitAssociated.length &&
-                number < props.conversionToBiggerSize[state.unitInUsePTR] &&
-                number + props.unitAssociated[state.unitInUsePTR] >= props.conversionToBiggerSize[state.unitInUsePTR]
+                number === props.conversionToBiggerSize[state.unitInUsePTR]
             ) {
-                newNumber = number % props.conversionToBiggerSize[state.unitInUsePTR];
+                newNumber = number / props.conversionToBiggerSize[state.unitInUsePTR];
                 return [newNumber, true];
             }//checks if number turns from a nonStandardUpperUnit(<1) to a standardUpperUnit(>=), and will convert if so
             else {
@@ -415,14 +438,14 @@ class NumInputForm6 extends React.Component {
 
             if (buttonID === 'Increment') {
                 newNumber = this.increment(this.state, this.props);
-                newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
+                newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value, this.props.unitAssociated, this.state.unitInUsePTR);
             }//Increment
             else if (buttonID === 'Decrement') {
                 newNumber = this.decrement();
                 newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
             }//Decrement
 
-            this.setState({ value: newValue, });
+            this.setState( newNumber[1] ? { value: newValue, unitInUsePTR: this.state.unitInUsePTR+1} : {value:newValue});
         }
     }
 
