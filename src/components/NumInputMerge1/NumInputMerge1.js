@@ -65,9 +65,6 @@ class NumInputMerge1 extends React.Component {
 
       let newValueArrayReversed = [];
 
-      console.log(parsedOldValueReversed, parsedNewValueReversed, parsedUnit);
-      console.log(newNumber, parsedUnit);
-
       for (const x of parsedNewValueReversed) {
         if (parsedOldValueReversed[indexOfOldValue] === " ") {
           newValueArrayReversed.push(" ");
@@ -99,7 +96,7 @@ class NumInputMerge1 extends React.Component {
    * @returns {Array} newNumber : a tuple consisting of the new value and a conversion flag
    *
    */
-  increment(number, allowMultipleUnits, unitInUsePTR, unitList, conversionToBiggerSize, standardStepSizes){
+  increment(number,  unitInUsePTR, allowMultipleUnits, unitList, conversionToBiggerSize, standardStepSizes){
     let newNumber;
 
     if (allowMultipleUnits) {
@@ -355,19 +352,21 @@ class NumInputMerge1 extends React.Component {
   }
 
   onClick(buttonID) {
-    if (!this.state.valid) {
+    
+    if (!this.state.isValid) {
       return;
     } //throws error for invalid input format and doesnt change input value
     else {
-      let number = this.getNumber(this.state.value);
+      let number = this.getNumber(this.state.value, this.props.allowMultipleUnits);
       let newNumber = [];
       let newValue;
 
       if (buttonID === "Increment") {
         newNumber = this.increment(
             number,
-            this.props.allowMultipleUnits,
             this.state.unitInUsePTR,
+            this.props.allowMultipleUnits,
+            
             this.props.unitList,
             this.props.conversionToBiggerSize,
             this.props.standardStepSizes

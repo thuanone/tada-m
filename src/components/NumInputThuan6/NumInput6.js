@@ -145,7 +145,6 @@ class NumInputForm6 extends React.Component {
     increment(state, props) {
         let number = this.getNumber(state.value);
         let newNumber;
-        console.log(props.conversionToBiggerSize[state.unitInUsePTR]);
         if (props.allowMultipleUnits) {
             return;
         }//increment latter part 
@@ -203,7 +202,7 @@ class NumInputForm6 extends React.Component {
             return;
         }
         else {
-            const numbersOnly = /-?[0-9]|\s/gm;
+            const numbersOnly = /-?[0-9]/gm;
             let numbersAndWhiteSpaceMatch = this.state.value.match(numbersOnly);
             //has to be changed to this.state.value later on, onClick function only
 
@@ -222,6 +221,7 @@ class NumInputForm6 extends React.Component {
                     }
                 }
                 number = numberArray.join('');
+                console.log(number);
                 return Number(number);
             }
         }
