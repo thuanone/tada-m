@@ -31,12 +31,15 @@ class NumInputMerge1 extends React.Component {
       return (NewNumber)
   }
   convert(number, unitInUsePTR,conversionToBiggerSize){
-    
-    if (number === conversionToBiggerSize[unitInUsePTR]){
-      unitInUsePTR =+ 1
-      number = conversionToBiggerSize[unitInUsePTR]
-      return [number, true]
+    console.log(unitInUsePTR)
+    if (unitInUsePTR < conversionToBiggerSize.length -1 ){
+      if (number === conversionToBiggerSize[unitInUsePTR]){
+        unitInUsePTR =+ 1
+        number = conversionToBiggerSize[unitInUsePTR]
+        return [number, true]
+      }
     }
+    
     return [number, false]
   }
 
