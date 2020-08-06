@@ -142,24 +142,24 @@ class NumInputForm6 extends React.Component {
      * @returns {Array} newNumber : a tuple consisting of the new value and a conversion flag
      * 
      */
-    increment() {
-        let number = this.getNumber(this.state.value);
+    increment(state, props) {
+        let number = this.getNumber(state.value);
         let newNumber;
-        console.log(this.props.conversionToBiggerSize[this.state.unitInUsePTR]);
-        if (this.props.allowMultipleUnits) {
+        console.log(props.conversionToBiggerSize[state.unitInUsePTR]);
+        if (props.allowMultipleUnits) {
             return;
         }//increment latter part 
         else {
             if (
-                this.state.unitInUsePTR < this.props.unitAssociated.length &&
-                number < this.props.conversionToBiggerSize[this.state.unitInUsePTR] &&
-                number + this.props.unitAssociated[this.state.unitInUsePTR] >= this.props.conversionToBiggerSize[this.state.unitInUsePTR]
+                state.unitInUsePTR < props.unitAssociated.length &&
+                number < props.conversionToBiggerSize[state.unitInUsePTR] &&
+                number + props.unitAssociated[state.unitInUsePTR] >= props.conversionToBiggerSize[state.unitInUsePTR]
             ) {
-                newNumber = number % this.props.conversionToBiggerSize[this.state.unitInUsePTR];
+                newNumber = number % props.conversionToBiggerSize[state.unitInUsePTR];
                 return [newNumber, true];
             }//checks if number turns from a nonStandardUpperUnit(<1) to a standardUpperUnit(>=), and will convert if so
             else {
-                newNumber = number + this.props.standardStepSizes[this.state.unitInUsePTR];
+                newNumber = number + props.standardStepSizes[state.unitInUsePTR];
                 return [newNumber, false];
             }//if not conversion-ready will simply increment the old value by a standardSized increment
         }
@@ -414,7 +414,7 @@ class NumInputForm6 extends React.Component {
             let newValue;
 
             if (buttonID === 'Increment') {
-                newNumber = this.increment();
+                newNumber = this.increment(this.state, this.props);
                 newValue = this.matchToOriginal(newNumber[0], newNumber[1], this.state.value);
             }//Increment
             else if (buttonID === 'Decrement') {

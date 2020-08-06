@@ -1,4 +1,5 @@
-const onClick = require('./onClick');
+const onClick = require('../src/components/NumInputThuan6');
+
 
 const props = {
     value: 0,
@@ -22,10 +23,10 @@ const state = {
 
 test('increment(): increments a number', () => {
     const number = 1;
-    const newNumber = onClick.increment(number, state, props)[0];
-    const newUnit = onClick.increment(number, state, props)[1];
+    const newNumber = onClick.increment( state, props)[0];
+    const newUnit = onClick.increment(state, props)[1];
 
-    expect(onClick.increment(number, state, props))
+    expect(onClick.increment( state, props))
         .toEqual(
             expect.arrayContaining([expect.any(Number), expect.any(Boolean)])
         );
