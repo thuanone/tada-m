@@ -22,15 +22,16 @@ class NumInputMerge1 extends React.Component {
   increment(number, unitInUsePTR, standardStepSizes) {
     
       let NewNumber = (number) + (standardStepSizes[unitInUsePTR])
-      return NewNumber
+      return (NewNumber)
   }
 
   decrement(number, unitInUsePTR, standardStepSizes) {
 
       let NewNumber = number - standardStepSizes[unitInUsePTR]
-      return NewNumber
+      return (NewNumber)
   }
   convert(number, unitInUsePTR,conversionToBiggerSize){
+    
     if (number === conversionToBiggerSize[unitInUsePTR]){
       unitInUsePTR =+ 1
       number = conversionToBiggerSize[unitInUsePTR]
@@ -53,7 +54,7 @@ class NumInputMerge1 extends React.Component {
 
   unitMatch(string,unitList) {
     for (const [index, unit] of unitList.entries()) {
-      if (string.localeCompare(unit) === 0) { //case insensitive comparison of two strings, if equivalent returns 0
+      if (string.toUpperCase().localeCompare(unit) === 0) { //case insensitive comparison of two strings, if equivalent returns 0
         return true
       } //returns truthy only if one element of the array matches with the string
     }
@@ -82,7 +83,7 @@ class NumInputMerge1 extends React.Component {
     if (!isNaN( parseFloat(matchedNum) ) ){ // Checks if a number comes first
 
       if (this.unitMatch(matchedString,unitList)){ // checks if the unit comes next
-        this.setState({errorMessage:'recognized unit: '+ matchedString})
+        this.setState({errorMessage:'recognized unit: '+ matchedString, unitInUsePTR: unitList.indexOf(matchedString)})
       }
       else{
         if (matchedString===''){
