@@ -31,14 +31,30 @@ class NumInputMerge1 extends React.Component {
       return (NewNumber)
   }
   convert(number, unitInUsePTR,conversionToBiggerSize){
-    console.log(unitInUsePTR)
     if (unitInUsePTR < conversionToBiggerSize.length -1 ){
       if (number === conversionToBiggerSize[unitInUsePTR]){
         unitInUsePTR =+ 1
         number = conversionToBiggerSize[unitInUsePTR]
-        return [number, true]
+        return [number, 1]
       }
     }
+    /*
+    if (unitInUsePTR > 0){
+      if (number < 1){
+        unitInUsePTR =- 1
+        console.log(this.unitInUsePTR)
+        console.log(conversionToBiggerSize[unitInUsePTR])
+        number = parseFloat(conversionToBiggerSize[unitInUsePTR]) -1
+        return [number, -1]
+      }
+    }
+    */
+   
+    /*
+    if (Math.floor(number/1024) >=1){
+      number = conversionToBiggerSize[unitInUsePTR+1]
+      return number
+    }*/
     
     return [number, false]
   }
@@ -121,13 +137,12 @@ class NumInputMerge1 extends React.Component {
           this.props.standardStepSizes,
         )
       }
-      let bool;
+      let changePTR;
       let returnConvert = this.convert(newNumber, unitInUsePTR,conversionToBiggerSize)
       newNumber =  returnConvert[0]
-      bool = returnConvert[1]
-      if (bool){
-        this.setState({unitInUsePTR: unitInUsePTR + 1 })
-      }
+      changePTR = returnConvert[1]
+      this.setState({unitInUsePTR: unitInUsePTR + changePTR })
+      
 
       this.setState({
         value: String(newNumber) + ' ' + unitList[unitInUsePTR]
