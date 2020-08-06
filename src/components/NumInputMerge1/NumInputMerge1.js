@@ -17,14 +17,12 @@ class NumInputMerge1 extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.onClick = this.onClick.bind(this);
 
-    this.userInputToArray = this.userInputToArray.bind(this);
+    
     this.stringMatchesSomeUnit = this.stringMatchesSomeUnit.bind(this);
-    this.getNumber = this.getNumber.bind(this);
+    
     this.checkFormat = this.checkFormat.bind(this);
 
-    this.increment = this.increment.bind(this);
-    this.decrement = this.decrement.bind(this);
-    this.matchToOriginal = this.matchToOriginal.bind(this);
+
   }
 
   /**MATCH_TO_ORIGINAL__onClickOnly
@@ -121,30 +119,28 @@ class NumInputMerge1 extends React.Component {
     }
   }
 
-  decrement() {
-    let number = this.getNumber(this.state.value);
+  decrement(number,  unitInUsePTR, allowMultipleUnits, unitList, conversionToBiggerSize, standardStepSizes){
     let newNumber;
 
-    console.log(number);
-    if (this.props.allowMultipleUnits) {
+    if (allowMultipleUnits) {
       return;
-    } //increment latter part
+    } 
     else {
       if (
-        this.state.unitInUsePTR < this.props.unitList.length &&
-        number < this.props.conversionToBiggerSize[this.state.unitInUsePTR] &&
-        number + this.props.unitList[this.state.unitInUsePTR] >=
-          this.props.conversionToBiggerSize[this.state.unitInUsePTR]
+        unitInUsePTR < unitList.length &&
+        number < conversionToBiggerSize[unitInUsePTR] &&
+        number + unitList[unitInUsePTR] >=
+          conversionToBiggerSize[unitInUsePTR]
       ) {
         newNumber =
-          number % this.props.conversionToBiggerSize[this.state.unitInUsePTR];
+          number % conversionToBiggerSize[unitInUsePTR];
         return [newNumber, true];
-      } //checks if number turns from a nonStandardUpperUnit(<1) to a standardUpperUnit(>=), and will convert if so
+      } 
       else {
         newNumber =
-          number - this.props.standardStepSizes[this.state.unitInUsePTR];
+          number - standardStepSizes[unitInUsePTR];
         return [newNumber, false];
-      } //if not conversion-ready will simply increment the old value by a standardSized increment
+      } 
     }
   }
 
@@ -180,7 +176,7 @@ class NumInputMerge1 extends React.Component {
    * @param {Number} computedValue result of String.prototype.localeCompare() [0:equivalent, -1/+1: ineuqivalent]
    */
   stringMatchesSomeUnit(string) {
-    for (const [index, unit] of this.state.unitList.entries()) {
+    for (const [index, unit] of this.props.unitList.entries()) {
       let computedValue = string.localeCompare(unit);
       //case insensitive comparison of two strings, if equivalent returns 0
 
@@ -365,8 +361,8 @@ class NumInputMerge1 extends React.Component {
         newNumber = this.increment(
             number,
             this.state.unitInUsePTR,
+
             this.props.allowMultipleUnits,
-            
             this.props.unitList,
             this.props.conversionToBiggerSize,
             this.props.standardStepSizes
@@ -378,7 +374,15 @@ class NumInputMerge1 extends React.Component {
         );
       } //Increment
       else if (buttonID === "Decrement") {
-        newNumber = this.decrement(this.state.value);
+        newNumber = this.decrement(
+          number,
+            this.state.unitInUsePTR,
+
+            this.props.allowMultipleUnits,
+            this.props.unitList,
+            this.props.conversionToBiggerSize,
+            this.props.standardStepSizes
+        );
         newValue = this.matchToOriginal(
           newNumber[0],
           newNumber[1],
