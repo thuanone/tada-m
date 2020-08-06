@@ -20,13 +20,6 @@ class NumInputMerge1 extends React.Component {
             conversionToBiggerSize: (props.conversionToBiggerSize ? props.conversionToBiggerSize : [1,]),
             userInputAsArray: [],
 
-            reportCard: {
-                isValid: true,
-                number_Position: [],
-                string_Position: [],
-                userInputAsArray: [],
-            },
-
 
             //errorMessageString, set in valdidate()
         }
@@ -164,43 +157,35 @@ class NumInputMerge1 extends React.Component {
 
     /**GET_NUMBER
      * this functions gets this.state.value and returns the number inside the string
-     * 
-     * @param {Array} numbersAndWhiteSpaceMatch this.state.value's numbers and whitespaces parsed invidually into an Array
+     * @param {Array} numbersMatch this.state.value's numbers and whitespaces parsed invidually into an Array
      * @param {Array} numberArray numbersAndWhiteSpaceMatch without its whitespaces
      * @param {Number} number number
      * @return {Number} number 
+     * 
      */
     getNumber(placeholder) {
         if (this.props.allowMultipleUnits) {
             return;
         }
         else {
-            const numbersOnly = /-?[0-9]|\s/gm;
-            let numbersAndWhiteSpaceMatch = this.state.value.match(numbersOnly);
+            const numbersOnly = /-?[0-9]|/gm;
+            let numbersMatch = this.state.value.match(numbersOnly);
             //has to be changed to this.state.value later on, onClick function only
 
-            if (numbersAndWhiteSpaceMatch === null) {
+            if (numbersMatch === null) {
                 return 0;
             }
             else {
-                let numberArray = [];
-                let number;
-                console.log(numbersAndWhiteSpaceMatch);
-                for (const e of numbersAndWhiteSpaceMatch) {
-                    if (e === ' ') {
-                        continue;
-                    } else {
-                        numberArray.push(e);
+                var numberArray = [];
+                for (const e of numbersMatch) {
+                    numberArray.push(e);
                     }
-                }
-                if (this.state.value[0] === '-') {
-                    number = '-' + numberArray.join('');
-                }
-                number = numberArray.join('');
-                return Number(number);
-            }
+            };
+            let number = numberArray.join('');
+            return Number(number);
         }
     }
+
 
 
     /**STRING_MATCHES_SOME_UNIT
