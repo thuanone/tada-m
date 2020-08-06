@@ -23,7 +23,7 @@ import Page10 from './content/Page10';
 import Page12 from './content/Page12';
 
 import PageM from './content/PageM';
-import PageM2 from './content/PageM2';
+import PageM1 from './content/PageM1';
 
 const routing = (
 <Router>
@@ -100,13 +100,13 @@ const routing = (
 
           <div class="bx--col">
               <Link to="/PageM"> 
-                <Button><Document /> PageM</Button>
+                <Button><Document /> PageM Base </Button>
               </Link>
           </div>
           
           <div class="bx--col">
-              <Link to="/PageM2"> 
-                <Button><Document /> PageM2</Button>
+              <Link to="/PageM1"> 
+                <Button><Document /> PageM1</Button>
               </Link>
           </div>
           
@@ -128,7 +128,7 @@ const routing = (
     <Route path="/Page10" component={Page10} />
     <Route path="/Page12" component={Page12} />
     <Route path="/PageM" component={PageM} />
-    <Route path="/PageM2" component={PageM2} />
+    <Route path="/PageM1" component={PageM1} />
 
   </div>
 </Router>

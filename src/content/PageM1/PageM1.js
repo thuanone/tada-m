@@ -1,10 +1,10 @@
 import React from 'react';
-import NumInputMerge2 from '../../components/NumInputMerge2/NumInputMerge2'
+import NumInputMerge1 from '../../components/NumInputMerge1/NumInputMerge1'
 
 
 const Memory_Unit= {
     value: 0,
-    unitAssociated:['mb','gb'],
+    unitList:['mb','gb'],
     minVal: 0,
     maxVal: 10,
     standardStepSizes:[1,0.25],
@@ -15,14 +15,14 @@ const Memory_Unit= {
 
 } 
 
-const PageM2 = () => {
+const PageM1 = () => {
     return(
         <div>
-            <h1>PageM</h1>
+            <h1>PageM1</h1>
 
             <label>
                 NumberInput Merge
-                <NumInputMerge2 
+                <NumInputMerge1 
                     {...Memory_Unit}
                 />
             </label>
@@ -32,4 +32,4 @@ const PageM2 = () => {
     );
 }
 
-export default PageM2;
+export default PageM1;
