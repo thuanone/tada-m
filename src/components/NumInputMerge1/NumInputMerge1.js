@@ -145,7 +145,7 @@ class NumInputMerge1 extends React.Component {
       
 
       this.setState({
-        value: String(newNumber) + ' ' + unitList[unitInUsePTR]
+        value: String(newNumber) + ' ' + unitList[unitInUsePTR+ changePTR]
       })
     }
   }
