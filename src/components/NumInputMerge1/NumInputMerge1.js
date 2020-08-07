@@ -5,7 +5,7 @@ class NumInputMerge1 extends React.Component {
     super(props)
     this.state = {
       //actively used properties
-      value: props.value ? props.value : `0`,
+      value: '0',
       unitInUsePTR: props.unitInUsePTR ? props.unitInUsePTR : 0,
       errorMessage: '',
       isValid: true,
@@ -18,144 +18,139 @@ class NumInputMerge1 extends React.Component {
     this.onClick = this.onClick.bind(this)
     this.unitMatch = this.unitMatch.bind(this)
     this.validate = this.validate.bind(this)
+    this.ConfigUnits = this.props;
   }
-  increment(number, unitInUsePTR, standardStepSizes) {
-    
-      let NewNumber = (number) + (standardStepSizes[unitInUsePTR])
-      return (NewNumber)
+  increment(number, standardStepSize) {
+    let NewNumber = number + standardStepSize
+    return NewNumber
   }
 
-  decrement(number, unitInUsePTR, standardStepSizes) {
-
-      let NewNumber = number - standardStepSizes[unitInUsePTR]
-      return (NewNumber)
+  decrement(number, standardStepSize) {
+    let NewNumber = number - standardStepSize
+    return NewNumber
   }
-  convert(number, unitInUsePTR,conversionToBiggerSize){
-    if (unitInUsePTR < conversionToBiggerSize.length -1 ){
-      if (number === conversionToBiggerSize[unitInUsePTR]){
-        unitInUsePTR =+ 1
-        number = conversionToBiggerSize[unitInUsePTR]
-        return [number, 1]
-      }
+  convert(number,unitInUsePTR,unitSpecs) {
+    let convertedNumber = {
+      number : number,
+      unit : unitSpecs[unitInUsePTR].unit,
+      unitPTR: unitInUsePTR,
     }
-    /*
-    if (unitInUsePTR > 0){
-      if (number < 1){
-        unitInUsePTR =- 1
-        console.log(this.unitInUsePTR)
-        console.log(conversionToBiggerSize[unitInUsePTR])
-        number = parseFloat(conversionToBiggerSize[unitInUsePTR]) -1
-        return [number, -1]
-      }
-    }
-    */
-   
-    /*
-    if (Math.floor(number/1024) >=1){
-      number = conversionToBiggerSize[unitInUsePTR+1]
-      return number
-    }*/
     
-    return [number, false]
+    if (number >= 1024) {
+      convertedNumber.number = Math.round(number/1024)
+      convertedNumber.unit = unitSpecs[unitInUsePTR + 1].unit
+      convertedNumber.unitPTR = unitInUsePTR +1
+
+    }
+    if (number < 1){
+      convertedNumber.number = 1024 -1 /*unitSpecs[unitInUsePTR-1].standardStepSizes*/
+      convertedNumber.unit = unitSpecs[unitInUsePTR - 1].unit
+      convertedNumber.unitPTR = unitInUsePTR - 1
+      console.log('CN: ', convertedNumber.number)
+
+    }
+    return convertedNumber 
+
   }
 
-  getNumber(value) {
+  getNumber(input) {
+    const numbersOnly = /-?[0-9]|./gm
+    let numbersMatch = input.match(numbersOnly)
 
-      const numbersOnly = /-?[0-9]|./gm
-      let numbersMatch = value.match(numbersOnly)
-
-      if (numbersMatch === null) {
-        return 0
-      }
-      let number = numbersMatch.join('')
-      return parseFloat(number) 
+    if (numbersMatch === null) {
+      return 0
+    }
+    let number = numbersMatch.join('')
+    return parseFloat(number)
   }
 
-  unitMatch(string,unitList) {
-    for (const [index, unit] of unitList.entries()) {
-      if (string.toUpperCase().localeCompare(unit) === 0) { //case insensitive comparison of two strings, if equivalent returns 0
+  unitMatch(string, ConfigU) {
+    var i;
+    console.log('len: ', ConfigU)
+    for (i = 0; i < ConfigU.length; i++)
+      if (string.toUpperCase() === ConfigU[i].unit.toUpperCase){
         return true
-      } //returns truthy only if one element of the array matches with the string
     }
     return false
   }
 
-  validate(userInput,unitList) {
-    const regexNum = /-?[0-9]+/gi;
-    const regexString = /[a-z]+/gi;
+  validate(userInput, ConfigU) {
+    const regexNum = /-?[0-9]+/gi
+    const regexString = /[a-z]+/gi
 
-    let matchedNum = (userInput.match(regexNum))
-    let matchedString = (userInput.match(regexString))
+    let matchedNum = userInput.match(regexNum)
+    let matchedString = userInput.match(regexString)
 
-    if (matchedNum !==  null){
-      matchedNum = matchedNum.join('');
-    }else{
+    if (matchedNum !== null) {
+      matchedNum = matchedNum.join('')
+    } else {
       matchedNum = ''
     }
 
-    if (matchedString !== null){
-      matchedString = matchedString.join("");
-    }else{
+    if (matchedString !== null) {
+      matchedString = matchedString.join('')
+    } else {
       matchedString = ''
     }
-    
-    if (!isNaN( parseFloat(matchedNum) ) ){ // Checks if a number comes first
 
-      if (this.unitMatch(matchedString,unitList)){ // checks if the unit comes next
-        this.setState({errorMessage:'recognized unit: '+ matchedString, unitInUsePTR: unitList.indexOf(matchedString)})
-      }
-      else{
-        if (matchedString===''){
-          this.setState({errorMessage:'please enter a valid unit'})
-        }
-        else{
-          this.setState({errorMessage: matchedString + ' is not a valid unit'})
-        } 
-      }
-    }else{
-      this.setState({errorMessage:matchedNum + ' is not a valid number'})
+    if (isNaN(parseFloat(matchedNum))) {
+      // Checks if a number comes first
+      this.setState({ errorMessage: matchedNum + ' is not a valid number' })
+      return
     }
+    if (this.unitMatch(matchedString, ConfigU)) {
+      // checks if the unit comes next
+      this.setState({
+        errorMessage: `recognized unit: ${matchedString}`,
+        /* unitInUsePTR: unitInUsePTR */ // CHANGE !!!!!!!
+      })
+    } else {
+      if (matchedString === '') {
+        this.setState({ errorMessage: 'please enter a valid unit' })
+      } else {
+        this.setState({
+          errorMessage: matchedString + ' is not a valid unit',
+        })
+      }
+    }
+
+    //seState in onChange object übergeben
   }
 
-  onClick(buttonID,unitList,unitInUsePTR, conversionToBiggerSize){
+  onClick(buttonID, unitInUsePTR, ConfigU ) {
     if (!this.state.isValid) {
       return
     } else {
-      let number = this.getNumber(this.state.value);
-      let newNumber;
+      let number = this.getNumber(this.state.value)
+      let newNumber
 
       if (buttonID === 'Increment') {
         newNumber = this.increment(
           number,
-          this.state.unitInUsePTR,
-          this.props.standardStepSizes,
+          ConfigU[unitInUsePTR].standardStepSize,
         )
       } else if (buttonID === 'Decrement') {
         newNumber = this.decrement(
           number,
-          this.state.unitInUsePTR, 
-          this.props.standardStepSizes,
+          ConfigU[unitInUsePTR].standardStepSize,
         )
       }
-      let changePTR;
-      let returnConvert = this.convert(newNumber, unitInUsePTR,conversionToBiggerSize)
-      newNumber =  returnConvert[0]
-      changePTR = returnConvert[1]
-      this.setState({unitInUsePTR: unitInUsePTR + changePTR })
-      
+      let returnConverted = this.convert(newNumber,unitInUsePTR,ConfigU)
 
       this.setState({
-        value: String(newNumber) + ' ' + unitList[unitInUsePTR+ changePTR]
+        value: String(returnConverted.number) + ' ' + returnConverted.unit,
+        unitInUsePTR : returnConverted.unitPTR
       })
     }
   }
 
   onChange(event) {
+    let ConfigU = this.ConfigUnits;
     let userInput = event.target.value;
-    this.validate(userInput,this.props.unitList);
+    this.validate(userInput,ConfigU);
     this.setState({
       value: event.target.value,
-    })
+    });
   } //should be used in final iteration
 
   render() {
@@ -185,7 +180,13 @@ class NumInputMerge1 extends React.Component {
                     aria-atomic="true"
                     id="incrementButton"
                     isincrement={true}
-                    onMouseDown={() => this.onClick('Increment',this.props.unitList,this.state.unitInUsePTR, this.props.conversionToBiggerSize)}
+                    onMouseDown={() =>
+                      this.onClick(
+                        'Increment',
+                        this.state.unitInUsePTR,
+                        this.ConfigUnits,
+                      )
+                    }
                   >
                     <svg
                       focusable="false"
@@ -211,7 +212,13 @@ class NumInputMerge1 extends React.Component {
                     aria-atomic="true"
                     id="decrementButton"
                     isincrement={false}
-                    onClick={() => this.onClick('Decrement',this.props.unitList,this.state.unitInUsePTR,this.props.conversionToBiggerSize)}
+                    onMouseDown={() =>
+                      this.onClick(
+                        'Decrement',
+                        this.state.unitInUsePTR,
+                        this.ConfigUnits,
+                      )
+                    }
                   >
                     <svg
                       focusable="false"
@@ -234,7 +241,7 @@ class NumInputMerge1 extends React.Component {
         </div>
 
         <div class="bx--form__helper-text">
-          Active Unit: {this.props.unitList[this.state.unitInUsePTR]}
+          Active Unit: {this.ConfigUnits[this.state.unitInUsePTR].unit}
         </div>
 
         <div class="bx--form__helper-text">{this.state.errorMessage}</div>
