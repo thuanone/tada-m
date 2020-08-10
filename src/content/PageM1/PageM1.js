@@ -25,6 +25,13 @@ const Memory_Units = {
             standardChunk: 0.5,
             allowMultipleUnits: false,
         },
+        {
+            unit: 'TiB',
+            shortUnit: 'Ti',
+            standardStepSize: 0.1,
+            standardChunk: 0.5,
+            allowMultipleUnits: false,
+        },
     ]
 }
 

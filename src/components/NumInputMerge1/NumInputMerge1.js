@@ -53,6 +53,7 @@ class NumInputMerge1 extends React.Component {
     })
     return number
   }
+
   convert(number,unitInUsePTR,Config) {
     let convertedNumber = {
       number : number,
@@ -69,7 +70,7 @@ class NumInputMerge1 extends React.Component {
 
     }
     if (number < 1 && unitConfig[unitInUsePTR - 1] != undefined){
-      convertedNumber.number = 1024 -1 /*unitSpecs[unitInUsePTR-1].standardStepSizes*/
+      convertedNumber.number = 1024 - Config.unitConfig[unitInUsePTR-1].standardStepSize
       convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit
       convertedNumber.unitPTR = unitInUsePTR - 1
 
@@ -127,6 +128,7 @@ class NumInputMerge1 extends React.Component {
     if (isNaN(parseFloat(matchedNum))) {
       // Checks if a number comes first
       report.message =  `${matchedNum}  is not a valid number`
+      report.isValid = false
       return report
     }
     
