@@ -5,10 +5,10 @@ class NumInputMerge1 extends React.Component {
     super(props)
     this.state = {
       //actively used properties
-      value: '0',
+      value: '',
       unitInUsePTR: props.unitInUsePTR ? props.unitInUsePTR : 0,
       message: '',
-      isValid: true,
+      isValid: false,
 
       //static variables which should be accessed through props
       userInputAsArray: [],
@@ -205,6 +205,7 @@ class NumInputMerge1 extends React.Component {
                   class="bx--text-input bx--text__input"
                   type="text"
                   aria-label="Numeric input field with increment and decrement buttons"
+                  placeholder = 'e.g. 1 MiB'
                   value={this.state.value}
                   onChange={this.onChange}
                 />
