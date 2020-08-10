@@ -2,28 +2,32 @@ import React from 'react';
 import NumInputMerge1 from '../../components/NumInputMerge1/NumInputMerge1'
 
 
-const Memory_Units = [{
-    unit: 'MiB',
-    shortUnit: 'Mi',
-    minVal: 0,
-    maxVal: 10,
-    standardStepSize: 1,
-    standardChunk: 128,
-    allowMultipleUnits: false,
-    conversionToBiggerSize: 1024
-  },
-  {
-    unit: 'GiB',
-    shortUnit: 'Gi',
-    minVal: 0,
-    maxVal: 10,
-    standardStepSize: 0.25,
-    standardChunk: 0.5,
-    allowMultipleUnits: false,
-    conversionToBiggerSize: 1024
-  },
-      'length:2']
-  console.log('Mem Len',Memory_Units)
+const Memory_Units = {
+    general : {
+        // base config
+        convertUnit : 1024,
+        minVal : 0,
+        // maxVal : ?,
+    },
+    unitConfig:[
+        
+        {
+            unit: 'MiB',
+            shortUnit: 'Mi',
+            standardStepSize: 1,
+            standardChunk: 128,
+            allowMultipleUnits: false,
+        },
+        {
+            unit: 'GiB',
+            shortUnit: 'Gi',
+            standardStepSize: 0.25,
+            standardChunk: 0.5,
+            allowMultipleUnits: false,
+        },
+    ]
+}
+
 
 const PageM1 = () => {
     return(

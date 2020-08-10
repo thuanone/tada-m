@@ -18,34 +18,60 @@ class NumInputMerge1 extends React.Component {
     this.onClick = this.onClick.bind(this)
     this.unitMatch = this.unitMatch.bind(this)
     this.validate = this.validate.bind(this)
-    this.ConfigUnits = this.props;
+    /*
+    this.ConfigBase = this.props.general // Base Config e.g. min/max Value
+    this.Confignits = this.props.unitSpec // Units e.g. MiB -> stepsize , GiB -> stepsize
+    */
+
+    this.Configuration = this.props;
+    
   }
-  increment(number, standardStepSize) {
-    let NewNumber = number + standardStepSize
-    return NewNumber
+  increment(number, unitInUsePTR, Config) {
+    let stepsize = Config.unitConfig[unitInUsePTR].standardStepSize
+
+    number = number + stepsize
+
+    // if (number + stepsize <= Config.maxVal){  } use when maxVal is defined
+    this.setState({
+      message : ''
+    })
+    return number
   }
 
-  decrement(number, standardStepSize) {
-    let NewNumber = number - standardStepSize
-    return NewNumber
+  decrement(number, unitInUsePTR, Config) {
+    let stepsize = Config.unitConfig[unitInUsePTR].standardStepSize;
+    let msg;
+
+    if (number - stepsize >= Config.general.minVal){
+      number = number - stepsize
+      msg = ''
+    }
+    else {
+      msg = 'min Value reached'
+    }
+    this.setState({
+      message : msg
+    })
+    return number
   }
-  convert(number,unitInUsePTR,unitSpecs) {
+  convert(number,unitInUsePTR,Config) {
     let convertedNumber = {
       number : number,
-      unit : unitSpecs[unitInUsePTR].unit,
+      unit : Config.unitConfig[unitInUsePTR].unit,
       unitPTR: unitInUsePTR,
     }
+    let unitConfig = Config.unitConfig
     
-    if (number >= 1024 && unitSpecs[unitInUsePTR + 1] != undefined) {
+    if (number >= 1024 && unitConfig[unitInUsePTR + 1] != undefined) {
       convertedNumber.number = Math.round(number/1024)
-      convertedNumber.unit = unitSpecs[unitInUsePTR + 1].unit
+      convertedNumber.unit = unitConfig[unitInUsePTR + 1].unit
       convertedNumber.unitPTR = unitInUsePTR +1
 
 
     }
-    if (number < 1 && unitSpecs[unitInUsePTR - 1] != undefined){
+    if (number < 1 && unitConfig[unitInUsePTR - 1] != undefined){
       convertedNumber.number = 1024 -1 /*unitSpecs[unitInUsePTR-1].standardStepSizes*/
-      convertedNumber.unit = unitSpecs[unitInUsePTR - 1].unit
+      convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit
       convertedNumber.unitPTR = unitInUsePTR - 1
 
 
@@ -65,16 +91,16 @@ class NumInputMerge1 extends React.Component {
     return parseFloat(number)
   }
 
-  unitMatch(string, ConfigU) {
+  unitMatch(string, Config) {
     var i;
-    for (i = 0; i < 2; i++) // Array Size 
-      if (string.toUpperCase() === ConfigU[i].unit.toUpperCase() || string.toUpperCase() === ConfigU[i].shortUnit.toUpperCase()){
+    for (i = 0; i < Config.length; i++) // Array Size 
+      if (string.toUpperCase() === Config[i].unit.toUpperCase() || string.toUpperCase() === Config[i].shortUnit.toUpperCase()){
         return true
     }
     return false
   }
 
-  validate(userInput, ConfigU) {
+  validate(userInput, Config) {
     const regexNum = /-?[0-9]+/gi
     const regexString = /[a-z]+/gi
 
@@ -105,7 +131,7 @@ class NumInputMerge1 extends React.Component {
       return report
     }
 
-    if (this.unitMatch(matchedString, ConfigU)) {
+    if (this.unitMatch(matchedString, Config.unitConfig)) {
       // checks if the unit comes next
         report.message =  `recognized unit: ${matchedString}`
         //report.changePTR = ??
@@ -121,7 +147,7 @@ class NumInputMerge1 extends React.Component {
     return report
   }
 
-  onClick(buttonID, unitInUsePTR, ConfigU ) {
+  onClick(buttonID, unitInUsePTR, Config ) {
     if (!this.state.isValid) {
       return 
     } else {
@@ -131,15 +157,17 @@ class NumInputMerge1 extends React.Component {
       if (buttonID === 'Increment') {
         newNumber = this.increment(
           number,
-          ConfigU[unitInUsePTR].standardStepSize,
+          unitInUsePTR,
+          Config,
         )
       } else if (buttonID === 'Decrement') {
         newNumber = this.decrement(
           number,
-          ConfigU[unitInUsePTR].standardStepSize,
+          unitInUsePTR,
+          Config,
         )
       }
-      let returnConverted = this.convert(newNumber,unitInUsePTR,ConfigU)
+      let returnConverted = this.convert(newNumber,unitInUsePTR,Config)
 
       this.setState({
         value: String(returnConverted.number) + ' ' + returnConverted.unit,
@@ -149,9 +177,9 @@ class NumInputMerge1 extends React.Component {
   }
 
   onChange(event) {
-    let ConfigU = this.ConfigUnits;
+    let Config = this.Confignits;
     let userInput = event.target.value;
-    let report = this.validate(userInput,ConfigU);
+    let report = this.validate(userInput,Config);
     this.setState({
       value: event.target.value,
       message: report.message,
@@ -189,7 +217,7 @@ class NumInputMerge1 extends React.Component {
                       this.onClick(
                         'Increment',
                         this.state.unitInUsePTR,
-                        this.ConfigUnits,
+                        this.Configuration,
                       )
                     }
                   >
@@ -221,7 +249,7 @@ class NumInputMerge1 extends React.Component {
                       this.onClick(
                         'Decrement',
                         this.state.unitInUsePTR,
-                        this.ConfigUnits,
+                        this.Configuration,
                       )
                     }
                   >
@@ -246,7 +274,7 @@ class NumInputMerge1 extends React.Component {
         </div>
 
         <div class="bx--form__helper-text">
-          Active Unit: {this.ConfigUnits[this.state.unitInUsePTR].unit}
+          Active Unit: {/*this.Confignits[this.state.unitInUsePTR].unit*/}
         </div>
 
         <div class="bx--form__helper-text">{this.state.message}</div>
