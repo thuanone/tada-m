@@ -92,11 +92,11 @@ class NumInputMerge1 extends React.Component {
 
   unitMatch(string, Config) {
     var i;
-    for (i = 0; i < Config.length; i++) // Array Size 
+    for (i = 0; i < Config.length; i++) // Array Size (last one is none)
       if (string.toUpperCase() === Config[i].unit.toUpperCase() || string.toUpperCase() === Config[i].shortUnit.toUpperCase()){
-        return true
+        return i // new unitInUsePTR
     }
-    return false
+    return 'notValid' 
   }
 
   validate(userInput, Config) {
@@ -108,7 +108,7 @@ class NumInputMerge1 extends React.Component {
 
     let report = {
      message: ' ',
-     changePTR: 0,
+     isValid:true,
     }
 
 
@@ -129,11 +129,14 @@ class NumInputMerge1 extends React.Component {
       report.message =  `${matchedNum}  is not a valid number`
       return report
     }
+    
+    let returnUnitMatch = this.unitMatch(matchedString, Config.unitConfig) // either new unitInUsePTR or '' (none)
 
-    if (this.unitMatch(matchedString, Config.unitConfig)) {
+    if (returnUnitMatch != 'notValid') {
       // checks if the unit comes next
         report.message =  `recognized unit: ${matchedString}`
-        //report.changePTR = ??
+        console.log('rUM:',returnUnitMatch)
+        report.newPTR = returnUnitMatch
 
     } else {
       if (matchedString === '') {
@@ -141,6 +144,7 @@ class NumInputMerge1 extends React.Component {
       } else {
           report.message = `${matchedString} is not a valid unit`
       }
+      report.isValid = false
     }
 
     return report
@@ -178,11 +182,14 @@ class NumInputMerge1 extends React.Component {
   onChange(event) {
     let Config = this.Configuration;
     let userInput = event.target.value;
-    let report = this.validate(userInput,Config);
+    let report = this.validate(userInput,Config,this.state.unitInUsePTR);
     this.setState({
       value: event.target.value,
       message: report.message,
+      isValid: report.isValid,
+      unitInUsePTR: report.newPTR ? report.newPTR : this.state.unitInUsePTR,
     });
+    console.log('PTR',this.state.unitInUsePTR)
   } //should be used in final iteration
 
   render() {
