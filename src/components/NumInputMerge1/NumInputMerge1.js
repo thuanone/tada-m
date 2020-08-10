@@ -36,17 +36,18 @@ class NumInputMerge1 extends React.Component {
       unitPTR: unitInUsePTR,
     }
     
-    if (number >= 1024) {
+    if (number >= 1024 && unitSpecs[unitInUsePTR + 1] != undefined) {
       convertedNumber.number = Math.round(number/1024)
       convertedNumber.unit = unitSpecs[unitInUsePTR + 1].unit
       convertedNumber.unitPTR = unitInUsePTR +1
 
+
     }
-    if (number < 1){
+    if (number < 1 && unitSpecs[unitInUsePTR - 1] != undefined){
       convertedNumber.number = 1024 -1 /*unitSpecs[unitInUsePTR-1].standardStepSizes*/
       convertedNumber.unit = unitSpecs[unitInUsePTR - 1].unit
       convertedNumber.unitPTR = unitInUsePTR - 1
-      console.log('CN: ', convertedNumber.number)
+
 
     }
     return convertedNumber 
