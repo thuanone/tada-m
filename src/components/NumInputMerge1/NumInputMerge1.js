@@ -44,7 +44,6 @@ class NumInputMerge1 extends React.Component {
 
     if (number - stepsize >= Config.general.minVal){
       number = number - stepsize
-      msg = ''
     }
     else {
       msg = 'min Value reached'
@@ -177,7 +176,7 @@ class NumInputMerge1 extends React.Component {
   }
 
   onChange(event) {
-    let Config = this.Confignits;
+    let Config = this.Configuration;
     let userInput = event.target.value;
     let report = this.validate(userInput,Config);
     this.setState({
@@ -274,7 +273,7 @@ class NumInputMerge1 extends React.Component {
         </div>
 
         <div class="bx--form__helper-text">
-          Active Unit: {/*this.Confignits[this.state.unitInUsePTR].unit*/}
+          Active Unit: {this.Configuration.unitConfig[this.state.unitInUsePTR].unit}
         </div>
 
         <div class="bx--form__helper-text">{this.state.message}</div>
