@@ -7,7 +7,7 @@ class NumInputMerge1 extends React.Component {
       //actively used properties
       value: '0',
       unitInUsePTR: props.unitInUsePTR ? props.unitInUsePTR : 0,
-      errorMessage: '',
+      message: '',
       isValid: true,
 
       //static variables which should be accessed through props
@@ -67,9 +67,8 @@ class NumInputMerge1 extends React.Component {
 
   unitMatch(string, ConfigU) {
     var i;
-    console.log('len: ', ConfigU)
-    for (i = 0; i < ConfigU.length; i++)
-      if (string.toUpperCase() === ConfigU[i].unit.toUpperCase){
+    for (i = 0; i < 2; i++) // Array Size 
+      if (string.toUpperCase() === ConfigU[i].unit.toUpperCase() || string.toUpperCase() === ConfigU[i].shortUnit.toUpperCase()){
         return true
     }
     return false
@@ -81,6 +80,12 @@ class NumInputMerge1 extends React.Component {
 
     let matchedNum = userInput.match(regexNum)
     let matchedString = userInput.match(regexString)
+
+    let report = {
+     message: ' ',
+     changePTR: 0,
+    }
+
 
     if (matchedNum !== null) {
       matchedNum = matchedNum.join('')
@@ -96,31 +101,29 @@ class NumInputMerge1 extends React.Component {
 
     if (isNaN(parseFloat(matchedNum))) {
       // Checks if a number comes first
-      this.setState({ errorMessage: matchedNum + ' is not a valid number' })
-      return
+      report.message =  `${matchedNum}  is not a valid number`
+      return report
     }
+
     if (this.unitMatch(matchedString, ConfigU)) {
       // checks if the unit comes next
-      this.setState({
-        errorMessage: `recognized unit: ${matchedString}`,
-        /* unitInUsePTR: unitInUsePTR */ // CHANGE !!!!!!!
-      })
+        report.message =  `recognized unit: ${matchedString}`
+        //report.changePTR = ??
+
     } else {
       if (matchedString === '') {
-        this.setState({ errorMessage: 'please enter a valid unit' })
+     report.message = 'please enter a valid unit'
       } else {
-        this.setState({
-          errorMessage: matchedString + ' is not a valid unit',
-        })
+          report.message = `${matchedString} is not a valid unit`
       }
     }
 
-    //seState in onChange object übergeben
+    return report
   }
 
   onClick(buttonID, unitInUsePTR, ConfigU ) {
     if (!this.state.isValid) {
-      return
+      return 
     } else {
       let number = this.getNumber(this.state.value)
       let newNumber
@@ -148,9 +151,10 @@ class NumInputMerge1 extends React.Component {
   onChange(event) {
     let ConfigU = this.ConfigUnits;
     let userInput = event.target.value;
-    this.validate(userInput,ConfigU);
+    let report = this.validate(userInput,ConfigU);
     this.setState({
       value: event.target.value,
+      message: report.message,
     });
   } //should be used in final iteration
 
@@ -245,7 +249,7 @@ class NumInputMerge1 extends React.Component {
           Active Unit: {this.ConfigUnits[this.state.unitInUsePTR].unit}
         </div>
 
-        <div class="bx--form__helper-text">{this.state.errorMessage}</div>
+        <div class="bx--form__helper-text">{this.state.message}</div>
       </div>
     )
   }

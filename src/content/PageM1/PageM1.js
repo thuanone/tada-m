@@ -3,7 +3,8 @@ import NumInputMerge1 from '../../components/NumInputMerge1/NumInputMerge1'
 
 
 const Memory_Units = [{
-    unit: 'MB',
+    unit: 'MiB',
+    shortUnit: 'Mi',
     minVal: 0,
     maxVal: 10,
     standardStepSize: 1,
@@ -12,14 +13,17 @@ const Memory_Units = [{
     conversionToBiggerSize: 1024
   },
   {
-    unit: 'GB',
+    unit: 'GiB',
+    shortUnit: 'Gi',
     minVal: 0,
     maxVal: 10,
     standardStepSize: 0.25,
     standardChunk: 0.5,
     allowMultipleUnits: false,
     conversionToBiggerSize: 1024
-  }]
+  },
+      'length:2']
+  console.log('Mem Len',Memory_Units)
 
 const PageM1 = () => {
     return(
