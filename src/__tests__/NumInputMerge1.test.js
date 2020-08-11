@@ -445,7 +445,7 @@ describe('increment()/decrement()', () => {
         expect(newNumber).toBeGreaterThan(number);
         expect(returnValue).toBeGreaterThan(newNumber);
     });
-    it('increment stops at minValue threshold', () => {
+    it('increment stops at maxValue threshold', () => {
         const wrapper = shallow(<NumInputMerge1 {...Memory_Units} />);
         const instance = wrapper.instance({ ...Memory_Units });
         Config.general.maxVal = 1023;
@@ -517,17 +517,17 @@ describe('convert()', () => {
     //returns an Object containg number, unit used and and Array Index
     // (number,unitInUsePTR,unitRX,Config) => let convertedNumber = {number : number, unit : unitRX, unitPTR: unitInUsePTR,}
     const Memory_Units = {
-        general: {
+        general : {
             // base config
-            convertUnit: 1024,
-            minVal: 0,
+            convertUnit : 1024,
+            minVal : 0,
             // maxVal : ?,
         },
-        unitConfig: [
-
+        unitConfig:[
+            
             {
                 unit: 'MiB',
-                shortUnit: 'Mi',
+                shortUnit: 'MI',
                 standardStepSize: 1,
                 standardChunk: 128,
                 allowMultipleUnits: false,
@@ -539,8 +539,15 @@ describe('convert()', () => {
                 standardChunk: 0.5,
                 allowMultipleUnits: false,
             },
+            {
+                unit: 'TiB',
+                shortUnit: 'Ti',
+                standardStepSize: 0.1,
+                standardChunk: 0.5,
+                allowMultipleUnits: false,
+            },
         ]
-    };
+    }
     let Config = Memory_Units;
     let newNumber, unitInUsePTR, unitRX;
     it('converts 1st unit to 2nd unit', () => {
@@ -553,7 +560,7 @@ describe('convert()', () => {
         expect(returnConverted)
         .toEqual({
             number: 1,
-            unit: ["GiB"], 
+            unit: "GiB", 
             unitPTR:1,
         });
     });
@@ -561,13 +568,13 @@ describe('convert()', () => {
         const wrapper = shallow(<NumInputMerge1 {...Memory_Units}/>);
         const instance = wrapper.instance({...Memory_Units});
 
-        [newNumber, unitInUsePTR, unitRX] = [1024 ,1, ["GiB"]];
+        [newNumber, unitInUsePTR, unitRX] = [1025 ,1, ["GiB"]];
         //
         const returnConverted = instance.convert(newNumber, unitInUsePTR, unitRX, Config);
         expect(returnConverted)
         .toEqual({
             number: 1,
-            unit: ["TiB"], 
+            unit: "TiB", 
             unitPTR: 2,
         });
     });
@@ -580,8 +587,8 @@ describe('convert()', () => {
         const returnConverted = instance.convert(newNumber, unitInUsePTR, unitRX, Config);
         expect(returnConverted)
         .toEqual({
-            number: 1023,
-            unit: ["GiB"], 
+            number: 1023.75,
+            unit: "GiB", 
             unitPTR: 1,
         });
     });
@@ -595,7 +602,7 @@ describe('convert()', () => {
         expect(returnConverted)
         .toEqual({
             number: 1023,
-            unit: ["MiB"], 
+            unit: "MiB", 
             unitPTR: 0,
         });
     });
@@ -603,27 +610,27 @@ describe('convert()', () => {
         const wrapper = shallow(<NumInputMerge1 {...Memory_Units}/>);
         const instance = wrapper.instance({...Memory_Units});
 
-        [newNumber, unitInUsePTR, unitRX] = [1 ,0, ["MiB"]];
+        [newNumber, unitInUsePTR, unitRX] = [10225 ,2, ["TiB"]];
         //
         const returnConverted = instance.convert(newNumber, unitInUsePTR, unitRX, Config);
         expect(returnConverted)
         .toEqual({
             number: 10225,
-            unit: ["TiB"], 
+            unit: "TiB", 
             unitPTR: 2,
         });
     });
-    it('doesnt convert below smallest unit', () => {
+    it('shouldnt occur: doesnt convert below smallest unit -> reliance on (decimals invalid with smallest units)', () => {
         const wrapper = shallow(<NumInputMerge1 {...Memory_Units}/>);
         const instance = wrapper.instance({...Memory_Units});
 
-        [newNumber, unitInUsePTR, unitRX] = [1 ,0, ["MiB"]];
+        [newNumber, unitInUsePTR, unitRX] = [0.9 ,0, ["MiB"]];
         //
         const returnConverted = instance.convert(newNumber, unitInUsePTR, unitRX, Config);
         expect(returnConverted)
         .toEqual({
-            number: 1,
-            unit: ["MiB"], 
+            number: 0.9,
+            unit: "MiB", 
             unitPTR: 0,
         });
     });
