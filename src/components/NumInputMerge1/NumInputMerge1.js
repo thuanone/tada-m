@@ -159,7 +159,6 @@ class NumInputMerge1 extends React.Component {
     } else {
       const regexString = /[a-z]+/gi
       let unitRX = this.state.value.match(regexString)
-
       let number = this.getNumber(this.state.value)
       let newNumber
 
@@ -176,6 +175,7 @@ class NumInputMerge1 extends React.Component {
           Config,
         )
       }
+      console.log(newNumber);
       let returnConverted = this.convert(newNumber,unitInUsePTR,unitRX, Config)
 
       this.setState({
