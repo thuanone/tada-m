@@ -41,7 +41,10 @@
     "@testing-library/user-event": "^7.1.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.3",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "jest": "^24.9.0",
+    "prettier": "2.0.5",
     "react-test-renderer": "^16.13.1"
   }
 }
