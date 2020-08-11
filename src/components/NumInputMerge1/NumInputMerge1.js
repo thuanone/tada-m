@@ -62,7 +62,7 @@ class NumInputMerge1 extends React.Component {
       unitPTR: unitInUsePTR,
     }
     let unitConfig = Config.unitConfig
-    console.log(number,unitInUsePTR,unitRX);
+
     if (number >= 1024 && unitConfig[unitInUsePTR + 1] != undefined) {
       convertedNumber.number = Math.round(number/1024)
       convertedNumber.unit = unitConfig[unitInUsePTR + 1].unit//{unit:} is assigned to String

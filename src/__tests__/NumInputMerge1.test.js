@@ -634,6 +634,48 @@ describe('convert()', () => {
             unitPTR: 0,
         });
     });
+    it(`shouldnt occur: convert '-', MiB set -> (convert is called by onClick, '-' would be in/de-cremented in beforehand)`, () => {
+        const wrapper = shallow(<NumInputMerge1 {...Memory_Units}/>);
+        const instance = wrapper.instance({...Memory_Units});
+
+        [newNumber, unitInUsePTR, unitRX] = ['-' ,0, ["MiB"]];
+        //
+        const returnConverted = instance.convert(newNumber, unitInUsePTR, unitRX, Config);
+        expect(returnConverted)
+        .toEqual({
+            number: '-',
+            unit: "MiB", 
+            unitPTR: 0,
+        });
+    });
+    it(`shouldnt occur: convert '-', GiB set -> (convert is called by onClick, '-' would be in/de-cremented in beforehand)`, () => {
+        const wrapper = shallow(<NumInputMerge1 {...Memory_Units}/>);
+        const instance = wrapper.instance({...Memory_Units});
+
+        [newNumber, unitInUsePTR, unitRX] = ['-' ,1, ["GiB"]];
+        //
+        const returnConverted = instance.convert(newNumber, unitInUsePTR, unitRX, Config);
+        expect(returnConverted)
+        .toEqual({
+            number: '-',
+            unit: "GiB", 
+            unitPTR: 1,
+        });
+    });
+    it(`shouldnt occur: convert '-', TiB set -> (convert is called by onClick, '-' would be in/de-cremented in beforehand)`, () => {
+        const wrapper = shallow(<NumInputMerge1 {...Memory_Units}/>);
+        const instance = wrapper.instance({...Memory_Units});
+
+        [newNumber, unitInUsePTR, unitRX] = ['-' ,2, ["TiB"]];
+        //
+        const returnConverted = instance.convert(newNumber, unitInUsePTR, unitRX, Config);
+        expect(returnConverted)
+        .toEqual({
+            number: '-',
+            unit: "TiB", 
+            unitPTR: 2,
+        });
+    });
 
     });
 /*
