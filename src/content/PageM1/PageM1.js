@@ -13,7 +13,7 @@ const Memory_Units = {
         
         {
             unit: 'MiB',
-            shortUnit: 'Mi',
+            shortUnit: 'MI',
             standardStepSize: 1,
             standardChunk: 128,
             allowMultipleUnits: false,

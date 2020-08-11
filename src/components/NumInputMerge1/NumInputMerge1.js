@@ -54,10 +54,10 @@ class NumInputMerge1 extends React.Component {
     return number
   }
 
-  convert(number,unitInUsePTR,Config) {
+  convert(number,unitInUsePTR,unitRX,Config) {
     let convertedNumber = {
       number : number,
-      unit : Config.unitConfig[unitInUsePTR].unit,
+      unit : unitRX,
       unitPTR: unitInUsePTR,
     }
     let unitConfig = Config.unitConfig
@@ -110,6 +110,7 @@ class NumInputMerge1 extends React.Component {
     let report = {
      message: ' ',
      isValid:true,
+     newPTR:'',
     }
 
 
@@ -137,8 +138,8 @@ class NumInputMerge1 extends React.Component {
     if (returnUnitMatch != 'notValid') {
       // checks if the unit comes next
         report.message =  `recognized unit: ${matchedString}`
-        console.log('rUM:',returnUnitMatch)
         report.newPTR = returnUnitMatch
+
 
     } else {
       if (matchedString === '') {
@@ -156,6 +157,9 @@ class NumInputMerge1 extends React.Component {
     if (!this.state.isValid) {
       return 
     } else {
+      const regexString = /[a-z]+/gi
+      let unitRX = this.state.value.match(regexString)
+
       let number = this.getNumber(this.state.value)
       let newNumber
 
@@ -172,7 +176,7 @@ class NumInputMerge1 extends React.Component {
           Config,
         )
       }
-      let returnConverted = this.convert(newNumber,unitInUsePTR,Config)
+      let returnConverted = this.convert(newNumber,unitInUsePTR,unitRX, Config)
 
       this.setState({
         value: String(returnConverted.number) + ' ' + returnConverted.unit,
@@ -189,9 +193,10 @@ class NumInputMerge1 extends React.Component {
       value: event.target.value,
       message: report.message,
       isValid: report.isValid,
-      unitInUsePTR: report.newPTR ? report.newPTR : this.state.unitInUsePTR,
+      unitInUsePTR: report.newPTR ? report.newPTR: this.state.unitInUsePTR,
     });
-    console.log('PTR',this.state.unitInUsePTR)
+    console.log('ptr :', this.state.unitInUsePTR)
+
   } //should be used in final iteration
 
   render() {
