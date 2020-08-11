@@ -61,12 +61,12 @@ class NumInputMerge1 extends React.Component {
     };
     let unitConfig = Config.unitConfig;
 
-    if (number >= 1024 && unitConfig[unitInUsePTR + 1] != undefined) {
+    if (number >= 1024 && unitConfig[unitInUsePTR + 1] !== undefined) {
       convertedNumber.number = Math.round(number / 1024);
       convertedNumber.unit = unitConfig[unitInUsePTR + 1].unit; //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR + 1;
     }
-    if (number < 1 && unitConfig[unitInUsePTR - 1] != undefined) {
+    if (number < 1 && unitConfig[unitInUsePTR - 1] !== undefined) {
       convertedNumber.number =
         1024 - Config.unitConfig[unitInUsePTR - 1].standardStepSize;
       convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit; //{unit:} is assigned to String
@@ -136,7 +136,7 @@ class NumInputMerge1 extends React.Component {
 
     let returnUnitMatch = this.unitMatch(matchedString, Config.unitConfig); // either new unitInUsePTR or '' (none)
 
-    if (returnUnitMatch != "notValid") {
+    if (returnUnitMatch !== "notValid") {
       // checks if the unit comes next
       report.message = `recognized unit: ${matchedString}`;
       report.newPTR = returnUnitMatch;
