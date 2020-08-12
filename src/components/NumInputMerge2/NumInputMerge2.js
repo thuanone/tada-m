@@ -64,7 +64,8 @@ class NumInputMerge2 extends React.Component {
 
   getNumber(input) {
     //const numbersOnly = /-?[0-9]+/gm;
-    const numbersOnly = /(-?[0-9]+)(\.?[0-9]+)?/gm;
+    //const numbersOnly = /(-?[0-9]+)(\.?[0-9]+)?/gm;
+    const numbersOnly = /(-?[0-9]+)(\.?)([0-9]+)?/gm;
     let numbersMatch = input.match(numbersOnly);
     let number =  input === '' ? 0
     : input === '-' ? '-'
