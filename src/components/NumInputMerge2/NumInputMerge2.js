@@ -1,6 +1,6 @@
 import React from "react";
 
-class NumInputMerge1 extends React.Component {
+class NumInputMerge2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -9,9 +9,6 @@ class NumInputMerge1 extends React.Component {
       unitInUsePTR: props.unitInUsePTR ? props.unitInUsePTR : 0,
       message: "",
       isValid: false,
-
-      //static variables which should be accessed through props
-      userInputAsArray: [],
     };
 
     this.onChange = this.onChange.bind(this);
@@ -26,40 +23,32 @@ class NumInputMerge1 extends React.Component {
     this.Configuration = this.props;
   }
   increment(number, unitInUsePTR, Config) {
+    if (number === '-') {
+      return {number: 1, message:''};
+    }
     let stepsize = Config.unitConfig[unitInUsePTR].standardStepSize;
-
-    number = number + stepsize;
-
-    // if (number + stepsize <= Config.maxVal){  } use when maxVal is defined
-    this.setState({
-      message: "",
-    });
-    return number;
+    let newNumber = number + stepsize;
+    console.log("Increment");
+    console.log(number, newNumber, newNumber > Config.general.maxVal);
+    return newNumber > Config.general.maxVal //is incrementedNumber bigger than maxVal? //funktioniert weil newNum> undefined 
+      ? { number: number, message: "maxVal reached" } //true -> return current number
+      : { number: newNumber, message: "" }; //false -> return new Number
   }
 
   decrement(number, unitInUsePTR, Config) {
-    let stepsize = Config.unitConfig[unitInUsePTR].standardStepSize;
-    let msg;
-
-    if (number - stepsize >= Config.general.minVal) {
-      number = number - stepsize;
-    } else {
-      msg = "min Value reached";
+    if (number === '-') {
+      return {number: 0, message:''};
     }
-    this.setState({
-      message: msg,
-    });
-    return number;
+    let stepsize = Config.unitConfig[unitInUsePTR].standardStepSize;
+    let newNumber = number - stepsize;
+
+    return newNumber < Config.general.minVal //is decrementedNumber smaller than minVal
+      ? { number: number, message: "minVal reached" } //true -> return current number
+      : { number: newNumber, message: "" }; //false -> return new Number
   }
 
-  convert(number, unitInUsePTR, unitRX, Config) {
-    let convertedNumber = {
-      number: number,
-      //unit : unitRX,//UnitRX is String withing Array
-      unit: unitRX[0], //thuan
-      unitPTR: unitInUsePTR,
-    };
-
+  convert(number, unitInUsePTR, unit, Config) {
+    let convertedNumber = { number, unit, unitPTR: unitInUsePTR };
     let unitConfig = Config.unitConfig;
 
     if (number >= 1024 && unitConfig[unitInUsePTR + 1] !== undefined) {
@@ -78,12 +67,12 @@ class NumInputMerge1 extends React.Component {
   getNumber(input) {
     const numbersOnly = /-?[0-9]|./gm;
     let numbersMatch = input.match(numbersOnly);
-
-    if (numbersMatch === null) {
-      return 0;
-    }
-    let number = numbersMatch.join("");
-    return parseFloat(number);
+    let number =  input === '' ? 0
+    : input === '-' ? '-'
+    : numbersMatch ? parseFloat(numbersMatch.join(''))
+    : 0;
+    console.log("getNumber", number, input === "", );
+    return number;
   }
 
   unitMatch(string, Config) {
@@ -151,54 +140,57 @@ class NumInputMerge1 extends React.Component {
 
     return report;
   }
-
   onClick(buttonID, unitInUsePTR, Config) {
-    //Buttons can only be used when state.value String is valid
     if (!this.state.isValid) {
       return;
     } else {
-      const regexString = /[a-z]+/gi;
-      let unitRX = this.state.value.match(regexString);
-      let number = this.getNumber(this.state.value);
-      let newNumber;
+      let nullIfNoMatch = this.state.value.match(/[a-z]+/gi); //produces null if no match
+      let unit = nullIfNoMatch
+        ? nullIfNoMatch.join()
+        : Config.unitConfig[unitInUsePTR].unit; //unit equals either typeInput or unitInUse
+      let number = this.getNumber(this.state.value); //if no number returns 0
+      let newNumber = { number: number, message: "" };
+      console.log("onClick", number, newNumber);
+      let returnConverted /** = {number: number, unit: unit, unitPTR: unitInUsePTR} */;
 
       if (buttonID === "Increment") {
         newNumber = this.increment(number, unitInUsePTR, Config);
       } else if (buttonID === "Decrement") {
         newNumber = this.decrement(number, unitInUsePTR, Config);
       }
-      console.log(newNumber);
-      let returnConverted = this.convert(
-        newNumber,
+      /* ==> */ returnConverted = this.convert(
+        newNumber.number,
         unitInUsePTR,
-        unitRX,
+        unit,
         Config
       );
-
+      console.log(newNumber);
+        console.log(returnConverted);
       this.setState({
-        value: String(returnConverted.number) + " " + returnConverted.unit,
+        value: `${returnConverted.number} ${returnConverted.unit}`,
         unitInUsePTR: returnConverted.unitPTR,
+        message: newNumber.message,
       });
     }
   }
 
   onChange(event) {
-    let Config = this.Configuration;
+    let Config = this.props;
     let userInput = event.target.value;
     let report = this.validate(userInput, Config, this.state.unitInUsePTR);
+    //
     this.setState({
-      value: event.target.value,
+      value: userInput,
       message: report.message,
       isValid: report.isValid,
       unitInUsePTR: report.newPTR ? report.newPTR : this.state.unitInUsePTR,
     });
-    console.log("ptr :", this.state.unitInUsePTR);
-  } //should be used in final iteration
+  }
 
   render() {
     return (
       <div>
-        <label class="bx--label">NumInputMerge v1</label>
+        <label class="bx--label">NumInputMerge vThuan#AdamsKrank</label>
 
         <div class="bx--form-item bx--text-input-wrapper">
           <div class="bx--number bx--number--helpertext">
@@ -294,4 +286,4 @@ class NumInputMerge1 extends React.Component {
   }
 }
 
-export default NumInputMerge1;
+export default NumInputMerge2;
