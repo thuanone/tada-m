@@ -28,8 +28,6 @@ class NumInputMerge2 extends React.Component {
     }
     let stepsize = Config.unitConfig[unitInUsePTR].standardStepSize;
     let newNumber = number + stepsize;
-    console.log("Increment");
-    console.log(number, newNumber, newNumber > Config.general.maxVal);
     return newNumber > Config.general.maxVal //is incrementedNumber bigger than maxVal? //funktioniert weil newNum> undefined 
       ? { number: number, message: "maxVal reached" } //true -> return current number
       : { number: newNumber, message: "" }; //false -> return new Number
@@ -65,13 +63,13 @@ class NumInputMerge2 extends React.Component {
   }
 
   getNumber(input) {
-    const numbersOnly = /-?[0-9]|./gm;
+    //const numbersOnly = /-?[0-9]+/gm;
+    const numbersOnly = /(-?[0-9]+)(\.?[0-9]+)?/gm;
     let numbersMatch = input.match(numbersOnly);
     let number =  input === '' ? 0
     : input === '-' ? '-'
     : numbersMatch ? parseFloat(numbersMatch.join(''))
     : 0;
-    console.log("getNumber", number, input === "", );
     return number;
   }
 
@@ -97,24 +95,10 @@ class NumInputMerge2 extends React.Component {
 
     let matchedNum = userInput.match(regexNum);
     let matchedString = userInput.match(regexString);
+    let report = {message: " ",isValid: true,newPTR: "",};
 
-    let report = {
-      message: " ",
-      isValid: true,
-      newPTR: "",
-    };
-
-    if (matchedNum !== null) {
-      matchedNum = matchedNum.join("");
-    } else {
-      matchedNum = "";
-    }
-
-    if (matchedString !== null) {
-      matchedString = matchedString.join("");
-    } else {
-      matchedString = "";
-    }
+    matchedNum = matchedNum !== null ? matchedNum.join("") : "";
+    matchedString = matchedString !== null ? matchedString.join("") : "";
 
     if (isNaN(parseFloat(matchedNum))) {
       // Checks if a number comes first
@@ -145,12 +129,9 @@ class NumInputMerge2 extends React.Component {
       return;
     } else {
       let nullIfNoMatch = this.state.value.match(/[a-z]+/gi); //produces null if no match
-      let unit = nullIfNoMatch
-        ? nullIfNoMatch.join()
-        : Config.unitConfig[unitInUsePTR].unit; //unit equals either typeInput or unitInUse
+      let unit = nullIfNoMatch ? nullIfNoMatch.join() : Config.unitConfig[unitInUsePTR].unit; //unit equals either typeInput or unitInUse
       let number = this.getNumber(this.state.value); //if no number returns 0
       let newNumber = { number: number, message: "" };
-      console.log("onClick", number, newNumber);
       let returnConverted /** = {number: number, unit: unit, unitPTR: unitInUsePTR} */;
 
       if (buttonID === "Increment") {
@@ -158,14 +139,7 @@ class NumInputMerge2 extends React.Component {
       } else if (buttonID === "Decrement") {
         newNumber = this.decrement(number, unitInUsePTR, Config);
       }
-      /* ==> */ returnConverted = this.convert(
-        newNumber.number,
-        unitInUsePTR,
-        unit,
-        Config
-      );
-      console.log(newNumber);
-        console.log(returnConverted);
+      /* ==> */ returnConverted = this.convert(newNumber.number,unitInUsePTR,unit,Config);
       this.setState({
         value: `${returnConverted.number} ${returnConverted.unit}`,
         unitInUsePTR: returnConverted.unitPTR,

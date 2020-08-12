@@ -94,7 +94,7 @@ describe("getNumber()", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.getNumber("");
-    expect(returnValue).toBe("0");
+    expect(returnValue).toBe(0);
   });
   it("should √: invoked on String with Number", () => {
     // --> return only number
