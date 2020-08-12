@@ -179,13 +179,13 @@ describe("validate()", () => {
     ],
   };
   const Config = Memory_Units;
-  it("should be true: any Numbers only", () => {
+  it("should be √: any Numbers only", () => {
     const wrapper = shallow(<NumInputMerge1 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const report = instance.validate("10", Config);
     expect(report.isValid).toBe(true);
   });
-  it("should be true: Decimal Number", () => {
+  it("should be √: Decimal Number", () => {
     const wrapper = shallow(<NumInputMerge1 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const report = instance.validate("10.5", Config);
@@ -215,25 +215,25 @@ describe("validate()", () => {
     const report = instance.validate("10 daskj 10", Config);
     expect(report.isValid).toBe(false);
   });
-  it("should be true: Unit correct", () => {
+  it("should be √: Unit correct", () => {
     const wrapper = shallow(<NumInputMerge1 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const report = instance.validate("MiB", Config);
     expect(report.isValid).toBe(true);
   });
-  it("should be true: Unit lowercase", () => {
+  it("should be √: Unit lowercase", () => {
     const wrapper = shallow(<NumInputMerge1 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const report = instance.validate("mib", Config);
     expect(report.isValid).toBe(true);
   });
-  it("should be true: Unit uppercase", () => {
+  it("should be √: Unit uppercase", () => {
     const wrapper = shallow(<NumInputMerge1 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const report = instance.validate("MIB", Config);
     expect(report.isValid).toBe(true);
   });
-  it("should be true: Number with Unit", () => {
+  it("should be √: Number with Unit", () => {
     const wrapper = shallow(<NumInputMerge1 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const report = instance.validate("10 MiB", Config);

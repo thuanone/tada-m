@@ -64,8 +64,9 @@ class NumInputMerge2 extends React.Component {
 
   getNumber(input) {
     //const numbersOnly = /-?[0-9]+/gm;
+    const numbersOnly = /-?[0-9]|./gm;
     //const numbersOnly = /(-?[0-9]+)(\.?[0-9]+)?/gm;
-    const numbersOnly = /(-?[0-9]+)(\.?)([0-9]+)?/gm;
+    //const numbersOnly = /(-?[0-9]+)(\.?)([0-9]+)?/gm;
     let numbersMatch = input.match(numbersOnly);
     let number =  input === '' ? 0
     : input === '-' ? '-'
@@ -94,13 +95,13 @@ class NumInputMerge2 extends React.Component {
     const regexNum = /-?[0-9]+/gi;
     const regexString = /[a-z]+/gi;
 
-    let matchedNum = userInput.match(regexNum);
-    let matchedString = userInput.match(regexString);
     let report = {message: " ",isValid: true,newPTR: "",};
-
-    matchedNum = matchedNum !== null ? matchedNum.join("") : "";
-    matchedString = matchedString !== null ? matchedString.join("") : "";
-
+    let returnUnitMatch;
+    let matchedNum = userInput.match(regexNum);
+    /** ==>*/matchedNum = matchedNum !== null ? matchedNum.join("") : "";
+    let matchedString = userInput.match(regexString);
+    /** ==>*/matchedString = matchedString !== null ? matchedString.join("") : "";
+    
     if (isNaN(parseFloat(matchedNum))) {
       // Checks if a number comes first
       report.message = `${matchedNum}  is not a valid number`;
@@ -108,19 +109,19 @@ class NumInputMerge2 extends React.Component {
       return report;
     }
 
-    let returnUnitMatch = this.unitMatch(matchedString, Config.unitConfig); // either new unitInUsePTR or '' (none)
-
+    returnUnitMatch = this.unitMatch(matchedString, Config.unitConfig); // either new unitInUsePTR or '' (none)
     if (returnUnitMatch !== "notValid") {
       // checks if the unit comes next
       report.message = `recognized unit: ${matchedString}`;
       report.newPTR = returnUnitMatch;
     } else {
       if (matchedString === "") {
-        report.message = "please enter a valid unit";
+        //report.message = "please enter a valid unit";
+        report.isValid = true;
       } else {
         report.message = `${matchedString} is not a valid unit`;
+        report.isValid = false;
       }
-      report.isValid = false;
     }
 
     return report;
