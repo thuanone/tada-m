@@ -312,91 +312,91 @@ describe("unitMatch()", () => {
     ],
   };
   let Config = Memory_Units;
-  it("should √: 1st unit only correct", () => {
+  it("Number: 1st unit only correct", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("MiB", Config.unitConfig);
     expect(returnValue).toEqual(expect.any(Number));
   });
-  it("should √: 2nd unit only correct", () => {
+  it("Number √: 2nd unit only correct", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("GiB", Config.unitConfig);
     expect(returnValue).toEqual(expect.any(Number));
   });
-  it("should √: 1st unit only short", () => {
+  it("Number √: 1st unit only short", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("Mi", Config.unitConfig);
     expect(returnValue).toEqual(expect.any(Number));
   });
-  it("should √: 2nd unit only short", () => {
+  it("Number √: 2nd unit only short", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("Gi", Config.unitConfig);
     expect(returnValue).toEqual(expect.any(Number));
   });
-  it("should √: unit upppercase", () => {
+  it("Number √: unit upppercase", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("GIB", Config.unitConfig);
     expect(returnValue).toEqual(expect.any(Number));
   });
-  it("should √: unit lowecase", () => {
+  it("Number √: unit lowecase", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("mib", Config.unitConfig);
     expect(returnValue).toEqual(expect.any(Number));
   });
-  it("should √: unit short upppercase", () => {
+  it("Number √: unit short upppercase", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("GI", Config.unitConfig);
     expect(returnValue).toEqual(expect.any(Number));
   });
-  it("should √: unit short lowecase", () => {
+  it("Number √: unit short lowecase", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("mi", Config.unitConfig);
     expect(returnValue).toEqual(expect.any(Number));
   });
-  it("should X: unit letters", () => {
+  it("notValid √: unit letters", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("MiBhd", Config.unitConfig);
     expect(returnValue).toBe("notValid");
   });
-  it("should X: letters unit", () => {
+  it("notValid √: letters unit", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("dasMiB", Config.unitConfig);
     expect(returnValue).toBe("notValid");
   });
-  it("should X: special charcaters", () => {
+  it("notValid √: special charcaters", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("Äß", Config.unitConfig);
     expect(returnValue).toBe("notValid");
   });
-  it("should X: two units", () => {
+  it("notValid √: two units", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("MiBGiB", Config.unitConfig);
     expect(returnValue).toBe("notValid");
   });
-  it("test: invoked on undefined", () => {
+  it("notValid √: invoked on undefined", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch(undefined, Config.unitConfig);
     expect(returnValue).toBe("notValid");
   });
-  it("test: invoked on null", () => {
+  it("notValid √: invoked on null", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch(null, Config.unitConfig);
     expect(returnValue).toBe("notValid");
   });
-  it("should X: empty string", () => {
+  it("notValid √: empty string", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.unitMatch("", Config.unitConfig);

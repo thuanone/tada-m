@@ -122,7 +122,8 @@ class NumInputMerge2 extends React.Component {
     /** ==>*/ matchedString =
       matchedString !== null ? matchedString.join("") : "";
 
-    if (userInput === "-") {
+    
+    if (userInput === "-" || userInput === "") {
       //accept '-' as a valid string -> atm '-' !== undefined
       report.isValid = true;
       return report;
