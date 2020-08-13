@@ -269,13 +269,13 @@ describe("validate()", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.validate(undefined);
-    expect(returnValue).toBe("-");
+    expect(returnValue.isValid).toBe(false);
   });
   it("test: invoked on null", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     const returnValue = instance.validate(null);
-    expect(returnValue).toBe("-");
+    expect(returnValue.isValid).toBe(false);
   });
 });
 

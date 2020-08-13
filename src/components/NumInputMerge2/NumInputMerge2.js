@@ -69,8 +69,8 @@ class NumInputMerge2 extends React.Component {
     //const numbersOnly = /(-?[0-9]+)(\.?)([0-9]+)?/gm;
     let numbersMatch;
     let number;
-
-    try {
+    
+    try {//null / undefined
       numbersMatch = input.match(numbersOnly);
     } catch (error) {
       input = "-";
@@ -78,6 +78,7 @@ class NumInputMerge2 extends React.Component {
         message: `undefined/null has been passed into get Number -> input turned to '-'`,
       });
     }
+    
 
     number =
       input === ""
@@ -87,12 +88,12 @@ class NumInputMerge2 extends React.Component {
         : numbersMatch
         ? parseFloat(numbersMatch.join(""))
         : "-";
-    console.log(input, ":", numbersMatch, '->', number);
+        console.log(input, numbersMatch, number, this.state.message);
     return number;
   }
 
   unitMatch(string, Config) {
-    if (!string) {
+    if (!string) {//null / undefined '', falsy
       return "notValid";
     }
     var i;
@@ -113,21 +114,38 @@ class NumInputMerge2 extends React.Component {
   validate(userInput, Config) {
     const regexNum = /-?[0-9]+/gi;
     const regexString = /[a-z]+/gi;
+    const regexNumberAfterUnit = /.[a-z]+.[0-9]+/gi;
 
     let report = { message: " ", isValid: true, newPTR: 0 };
     let returnUnitMatch;
-    let matchedNum = userInput.match(regexNum);
-    /** ==>*/ matchedNum = matchedNum !== null ? matchedNum.join("") : "";
-    let matchedString = userInput.match(regexString);
-    /** ==>*/ matchedString =
-      matchedString !== null ? matchedString.join("") : "";
+    let matchedNumRX; //= userInput.match(regexNum);
+    let matchedStringRX; // = userInput.match(regexString);
+    let matchedNum, matchedString;
 
-    
+    try {
+      matchedNumRX = userInput.match(regexNum);
+      matchedStringRX = userInput.match(regexString);
+    } catch {
+      report.isValid = false;
+      report.message = "passed null/undefined into validate";
+      return report;
+    }
+
     if (userInput === "-" || userInput === "") {
       //accept '-' as a valid string -> atm '-' !== undefined
       report.isValid = true;
       return report;
     }
+    
+    if (userInput.match(regexNumberAfterUnit)) {
+      report.isValid = false;
+      report.message = 'please input in this format : [Number] [Unit]';
+      return report;
+    }
+
+    /** ==>*/ matchedNum = matchedNumRX !== null ? matchedNumRX.join("") : "";
+    /** ==>*/ matchedString =
+      matchedStringRX !== null ? matchedStringRX.join("") : "";
     if (isNaN(parseFloat(matchedNum))) {
       // Checks if a number comes first
       report.message = `${matchedNum}  is not a valid number`;
@@ -210,7 +228,10 @@ class NumInputMerge2 extends React.Component {
         <div class="bx--form-item bx--text-input-wrapper">
           <div class="bx--number bx--number--helpertext">
             <div class="bx--text-input__field-outer-wrapper">
-              <div class="bx--text-input__field-wrapper" data-invalid={!this.state.isValid || null}>
+              <div
+                class="bx--text-input__field-wrapper"
+                data-invalid={!this.state.isValid || null}
+              >
                 <input
                   class="bx--text-input bx--text__input"
                   type="text"
