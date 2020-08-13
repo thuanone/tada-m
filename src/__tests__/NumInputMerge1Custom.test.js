@@ -703,45 +703,7 @@ describe("convert()", () => {
     });
   });
 });
-describe("test", () => {
-  it("props test", () => {
-    const wrapper = shallow(<NumInputMerge1 />);
-    const instance = wrapper.instance();
-    const props = wrapper.props();
-    console.log(props);
-    expect(props).toEqual({
-      general: {
-        // base config
-        convertUnit: 1024,
-        minVal: 0,
-        // maxVal : ?,
-      },
-      unitConfig: [
-        {
-          unit: "MiB",
-          shortUnit: "MI",
-          standardStepSize: 1,
-          standardChunk: 128,
-          allowMultipleUnits: false,
-        },
-        {
-          unit: "GiB",
-          shortUnit: "Gi",
-          standardStepSize: 0.25,
-          standardChunk: 0.5,
-          allowMultipleUnits: false,
-        },
-        {
-          unit: "TiB",
-          shortUnit: "Ti",
-          standardStepSize: 0.1,
-          standardChunk: 0.5,
-          allowMultipleUnits: false,
-        },
-      ],
-    });
-  });
-});
+
 /*
 decribe("integration testin increment/decremnt and convert", () ={
 
