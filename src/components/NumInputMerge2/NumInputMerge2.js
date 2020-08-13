@@ -8,7 +8,7 @@ class NumInputMerge2 extends React.Component {
       value: "",
       unitInUsePTR: props.unitInUsePTR ? props.unitInUsePTR : 0,
       message: "",
-      isValid: false,
+      isValid: true,
     };
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
