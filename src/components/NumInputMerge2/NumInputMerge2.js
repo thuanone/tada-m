@@ -23,19 +23,19 @@ class NumInputMerge2 extends React.Component {
     this.Configuration = this.props;
   }
   increment(number, unitInUsePTR, Config) {
-    if (number === '-') {
-      return {number: 1, message:''};
+    if (number === "-") {
+      return { number: 1, message: "" };
     }
     let stepsize = Config.unitConfig[unitInUsePTR].standardStepSize;
     let newNumber = number + stepsize;
-    return newNumber > Config.general.maxVal //is incrementedNumber bigger than maxVal? //funktioniert weil newNum> undefined 
+    return newNumber > Config.general.maxVal //is incrementedNumber bigger than maxVal? //funktioniert weil newNum> undefined
       ? { number: number, message: "maxVal reached" } //true -> return current number
       : { number: newNumber, message: "" }; //false -> return new Number
   }
 
   decrement(number, unitInUsePTR, Config) {
-    if (number === '-') {
-      return {number: 0, message:''};
+    if (number === "-") {
+      return { number: 0, message: "" };
     }
     let stepsize = Config.unitConfig[unitInUsePTR].standardStepSize;
     let newNumber = number - stepsize;
@@ -55,7 +55,8 @@ class NumInputMerge2 extends React.Component {
       convertedNumber.unitPTR = unitInUsePTR + 1;
     }
     if (number < 1 && unitConfig[unitInUsePTR - 1] !== undefined) {
-      convertedNumber.number = 1024 - Config.unitConfig[unitInUsePTR - 1].standardStepSize;
+      convertedNumber.number =
+        1024 - Config.unitConfig[unitInUsePTR - 1].standardStepSize;
       convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit; //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR - 1;
     }
@@ -67,11 +68,24 @@ class NumInputMerge2 extends React.Component {
     const numbersOnly = /-?[0-9]|./gm;
     //const numbersOnly = /(-?[0-9]+)(\.?[0-9]+)?/gm;
     //const numbersOnly = /(-?[0-9]+)(\.?)([0-9]+)?/gm;
-    let numbersMatch = input.match(numbersOnly);
-    let number =  input === '' ? 0
-    : input === '-' ? '-'
-    : numbersMatch ? parseFloat(numbersMatch.join(''))
-    : 0;
+    let numbersMatch;
+    try {
+      numbersMatch = input.match(numbersOnly);
+    } catch (error) {
+      input = "-";
+      this.setState({
+        message: `undefined/null has been passed into get Number -> input turned to '-'`,
+      });
+    }
+
+    let number =
+      input === ""
+        ? 0
+        : input === "-"
+        ? "-"
+        : numbersMatch
+        ? parseFloat(numbersMatch.join(""))
+        : "-";
     return number;
   }
 
@@ -95,13 +109,14 @@ class NumInputMerge2 extends React.Component {
     const regexNum = /-?[0-9]+/gi;
     const regexString = /[a-z]+/gi;
 
-    let report = {message: " ",isValid: true,newPTR: "",};
+    let report = { message: " ", isValid: true, newPTR: "" };
     let returnUnitMatch;
     let matchedNum = userInput.match(regexNum);
-    /** ==>*/matchedNum = matchedNum !== null ? matchedNum.join("") : "";
+    /** ==>*/ matchedNum = matchedNum !== null ? matchedNum.join("") : "";
     let matchedString = userInput.match(regexString);
-    /** ==>*/matchedString = matchedString !== null ? matchedString.join("") : "";
-    
+    /** ==>*/ matchedString =
+      matchedString !== null ? matchedString.join("") : "";
+
     if (isNaN(parseFloat(matchedNum))) {
       // Checks if a number comes first
       report.message = `${matchedNum}  is not a valid number`;
@@ -131,7 +146,9 @@ class NumInputMerge2 extends React.Component {
       return;
     } else {
       let nullIfNoMatch = this.state.value.match(/[a-z]+/gi); //produces null if no match
-      let unit = nullIfNoMatch ? nullIfNoMatch.join() : Config.unitConfig[unitInUsePTR].unit; //unit equals either typeInput or unitInUse
+      let unit = nullIfNoMatch
+        ? nullIfNoMatch.join()
+        : Config.unitConfig[unitInUsePTR].unit; //unit equals either typedInput or unitInUse
       let number = this.getNumber(this.state.value); //if no number returns 0
       let newNumber = { number: number, message: "" };
       let returnConverted /** = {number: number, unit: unit, unitPTR: unitInUsePTR} */;
@@ -141,7 +158,12 @@ class NumInputMerge2 extends React.Component {
       } else if (buttonID === "Decrement") {
         newNumber = this.decrement(number, unitInUsePTR, Config);
       }
-      /* ==> */ returnConverted = this.convert(newNumber.number,unitInUsePTR,unit,Config);
+      /* ==> */ returnConverted = this.convert(
+        newNumber.number,
+        unitInUsePTR,
+        unit,
+        Config
+      );
       this.setState({
         value: `${returnConverted.number} ${returnConverted.unit}`,
         unitInUsePTR: returnConverted.unitPTR,
