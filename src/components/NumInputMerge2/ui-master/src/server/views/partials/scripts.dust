@@ -1,0 +1,10 @@
+<script src="{@hashValue obj=aceCommonFiles prop=commonHeaderJs/}"></script>
+<script src="{@hashValue obj=statics prop="lib/jquery"/}"></script>
+<script src="{@hashValue obj=statics prop="js/vendor"/}"></script>
+<script src="{@hashValue obj=statics prop="js/react"/}"></script>
+<script src="{@hashValue obj=statics prop="js/carbon"/}"></script>
+<script src="{@hashValue obj=statics prop="js/console"/}"></script>
+<script src="{@hashValue obj=statics prop="js/app"/}"></script>
+{+scripts}{/scripts}
+{>"partials/analytics"/}
+{>"partials/usabilla"/}

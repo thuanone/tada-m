@@ -1,0 +1,11 @@
+node_modules
+coverage
+dist
+reverse-proxy
+build-tools
+dev/local-dev-proxy
+**/*.ts
+**/*.tsx
+**/*.js
+**/*.jsx
+public

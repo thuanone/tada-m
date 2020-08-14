@@ -1,0 +1,9 @@
+{
+  "kind": "Status",
+  "apiVersion": "v1",
+  "metadata": {},
+  "status": "Failure",
+  "message": "the API version in the data (serving.knative.dev/v1beta1) does not match the expected API version (serving.knative.dev/v1alpha1)",
+  "reason": "BadRequest",
+  "code": 400
+}

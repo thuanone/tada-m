@@ -1,0 +1,29 @@
+{
+  "apiVersion": "v1",
+  "items": [{
+    "kind": "ConfigMap",
+    "apiVersion": "v1",
+    "metadata": {
+      "name": "some-confmap",
+      "namespace": "f10b5eae-cf67",
+      "selfLink": "/api/v1/namespaces/f10b5eae-cf67/configmaps/some-confmap",
+      "uid": "ff169c3b-281e-47ab-932d-41ac986e1bc0",
+      "resourceVersion": "42454546",
+      "creationTimestamp": "2020-06-25T15:20:20Z",
+      "annotations": {
+        "kubectl.kubernetes.io/last-applied-configuration": "{\"apiVersion\":\"v1\",\"data\":{\"game.properties\":\"enemy.types=aliens,monsters\\nplayer.maximum-lives=5\\n\",\"player_initial_lives\":\"3\",\"ui_properties_file_name\":\"user-interface.properties\",\"user-interface.properties\":\"color.good=purple\\ncolor.bad=yellow\\nallow.textmode=true\\n\"},\"kind\":\"ConfigMap\",\"metadata\":{\"annotations\":{},\"name\":\"game-demo\",\"namespace\":\"f10b5eae-cf67\"}}\n"
+      }
+    },
+    "data": {
+      "game.properties": "enemy.types=aliens,monsters\nplayer.maximum-lives=5\n",
+      "player_initial_lives": "3",
+      "ui_properties_file_name": "user-interface.properties",
+      "user-interface.properties": "color.good=purple\ncolor.bad=yellow\nallow.textmode=true\n"
+    }
+  }],
+  "kind": "List",
+  "metadata": {
+      "resourceVersion": "",
+      "selfLink": ""
+  }
+}

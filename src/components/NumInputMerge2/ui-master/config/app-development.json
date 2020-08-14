@@ -1,0 +1,7 @@
+{
+  "port": "39003",
+  "aceCommonRoute_client": "http://localhost:3000",
+  "aceAnalyticsRoute": "http://localhost:3000/analytics",
+  "aceAnalyticsRoute_client": "http://localhost:3000/analytics",
+  "coligoLoggerDisabled": "true"
+}

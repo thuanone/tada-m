@@ -1,0 +1,19 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended",
+        "tslint-react"
+    ],
+    "jsRules": {},
+    "rules": {
+        "no-console": [ false ],
+        "trailing-comma": [ false ],
+        "max-line-length": [ false],
+        "strict-type-predicates": [ false ],
+        "quotemark": [true, "single", "jsx-single", "avoid-template", "avoid-escape"],
+        "jsx-no-multiline-js": [ false ],
+        "ordered-imports": [ false ],
+        "object-literal-sort-keys": [ false ]
+    },
+    "rulesDirectory": []
+}

@@ -1,0 +1,11 @@
+.clg-container-image {
+  &.container-image-selector {
+    .image-add-registry {
+      margin-top: $spacing-06;
+    }
+  }
+
+  .select-image {
+    margin-top: $spacing-06;
+  }
+}

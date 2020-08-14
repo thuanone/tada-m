@@ -1,0 +1,20 @@
+{
+  "resources": [
+    {
+      "id": "4674987f404c4fbea63c3d78f7314c98",
+      "crn": "crn:v1:bluemix:public:resource-controller::a/7658687ea07db8396963ebe2b8e1897d::resource-group:4674987f404c4fbea63c3d78f7314c98",
+      "account_id": "7658687ea07db8396963ebe2b8e1897d",
+      "name": "default",
+      "state": "ACTIVE",
+      "default": true,
+      "enable_reclamation": false,
+      "quota_id": "7ce89f4a-4381-4600-b814-3cd9a4f4bdf4",
+      "quota_url": "/v2/quota_definitions/7ce89f4a-4381-4600-b814-3cd9a4f4bdf4",
+      "payment_methods_url": "/v2/resource_groups/4674987f404c4fbea63c3d78f7314c98/payment_methods",
+      "resource_linkages": [],
+      "teams_url": "/v2/resource_groups/4674987f404c4fbea63c3d78f7314c98/teams",
+      "created_at": "2017-09-17T07:39:12.908Z",
+      "updated_at": "2017-09-17T07:39:12.908Z"
+    }
+  ]
+}

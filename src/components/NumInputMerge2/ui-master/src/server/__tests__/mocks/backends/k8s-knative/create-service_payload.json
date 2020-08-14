@@ -1,0 +1,19 @@
+{
+  "apiVersion": "serving.knative.dev/v1beta1",
+  "kind": "Service",
+  "metadata": {
+    "name": "yeah",
+    "namespace": "dc06f6638837"
+  },
+  "spec": {
+    "template": {
+      "spec": {
+        "containers": [
+          {
+            "image": "index.docker.io/foo/helloworld"
+          }
+        ]
+      }
+    }
+  }
+}

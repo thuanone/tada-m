@@ -1,0 +1,11 @@
+<Configuration>
+  <Targets>
+    <Target outputs-only="false" path="/home/jenkins/workspace/appscan-static/codeengine/src/server">
+      <Exclude>__tests__</Exclude>
+    </Target>
+    <Target outputs-only="false" path="/home/jenkins/workspace/appscan-static/codeengine/src/client">
+      <Exclude>__tests__</Exclude>
+    </Target>
+    <Target outputs-only="false" path="/home/jenkins/workspace/appscan-static/codeengine/src/common"></Target>
+  </Targets>
+</Configuration>

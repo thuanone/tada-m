@@ -1,0 +1,28 @@
+<script>
+  window.armada = {
+    nodeEnv: '{nodeEnv}',
+    consoleEnv: '{consoleEnv}',
+    bluemixIcons: '{@hashValue obj=aceCommonFiles prop="bluemix-icons.svg"/}',
+    lng: '{lng}',
+    isAuthenticated: '{isAuthenticated}',
+    userEmail: '{userEmail}',
+    config: JSON.parse(decodeURIComponent('{config}')),
+    staticFileMap: JSON.parse(decodeURIComponent('{staticFileMap}')),
+    flags: JSON.parse(decodeURIComponent('{flags}')),
+    os: '{os}',
+    containersUrl: '{containersUrl}'
+  };
+  window.digitalData = {
+    page: {
+      pageInfo: {
+        ibm: {
+          messaging: {
+            routing: {
+              focusArea: '{isAuthenticated}' === 'true' ? 'WCP - Pooled CSM' : 'Cloud - BLMX Softlayer'
+            }
+          }
+        }
+      }
+    }
+  };
+</script>

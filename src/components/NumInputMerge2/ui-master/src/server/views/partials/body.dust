@@ -1,0 +1,18 @@
+<body data-integration-tests="{integrationTests}">
+  {header|s}
+  <main id="main-content" aria-label="root-container">
+    <div id="container" class="coligo-ui">
+      <div class="coligo-page ibm-cloud-app">
+        <div class="coligo-landing-page">
+          <div class="coligo-landing-page-header">
+            <p class="bx--skeleton__text bx--skeleton__heading" style="width: 30%;"></p>
+            <p class="bx--skeleton__text" style="width: 66%;"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  {>"partials/window-props"/}
+  {>"partials/scripts"/}
+  {>"partials/init"/}
+</body>

@@ -1,0 +1,8 @@
+<script>
+  document.addEventListener('DOMContentLoaded', function initApp() {
+    window.armada.init();
+    delete window.armada.init;
+    delete window.armada.locale;
+    window.header.sessionTimeoutUrl = "{proxyRoot}sessionTimeout";
+  });
+</script>

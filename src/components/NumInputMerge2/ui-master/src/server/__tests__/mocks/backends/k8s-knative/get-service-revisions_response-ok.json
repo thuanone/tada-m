@@ -1,0 +1,339 @@
+[
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Revision",
+    "metadata": {
+      "annotations": {
+        "autoscaling.knative.dev/maxScale": "2",
+        "autoscaling.knative.dev/minScale": "0",
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastPinned": "1582056584"
+      },
+      "creationTimestamp": "2020-02-18T20:09:40Z",
+      "generation": 1,
+      "labels": {
+        "serving.knative.dev/configuration": "some-application",
+        "serving.knative.dev/configurationGeneration": "4",
+        "serving.knative.dev/service": "some-application"
+      },
+      "name": "some-application-mgwml-4",
+      "namespace": "dc06f6638837",
+      "ownerReferences": [
+        {
+          "apiVersion": "serving.knative.dev/v1alpha1",
+          "blockOwnerDeletion": true,
+          "controller": true,
+          "kind": "Configuration",
+          "name": "some-application",
+          "uid": "0657679c-028d-47e5-b226-cbada948eb35"
+        }
+      ],
+      "resourceVersion": "30656957",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/revisions/some-application-mgwml-4",
+      "uid": "1e1831b2-e1f8-4cc5-a684-d0aae9c33ff2"
+    },
+    "spec": {
+      "containerConcurrency": 0,
+      "containers": [
+        {
+          "image": "index.docker.io/foobar/helloworld",
+          "name": "user-container",
+          "readinessProbe": {
+            "successThreshold": 1,
+            "tcpSocket": {
+              "port": 0
+            }
+          },
+          "resources": {
+            "limits": {
+              "cpu": "2",
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "timeoutSeconds": 300
+    },
+    "status": {
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-18T20:10:44Z",
+          "message": "The target is not receiving traffic.",
+          "reason": "NoTraffic",
+          "severity": "Info",
+          "status": "False",
+          "type": "Active"
+        },
+        {
+          "lastTransitionTime": "2020-02-18T20:09:44Z",
+          "status": "True",
+          "type": "ContainerHealthy"
+        },
+        {
+          "lastTransitionTime": "2020-02-18T20:09:44Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-02-18T20:09:44Z",
+          "status": "True",
+          "type": "ResourcesAvailable"
+        }
+      ],
+      "imageDigest": "index.docker.io/foobar/helloworld@sha256:be18cb80f43d8548ceb26adb0e4d53ed0d1fec71948dd88633265386394050bc",
+      "logUrl": "http://localhost:8001/api/v1/namespaces/knative-monitoring/services/kibana-logging/proxy/app/kibana#/discover?_a=(query:(match:(kubernetes.labels.knative-dev%2FrevisionUID:(query:'1e1831b2-e1f8-4cc5-a684-d0aae9c33ff2',type:phrase))))",
+      "observedGeneration": 1,
+      "serviceName": "some-application-mgwml-4"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Revision",
+    "metadata": {
+      "annotations": {
+        "autoscaling.knative.dev/maxScale": "2",
+        "autoscaling.knative.dev/minScale": "0",
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastPinned": "1582056562"
+      },
+      "creationTimestamp": "2020-02-18T20:09:17Z",
+      "generation": 1,
+      "labels": {
+        "serving.knative.dev/configuration": "some-application",
+        "serving.knative.dev/configurationGeneration": "3",
+        "serving.knative.dev/route": "some-application",
+        "serving.knative.dev/service": "some-application"
+      },
+      "name": "some-application-zfmrt-3",
+      "namespace": "dc06f6638837",
+      "ownerReferences": [
+        {
+          "apiVersion": "serving.knative.dev/v1alpha1",
+          "blockOwnerDeletion": true,
+          "controller": true,
+          "kind": "Configuration",
+          "name": "some-application",
+          "uid": "0657679c-028d-47e5-b226-cbada948eb35"
+        }
+      ],
+      "resourceVersion": "30656507",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/revisions/some-application-zfmrt-3",
+      "uid": "f5222927-7cc8-4dde-b0cf-6d74a6f99707"
+    },
+    "spec": {
+      "containerConcurrency": 0,
+      "containers": [
+        {
+          "image": "index.docker.io/foobar/helloworld",
+          "name": "user-container",
+          "readinessProbe": {
+            "successThreshold": 1,
+            "tcpSocket": {
+              "port": 0
+            }
+          },
+          "resources": {
+            "limits": {
+              "memory": "512Mi"
+            }
+          }
+        }
+      ],
+      "timeoutSeconds": 300
+    },
+    "status": {
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-18T20:10:22Z",
+          "message": "The target is not receiving traffic.",
+          "reason": "NoTraffic",
+          "severity": "Info",
+          "status": "False",
+          "type": "Active"
+        },
+        {
+          "lastTransitionTime": "2020-02-18T20:09:22Z",
+          "status": "True",
+          "type": "ContainerHealthy"
+        },
+        {
+          "lastTransitionTime": "2020-02-18T20:09:22Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-02-18T20:09:22Z",
+          "status": "True",
+          "type": "ResourcesAvailable"
+        }
+      ],
+      "imageDigest": "index.docker.io/foobar/helloworld@sha256:be18cb80f43d8548ceb26adb0e4d53ed0d1fec71948dd88633265386394050bc",
+      "logUrl": "http://localhost:8001/api/v1/namespaces/knative-monitoring/services/kibana-logging/proxy/app/kibana#/discover?_a=(query:(match:(kubernetes.labels.knative-dev%2FrevisionUID:(query:'f5222927-7cc8-4dde-b0cf-6d74a6f99707',type:phrase))))",
+      "observedGeneration": 1,
+      "serviceName": "some-application-zfmrt-3"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Revision",
+    "metadata": {
+      "annotations": {
+        "autoscaling.knative.dev/maxScale": "2",
+        "autoscaling.knative.dev/minScale": "0",
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastPinned": "1582056532"
+      },
+      "creationTimestamp": "2020-02-18T20:08:47Z",
+      "generation": 1,
+      "labels": {
+        "serving.knative.dev/configuration": "some-application",
+        "serving.knative.dev/configurationGeneration": "2",
+        "serving.knative.dev/service": "some-application"
+      },
+      "name": "some-application-hnbsz-2",
+      "namespace": "dc06f6638837",
+      "ownerReferences": [
+        {
+          "apiVersion": "serving.knative.dev/v1alpha1",
+          "blockOwnerDeletion": true,
+          "controller": true,
+          "kind": "Configuration",
+          "name": "some-application",
+          "uid": "0657679c-028d-47e5-b226-cbada948eb35"
+        }
+      ],
+      "resourceVersion": "30656114",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/revisions/some-application-hnbsz-2",
+      "uid": "38dd6dac-acde-4b96-a085-772208f8fb0b"
+    },
+    "spec": {
+      "containerConcurrency": 0,
+      "containers": [
+        {
+          "image": "index.docker.io/foobar/helloworld",
+          "name": "user-container",
+          "readinessProbe": {
+            "successThreshold": 1,
+            "tcpSocket": {
+              "port": 0
+            }
+          },
+          "resources": {}
+        }
+      ],
+      "timeoutSeconds": 300
+    },
+    "status": {
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-18T20:09:52Z",
+          "message": "The target is not receiving traffic.",
+          "reason": "NoTraffic",
+          "severity": "Info",
+          "status": "False",
+          "type": "Active"
+        },
+        {
+          "lastTransitionTime": "2020-02-18T20:08:52Z",
+          "status": "True",
+          "type": "ContainerHealthy"
+        },
+        {
+          "lastTransitionTime": "2020-02-18T20:08:52Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-02-18T20:08:52Z",
+          "status": "True",
+          "type": "ResourcesAvailable"
+        }
+      ],
+      "imageDigest": "index.docker.io/foobar/helloworld@sha256:be18cb80f43d8548ceb26adb0e4d53ed0d1fec71948dd88633265386394050bc",
+      "logUrl": "http://localhost:8001/api/v1/namespaces/knative-monitoring/services/kibana-logging/proxy/app/kibana#/discover?_a=(query:(match:(kubernetes.labels.knative-dev%2FrevisionUID:(query:'38dd6dac-acde-4b96-a085-772208f8fb0b',type:phrase))))",
+      "observedGeneration": 1,
+      "serviceName": "some-application-hnbsz-2"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Revision",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastPinned": "1582056527"
+      },
+      "creationTimestamp": "2020-02-12T21:49:21Z",
+      "generateName": "some-application-",
+      "generation": 1,
+      "labels": {
+        "serving.knative.dev/configuration": "some-application",
+        "serving.knative.dev/configurationGeneration": "1",
+        "serving.knative.dev/service": "some-application"
+      },
+      "name": "some-application-xtfvt",
+      "namespace": "dc06f6638837",
+      "ownerReferences": [
+        {
+          "apiVersion": "serving.knative.dev/v1alpha1",
+          "blockOwnerDeletion": true,
+          "controller": true,
+          "kind": "Configuration",
+          "name": "some-application",
+          "uid": "0657679c-028d-47e5-b226-cbada948eb35"
+        }
+      ],
+      "resourceVersion": "30655664",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/revisions/some-application-xtfvt",
+      "uid": "5b711af7-1452-429a-b96f-7c64a8665244"
+    },
+    "spec": {
+      "containerConcurrency": 0,
+      "containers": [
+        {
+          "image": "index.docker.io/foobar/helloworld",
+          "name": "user-container",
+          "readinessProbe": {
+            "successThreshold": 1,
+            "tcpSocket": {
+              "port": 0
+            }
+          },
+          "resources": {}
+        }
+      ],
+      "timeoutSeconds": 300
+    },
+    "status": {
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-12T21:52:08Z",
+          "message": "The target is not receiving traffic.",
+          "reason": "NoTraffic",
+          "severity": "Info",
+          "status": "False",
+          "type": "Active"
+        },
+        {
+          "lastTransitionTime": "2020-02-12T21:51:08Z",
+          "status": "True",
+          "type": "ContainerHealthy"
+        },
+        {
+          "lastTransitionTime": "2020-02-12T21:51:08Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-02-12T21:51:08Z",
+          "status": "True",
+          "type": "ResourcesAvailable"
+        }
+      ],
+      "imageDigest": "index.docker.io/foobar/helloworld@sha256:be18cb80f43d8548ceb26adb0e4d53ed0d1fec71948dd88633265386394050bc",
+      "logUrl": "http://localhost:8001/api/v1/namespaces/knative-monitoring/services/kibana-logging/proxy/app/kibana#/discover?_a=(query:(match:(kubernetes.labels.knative-dev%2FrevisionUID:(query:'5b711af7-1452-429a-b96f-7c64a8665244',type:phrase))))",
+      "observedGeneration": 1,
+      "serviceName": "some-application-xtfvt"
+    }
+  }
+]

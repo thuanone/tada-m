@@ -1,0 +1,14 @@
+{
+  "kind": "Status",
+  "apiVersion": "v1",
+  "metadata": {},
+  "status": "Failure",
+  "message": "buildruns.build.dev \"serviceid-test-run-lrqzq2\" not found",
+  "reason": "NotFound",
+  "details": {
+    "name": "serviceid-test-run-lrqzq2",
+    "group": "build.dev",
+    "kind": "buildruns"
+  },
+  "code": 404
+}

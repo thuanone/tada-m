@@ -1,0 +1,10 @@
+{
+  "message": "builds.build.dev \"some-build\" already exists",
+  "reason": "AlreadyExists",
+  "details": {
+    "name": "some-build",
+    "group": "build.dev",
+    "kind": "builds"
+  },
+  "status": 409
+}

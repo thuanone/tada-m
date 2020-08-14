@@ -1,0 +1,93 @@
+$feature-flags: (
+  grid-columns-16: true,
+);
+
+// Apply the PAL theme
+@import '@console/pal/scss/theme';
+
+// All carbon globals should be referenced here
+@import '@console/pal/carbon-components/scss/globals/scss/styles';
+
+// All carbon components should be referenced here
+@import '@console/pal/carbon-components/scss/components/accordion/accordion';
+@import '@console/pal/carbon-components/scss/components/breadcrumb/breadcrumb';
+@import '@console/pal/carbon-components/scss/components/button/button';
+@import '@console/pal/carbon-components/scss/components/checkbox/checkbox';
+@import '@console/pal/carbon-components/scss/components/code-snippet/code-snippet';
+@import '@console/pal/carbon-components/scss/components/content-switcher/content-switcher';
+@import '@console/pal/carbon-components/scss/components/copy-button/copy-button';
+@import '@console/pal/carbon-components/scss/components/data-table/data-table';
+@import '@console/pal/carbon-components/scss/components/dropdown/dropdown';
+@import '@console/pal/carbon-components/scss/components/form/form';
+@import '@console/pal/carbon-components/scss/components/link/link';
+@import '@console/pal/carbon-components/scss/components/list/list';
+@import '@console/pal/carbon-components/scss/components/list-box/list-box';
+@import '@console/pal/carbon-components/scss/components/loading/loading';
+@import '@console/pal/carbon-components/scss/components/modal/modal';
+@import '@console/pal/carbon-components/scss/components/multi-select/multi-select';
+@import '@console/pal/carbon-components/scss/components/notification/inline-notification';
+@import '@console/pal/carbon-components/scss/components/number-input/number-input';
+@import '@console/pal/carbon-components/scss/components/overflow-menu/overflow-menu';
+@import '@console/pal/carbon-components/scss/components/pagination/pagination';
+@import '@console/pal/carbon-components/scss/components/radio-button/radio-button';
+@import '@console/pal/carbon-components/scss/components/search/search';
+@import '@console/pal/carbon-components/scss/components/select/select';
+@import '@console/pal/carbon-components/scss/components/skeleton/skeleton';
+@import '@console/pal/carbon-components/scss/components/structured-list/structured-list';
+@import '@console/pal/carbon-components/scss/components/tabs/tabs';
+@import '@console/pal/carbon-components/scss/components/tag/tag';
+@import '@console/pal/carbon-components/scss/components/text-area/text-area';
+@import '@console/pal/carbon-components/scss/components/text-input/text-input';
+@import '@console/pal/carbon-components/scss/components/tile/tile';
+@import '@console/pal/carbon-components/scss/components/toolbar/toolbar';
+@import '@console/pal/carbon-components/scss/components/tooltip/tooltip';
+
+// All carbon charts styles
+@import '@carbon/charts/styles/styles';
+
+// All components we add from console-components-react should be referenced here
+//  Performance / Package size optimization below possible, by only importing the styles we really need
+//  We should only do this, before going live, when we kind of know, which components will be included
+//  in our deliverable. While CloudPal is still in the process of being developed, we simply import
+//  everything to keep effort and error-rate low for now.
+@import '@console/pal/Components/Card/styles';
+@import '@console/pal/Components/ErrorModal/styles';
+@import '@console/pal/Components/Message/styles';
+@import '@console/pal/Components/OrderSummaryV2/styles';
+@import '@console/pal/Components/PageHeader/styles';
+@import '@console/pal/Components/ResourceLevelNav/styles';
+@import '@console/pal/Components/SectionHeading/styles';
+@import '@console/pal/Components/SidePanel/styles';
+@import '@console/pal/Components/Tag/styles';
+@import '@console/pal/Components/TagList/styles';
+@import '@console/pal/Components/ToastManager/styles';
+@import '@console/pal/Components/WorldLevelNav/styles';
+
+@import '@console/pal/Connected/ObserveButton/styles';
+@import '@console/pal/Connected/ObserveOverflowMenuItem//styles';
+@import '@console/pal/Connected/ResourceTagArea/styles';
+@import '@console/pal/Connected/ResourceTagModal/styles';
+
+// All styles that we would like to apply should be outlined here
+@import './variables';
+@import './common/common';
+@import './pages/pages';
+@import './pal-overrides';
+@import './tests';
+@import './components/ClgBanner/ClgBanner';
+@import './components/ClgConfirmationModal/ClgConfirmationModal';
+@import './components/ClgContainerImage/ClgContainerImage';
+@import './components/ClgEmptyStateCard/ClgEmptyStateCard';
+@import './components/ClgEnvironmentVariables/ClgEnvironmentVariables';
+@import './components/ClgExpandableSection/ClgExpandableSection';
+@import './components/ClgFeatureTile/ClgFeatureTile';
+@import './components/ClgJobRunDetailsTable/ClgJobRunDetailsTable';
+@import './components/ClgKeyValueFields/ClgKeyValueFields';
+@import './components/ClgProjectExpirationWarnings/ClgProjectExpirationWarnings';
+@import './components/ClgProjectSelector/ClgProjectSelector';
+@import './components/ClgRegistrySelector/ClgRegistrySelector';
+@import './components/ClgResourceGroupSelector/ClgResourceGroupSelector';
+@import './components/ClgTableWrapper/ClgTableWrapper';
+@import './components/ClgTeaser/ClgTeaser';
+@import './components/ClgTypeSelector/ClgTypeSelector';
+@import './components/ClgSidePanel/ClgSidePanel';

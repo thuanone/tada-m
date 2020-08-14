@@ -1,0 +1,87 @@
+// build detail related styles
+.clg-build-detail-page {
+  &--configuration {
+    .actions-btns {
+      // ensures that the loading animation and the cancel button are rendered next to each other
+      display: flex;
+
+      // ensures that the action buttons are in-line with the input/dropdown field
+      margin-top: 0;
+
+      // we need some space between the cancel and save button
+      .bx--btn--secondary {
+        margin-right: $spacing-05;
+      }
+    }
+  }
+
+  .section.configuration-tabs {
+    .bx--tab-content,
+    .bx--tabs__nav-item--selected {
+      background-color: $ui-02;
+    }
+  }
+
+  .section.buildrun-list {
+    .build--no-buildruns {
+      padding: $spacing-05;
+
+      @media (min-width: 1312px) {
+        padding: $spacing-09;
+      }
+
+      &__title {
+        margin-top: $spacing-06;
+      }
+
+      &__description {
+        margin-top: $spacing-03;
+      }
+
+      &__morelink {
+        margin-top: $spacing-07;
+      }
+    }
+
+    .buildrun-status {
+      &--instance-details {
+        &__caption {
+          color: $text-01;
+          word-break: break-word;
+        }
+      }
+
+      &--startdate {
+        margin-bottom: $spacing-03;
+      }
+    }
+
+    .clg-datatable-sortable .bx--data-table td.bx--table-expand {
+      padding-left: $spacing-05;
+    }
+
+    .clg-datatable-sortable .bx--data-table td:not(.bx--table-expand) {
+      padding-left: $spacing-03;
+    }
+
+    .clg-datatable-sortable .bx--data-table th:not(.bx--table-expand) {
+      padding-left: $spacing-03;
+    }
+  }
+
+  // the buildrun list should make use of the full card width
+  .clg-card-container {
+    &.buildrun-list-card {
+      .pal--card__body {
+        padding: 0;
+      }
+    }
+  }
+
+  // styling for the expandable row within the buildrun table
+  .cfn-table-wrapper .bx--data-table tbody .bx--expandable-row[data-child-row='true'] {
+    td:not(.bx--table-expand) {
+      padding-left: $spacing-09;
+    }
+  }
+}

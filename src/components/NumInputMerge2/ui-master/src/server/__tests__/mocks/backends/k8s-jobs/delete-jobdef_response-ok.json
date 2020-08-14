@@ -1,0 +1,12 @@
+{
+  "kind": "Status",
+  "apiVersion": "v1",
+  "metadata": {},
+  "status": "Success",
+  "details": {
+    "name": "my-new-job-mdhx8",
+    "group": "codeengine.cloud.ibm.com",
+    "kind": "jobdefinitions",
+    "uid": "6cedfbd8-4b87-4f9c-9754-3de53078520a"
+  }
+}

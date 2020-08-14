@@ -1,0 +1,2240 @@
+[
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-26T23:52:04Z",
+      "generation": 1,
+      "name": "coligo-e2etest-app--biuid",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498374",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/coligo-e2etest-app--biuid",
+      "uid": "3b07a2d6-b56a-4358-a84d-87d8ed85cfbf"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 10,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "Coligo"
+                }
+              ],
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 100
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://coligo-e2etest-app--biuid.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-26T23:52:08Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:55Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:55Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "coligo-e2etest-app--biuid-kpnwm",
+      "latestReadyRevisionName": "coligo-e2etest-app--biuid-kpnwm",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "coligo-e2etest-app--biuid-kpnwm"
+        }
+      ],
+      "url": "http://coligo-e2etest-app--biuid.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-26T23:38:30Z",
+      "generation": 1,
+      "name": "coligo-e2etest-app--gwahe",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498025",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/coligo-e2etest-app--gwahe",
+      "uid": "17ee0dd8-6274-4bed-b016-ea3bddf92341"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 10,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "Coligo"
+                }
+              ],
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 100
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://coligo-e2etest-app--gwahe.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-26T23:38:35Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:43Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:43Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "coligo-e2etest-app--gwahe-js2tv",
+      "latestReadyRevisionName": "coligo-e2etest-app--gwahe-js2tv",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "coligo-e2etest-app--gwahe-js2tv"
+        }
+      ],
+      "url": "http://coligo-e2etest-app--gwahe.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-26T23:13:05Z",
+      "generation": 1,
+      "name": "coligo-e2etest-app--mehzi",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42496978",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/coligo-e2etest-app--mehzi",
+      "uid": "3a3daafe-464d-4511-855e-6ac9b6b071cd"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 10,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "Coligo"
+                }
+              ],
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 100
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://coligo-e2etest-app--mehzi.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-26T23:13:10Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:08Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:08Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "coligo-e2etest-app--mehzi-qr4nj",
+      "latestReadyRevisionName": "coligo-e2etest-app--mehzi-qr4nj",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "coligo-e2etest-app--mehzi-qr4nj"
+        }
+      ],
+      "url": "http://coligo-e2etest-app--mehzi.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-26T22:23:33Z",
+      "generation": 1,
+      "name": "coligo-e2etest-app--qujcf",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498260",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/coligo-e2etest-app--qujcf",
+      "uid": "a44b52c3-6d14-4d32-a11b-cbc6cd54cea5"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 10,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "Coligo"
+                }
+              ],
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 100
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://coligo-e2etest-app--qujcf.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-26T22:23:38Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:34Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:34Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "coligo-e2etest-app--qujcf-h9qzl",
+      "latestReadyRevisionName": "coligo-e2etest-app--qujcf-h9qzl",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "coligo-e2etest-app--qujcf-h9qzl"
+        }
+      ],
+      "url": "http://coligo-e2etest-app--qujcf.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-26T21:54:07Z",
+      "generation": 1,
+      "name": "coligo-e2etest-app--qwmro",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498386",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/coligo-e2etest-app--qwmro",
+      "uid": "522dd3d1-a4c2-4e4b-8b5c-0f0155f6be11"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 10,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "Coligo"
+                }
+              ],
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 100
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://coligo-e2etest-app--qwmro.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-26T21:54:13Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:57Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:57Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "coligo-e2etest-app--qwmro-b5bn6",
+      "latestReadyRevisionName": "coligo-e2etest-app--qwmro-b5bn6",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "coligo-e2etest-app--qwmro-b5bn6"
+        }
+      ],
+      "url": "http://coligo-e2etest-app--qwmro.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-26T21:34:31Z",
+      "generation": 1,
+      "name": "coligo-e2etest-app--qzjly",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498032",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/coligo-e2etest-app--qzjly",
+      "uid": "b7171163-c7c9-4033-984d-f01e0d3d1aa8"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 0,
+          "containers": [
+            {
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {}
+            }
+          ],
+          "timeoutSeconds": 300
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://coligo-e2etest-app--qzjly.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-26T21:34:36Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:45Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:45Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "coligo-e2etest-app--qzjly-mdzfk",
+      "latestReadyRevisionName": "coligo-e2etest-app--qzjly-mdzfk",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "coligo-e2etest-app--qzjly-mdzfk"
+        }
+      ],
+      "url": "http://coligo-e2etest-app--qzjly.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-26T21:58:09Z",
+      "generation": 1,
+      "name": "coligo-e2etest-app--rlena",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498228",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/coligo-e2etest-app--rlena",
+      "uid": "bf5fab4e-d22a-41bd-86c5-00f3a7614f3d"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 10,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "Coligo"
+                }
+              ],
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 100
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://coligo-e2etest-app--rlena.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-26T21:58:16Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:27Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:27Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "coligo-e2etest-app--rlena-pkl4k",
+      "latestReadyRevisionName": "coligo-e2etest-app--rlena-pkl4k",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "coligo-e2etest-app--rlena-pkl4k"
+        }
+      ],
+      "url": "http://coligo-e2etest-app--rlena.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-27T07:41:07Z",
+      "generation": 1,
+      "name": "coligo-e2etest-app--vksng",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498528",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/coligo-e2etest-app--vksng",
+      "uid": "bf784fb1-5ea3-44eb-a4b8-1b173547b2a3"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 10,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "Coligo"
+                }
+              ],
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 100
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://coligo-e2etest-app--vksng.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-27T07:41:13Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:15:07Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:15:07Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "coligo-e2etest-app--vksng-jqf84",
+      "latestReadyRevisionName": "coligo-e2etest-app--vksng-jqf84",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "coligo-e2etest-app--vksng-jqf84"
+        }
+      ],
+      "url": "http://coligo-e2etest-app--vksng.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-27T09:43:21Z",
+      "generation": 1,
+      "name": "coligo-e2etest-app--vqmpn",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498154",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/coligo-e2etest-app--vqmpn",
+      "uid": "a22051ea-bb20-4308-9480-cb689745f59d"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 10,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "Coligo"
+                }
+              ],
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 100
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://coligo-e2etest-app--vqmpn.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-27T09:43:26Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:12Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:12Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "coligo-e2etest-app--vqmpn-5rgmh",
+      "latestReadyRevisionName": "coligo-e2etest-app--vqmpn-5rgmh",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "coligo-e2etest-app--vqmpn-5rgmh"
+        }
+      ],
+      "url": "http://coligo-e2etest-app--vqmpn.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-26T22:59:03Z",
+      "generation": 1,
+      "name": "coligo-e2etest-app--wvsnk",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42497989",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/coligo-e2etest-app--wvsnk",
+      "uid": "ef4ad57b-cae2-4a63-a948-f87293f699ae"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 10,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "Coligo"
+                }
+              ],
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 100
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://coligo-e2etest-app--wvsnk.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-26T22:59:10Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:37Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:37Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "coligo-e2etest-app--wvsnk-wmflt",
+      "latestReadyRevisionName": "coligo-e2etest-app--wvsnk-wmflt",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "coligo-e2etest-app--wvsnk-wmflt"
+        }
+      ],
+      "url": "http://coligo-e2etest-app--wvsnk.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-28T07:40:57Z",
+      "generation": 1,
+      "name": "coligo-e2etest-app--xxstz",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42497831",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/coligo-e2etest-app--xxstz",
+      "uid": "46468939-1e9f-410a-92a6-676f512d4bbe"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 10,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "Coligo"
+                }
+              ],
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 100
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://coligo-e2etest-app--xxstz.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-28T07:41:03Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:30Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:30Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "coligo-e2etest-app--xxstz-468q5",
+      "latestReadyRevisionName": "coligo-e2etest-app--xxstz-468q5",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "coligo-e2etest-app--xxstz-468q5"
+        }
+      ],
+      "url": "http://coligo-e2etest-app--xxstz.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-24T15:27:39Z",
+      "generation": 7,
+      "name": "demo2",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42497497",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/demo2",
+      "uid": "4a74e42b-4df2-495c-8622-832f383768ab"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "client.knative.dev/user-image": "docker.io/agrawals18/helloworld"
+          },
+          "creationTimestamp": null,
+          "name": "demo2-yywgp-7"
+        },
+        "spec": {
+          "containerConcurrency": 0,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "Foo"
+                }
+              ],
+              "image": "index.docker.io/agrawals18/helloworld@sha256:be18cb80f43d8548ceb26adb0e4d53ed0d1fec71948dd88633265386394050bc",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "memory": "500M"
+                },
+                "requests": {
+                  "memory": "256Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 300
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": false,
+          "percent": 70,
+          "revisionName": "demo2-mrcgx-1",
+          "tag": "blue"
+        },
+        {
+          "latestRevision": false,
+          "percent": 30,
+          "revisionName": "demo2-csqfp-3",
+          "tag": "red"
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://demo2.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-24T19:17:37Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:21Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:21Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "demo2-yywgp-7",
+      "latestReadyRevisionName": "demo2-yywgp-7",
+      "observedGeneration": 7,
+      "traffic": [
+        {
+          "latestRevision": false,
+          "percent": 70,
+          "revisionName": "demo2-mrcgx-1",
+          "tag": "blue",
+          "url": "http://blue-demo2.dc06f6638837.us-south.knative.test.appdomain.cloud"
+        },
+        {
+          "latestRevision": false,
+          "percent": 30,
+          "revisionName": "demo2-csqfp-3",
+          "tag": "red",
+          "url": "http://red-demo2.dc06f6638837.us-south.knative.test.appdomain.cloud"
+        }
+      ],
+      "url": "http://demo2.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-24T19:51:35Z",
+      "generation": 1,
+      "name": "foobar",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42497912",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/foobar",
+      "uid": "0e034468-ac70-498c-9325-fbc3e4845669"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "client.knative.dev/user-image": "docker.io/agrawals18/helloworld"
+          },
+          "creationTimestamp": null,
+          "name": "foobar-zjblq-1"
+        },
+        "spec": {
+          "containerConcurrency": 0,
+          "containers": [
+            {
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {}
+            }
+          ],
+          "timeoutSeconds": 300
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://foobar.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-24T19:51:40Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:33Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:33Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "foobar-zjblq-1",
+      "latestReadyRevisionName": "foobar-zjblq-1",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "foobar-zjblq-1"
+        }
+      ],
+      "url": "http://foobar.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-25T09:55:50Z",
+      "generation": 3,
+      "name": "hey-ho",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498196",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/hey-ho",
+      "uid": "c4cfa560-74eb-4263-ade1-43a42d3a836f"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "100"
+          },
+          "creationTimestamp": null,
+          "name": "hey-ho-wuczb-3"
+        },
+        "spec": {
+          "containerConcurrency": 80,
+          "containers": [
+            {
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "128Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "128Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 120
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://hey-ho.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-03-03T13:53:31Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:21Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:21Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "hey-ho-wuczb-3",
+      "latestReadyRevisionName": "hey-ho-wuczb-3",
+      "observedGeneration": 3,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "hey-ho-wuczb-3"
+        }
+      ],
+      "url": "http://hey-ho.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-24T12:10:52Z",
+      "generation": 8,
+      "name": "monday-morning",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498068",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/monday-morning",
+      "uid": "60fc0a3e-1674-4c7e-a203-b30c40df59db"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "client.knative.dev/user-image": "agrawals18/helloworld"
+          },
+          "creationTimestamp": null,
+          "name": "monday-morning-xbybn-5"
+        },
+        "spec": {
+          "containerConcurrency": 0,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "yeah"
+                }
+              ],
+              "image": "index.docker.io/agrawals18/helloworld@sha256:be18cb80f43d8548ceb26adb0e4d53ed0d1fec71948dd88633265386394050bc",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "memory": "512M"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 300
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": false,
+          "percent": 50,
+          "revisionName": "monday-morning-fzrhz-1",
+          "tag": "blue"
+        },
+        {
+          "latestRevision": false,
+          "percent": 0,
+          "revisionName": "monday-morning-bxygm-2",
+          "tag": "green"
+        },
+        {
+          "latestRevision": false,
+          "percent": 50,
+          "revisionName": "monday-morning-xbybn-5",
+          "tag": "red"
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://monday-morning.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-24T12:29:59Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:54Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:54Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "monday-morning-xbybn-5",
+      "latestReadyRevisionName": "monday-morning-xbybn-5",
+      "observedGeneration": 8,
+      "traffic": [
+        {
+          "latestRevision": false,
+          "percent": 50,
+          "revisionName": "monday-morning-fzrhz-1",
+          "tag": "blue",
+          "url": "http://blue-monday-morning.dc06f6638837.us-south.knative.test.appdomain.cloud"
+        },
+        {
+          "latestRevision": false,
+          "percent": 0,
+          "revisionName": "monday-morning-bxygm-2",
+          "tag": "green",
+          "url": "http://green-monday-morning.dc06f6638837.us-south.knative.test.appdomain.cloud"
+        },
+        {
+          "latestRevision": false,
+          "percent": 50,
+          "revisionName": "monday-morning-xbybn-5",
+          "tag": "red",
+          "url": "http://red-monday-morning.dc06f6638837.us-south.knative.test.appdomain.cloud"
+        }
+      ],
+      "url": "http://monday-morning.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-24T15:17:02Z",
+      "generation": 4,
+      "name": "sample-service",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42497601",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/sample-service",
+      "uid": "6f52eec1-1855-428f-bbd3-56ca84197030"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "client.knative.dev/user-image": "docker.io/agrawals18/helloworld"
+          },
+          "creationTimestamp": null,
+          "name": "sample-service-nrhdn-4"
+        },
+        "spec": {
+          "containerConcurrency": 0,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "TARGET",
+                  "value": "Coligo"
+                }
+              ],
+              "image": "index.docker.io/agrawals18/helloworld@sha256:be18cb80f43d8548ceb26adb0e4d53ed0d1fec71948dd88633265386394050bc",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "memory": "500M"
+                },
+                "requests": {
+                  "cpu": "1"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 300
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://sample-service.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-24T15:23:19Z",
+          "status": "Unknown",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:24Z",
+          "status": "Unknown",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:13:24Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "sample-service-nrhdn-4",
+      "latestReadyRevisionName": "sample-service-mjyyg-2",
+      "observedGeneration": 4,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "sample-service-mjyyg-2"
+        }
+      ],
+      "url": "http://sample-service.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-12T21:49:20Z",
+      "generation": 14,
+      "name": "some-application",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498112",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/some-application",
+      "uid": "1950717f-15f6-4d8b-b139-21a774fb3963"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "2",
+            "autoscaling.knative.dev/minScale": "0"
+          },
+          "creationTimestamp": null,
+          "name": "some-application-fjhyr-14"
+        },
+        "spec": {
+          "containerConcurrency": 0,
+          "containers": [
+            {
+              "env": [
+                {
+                  "name": "GREETING",
+                  "value": "Universe"
+                }
+              ],
+              "image": "index.docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "2",
+                  "memory": "512Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 300
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": false,
+          "percent": 60,
+          "revisionName": "some-application-zfmrt-3",
+          "tag": "blue"
+        },
+        {
+          "latestRevision": false,
+          "percent": 40,
+          "revisionName": "some-application-zfmrt-3",
+          "tag": "green"
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://some-application.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-19T23:48:06Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:05Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:05Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "some-application-fjhyr-14",
+      "latestReadyRevisionName": "some-application-fjhyr-14",
+      "observedGeneration": 14,
+      "traffic": [
+        {
+          "latestRevision": false,
+          "percent": 60,
+          "revisionName": "some-application-zfmrt-3",
+          "tag": "blue",
+          "url": "http://blue-some-application.dc06f6638837.us-south.knative.test.appdomain.cloud"
+        },
+        {
+          "latestRevision": false,
+          "percent": 40,
+          "revisionName": "some-application-zfmrt-3",
+          "tag": "green",
+          "url": "http://green-some-application.dc06f6638837.us-south.knative.test.appdomain.cloud"
+        }
+      ],
+      "url": "http://some-application.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-26T14:17:01Z",
+      "generation": 1,
+      "name": "wohooo",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498296",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/wohooo",
+      "uid": "7a6dfb77-5f39-44a1-9620-dd683ece6dc3"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "100",
+            "autoscaling.knative.dev/minScale": "0"
+          },
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 80,
+          "containers": [
+            {
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "128Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "128Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 120
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://wohooo.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-26T14:17:06Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:40Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:40Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "wohooo-gv9pr",
+      "latestReadyRevisionName": "wohooo-gv9pr",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "wohooo-gv9pr"
+        }
+      ],
+      "url": "http://wohooo.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-12T21:15:35Z",
+      "generation": 1,
+      "name": "yeah",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "38289237",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/yeah",
+      "uid": "05fd86f3-d867-4989-890c-0ea1edf0fec4"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "client.knative.dev/user-image": "docker.io/agrawals/helloworld"
+          },
+          "creationTimestamp": null,
+          "name": "yeah-nppqx-1"
+        },
+        "spec": {
+          "containerConcurrency": 0,
+          "containers": [
+            {
+              "image": "docker.io/agrawals/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {}
+            }
+          ],
+          "timeoutSeconds": 300
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-13T19:09:35Z",
+          "message": "Revision \"yeah-nppqx-1\" failed with message: Unable to fetch image \"docker.io/agrawals/helloworld\": UNAUTHORIZED: authentication required; [map[Action:pull Class: Name:agrawals/helloworld Type:repository]].",
+          "reason": "RevisionFailed",
+          "status": "False",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-02-28T17:34:46Z",
+          "message": "Configuration \"yeah\" does not have any ready Revision.",
+          "reason": "RevisionMissing",
+          "status": "False",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-02-12T21:17:32Z",
+          "message": "Configuration \"yeah\" does not have any ready Revision.",
+          "reason": "RevisionMissing",
+          "status": "False",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "yeah-nppqx-1",
+      "observedGeneration": 1,
+      "url": "http://yeah.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-03-03T08:19:31Z",
+      "generation": 2,
+      "name": "yeah-application-creation-works",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498250",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/yeah-application-creation-works",
+      "uid": "afa3bf46-b644-4b98-a8aa-48bbc04b81cd"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "100"
+          },
+          "creationTimestamp": null,
+          "name": "yeah-application-creation-works-hhrk-2"
+        },
+        "spec": {
+          "containerConcurrency": 80,
+          "containers": [
+            {
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "128Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "128Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 110
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://yeah-application-creation-works.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-03-03T08:19:58Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:32Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:14:32Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "yeah-application-creation-works-hhrk-2",
+      "latestReadyRevisionName": "yeah-application-creation-works-hhrk-2",
+      "observedGeneration": 2,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "yeah-application-creation-works-hhrk-2"
+        }
+      ],
+      "url": "http://yeah-application-creation-works.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-26T13:52:40Z",
+      "generation": 1,
+      "name": "yeah1",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "42498540",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/yeah1",
+      "uid": "bf96d5b9-f958-4bd7-93fc-0f24e958c7d2"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "annotations": {
+            "autoscaling.knative.dev/maxScale": "100",
+            "autoscaling.knative.dev/minScale": "0"
+          },
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 80,
+          "containers": [
+            {
+              "image": "docker.io/agrawals18/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {
+                "limits": {
+                  "cpu": "1",
+                  "memory": "128Mi"
+                },
+                "requests": {
+                  "cpu": "1",
+                  "memory": "128Mi"
+                }
+              }
+            }
+          ],
+          "timeoutSeconds": 120
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "address": {
+        "url": "http://yeah1.dc06f6638837.svc.cluster.local"
+      },
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-26T13:52:45Z",
+          "status": "True",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:15:09Z",
+          "status": "True",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-03-03T16:15:09Z",
+          "status": "True",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "yeah1-8qhbj",
+      "latestReadyRevisionName": "yeah1-8qhbj",
+      "observedGeneration": 1,
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100,
+          "revisionName": "yeah1-8qhbj"
+        }
+      ],
+      "url": "http://yeah1.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-12T21:16:35Z",
+      "generation": 1,
+      "name": "yeah2",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "38288884",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/yeah2",
+      "uid": "a9adee0a-55a9-4624-8341-8777c5ce51b7"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 0,
+          "containers": [
+            {
+              "image": "index.docker.io/agrawals/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {}
+            }
+          ],
+          "timeoutSeconds": 300
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-13T19:15:27Z",
+          "message": "Revision \"yeah2-mlv67\" failed with message: Unable to fetch image \"index.docker.io/agrawals/helloworld\": UNAUTHORIZED: authentication required; [map[Action:pull Class: Name:agrawals/helloworld Type:repository]].",
+          "reason": "RevisionFailed",
+          "status": "False",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-02-28T17:34:26Z",
+          "message": "Configuration \"yeah2\" does not have any ready Revision.",
+          "reason": "RevisionMissing",
+          "status": "False",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-02-12T21:17:31Z",
+          "message": "Configuration \"yeah2\" does not have any ready Revision.",
+          "reason": "RevisionMissing",
+          "status": "False",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "yeah2-mlv67",
+      "observedGeneration": 1,
+      "url": "http://yeah2.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-12T21:17:50Z",
+      "generation": 1,
+      "name": "yeah3",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "38287523",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/yeah3",
+      "uid": "6fe8bc4d-c763-4290-8815-833013a753f8"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 0,
+          "containers": [
+            {
+              "image": "index.docker.io/agrawals/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {}
+            }
+          ],
+          "timeoutSeconds": 300
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-13T19:15:27Z",
+          "message": "Revision \"yeah3-lbnw7\" failed with message: Unable to fetch image \"index.docker.io/agrawals/helloworld\": UNAUTHORIZED: authentication required; [map[Action:pull Class: Name:agrawals/helloworld Type:repository]].",
+          "reason": "RevisionFailed",
+          "status": "False",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-02-28T17:33:14Z",
+          "message": "Configuration \"yeah3\" does not have any ready Revision.",
+          "reason": "RevisionMissing",
+          "status": "False",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-02-12T21:18:37Z",
+          "message": "Configuration \"yeah3\" does not have any ready Revision.",
+          "reason": "RevisionMissing",
+          "status": "False",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "yeah3-lbnw7",
+      "observedGeneration": 1,
+      "url": "http://yeah3.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  },
+  {
+    "apiVersion": "serving.knative.dev/v1alpha1",
+    "kind": "Service",
+    "metadata": {
+      "annotations": {
+        "serving.knative.dev/creator": "system:serviceaccount:dc06f6638837:dc06f6638837-manager",
+        "serving.knative.dev/lastModifier": "system:serviceaccount:dc06f6638837:dc06f6638837-manager"
+      },
+      "creationTimestamp": "2020-02-12T21:24:07Z",
+      "generation": 1,
+      "name": "yeah4",
+      "namespace": "dc06f6638837",
+      "resourceVersion": "38287973",
+      "selfLink": "/apis/serving.knative.dev/v1alpha1/namespaces/dc06f6638837/services/yeah4",
+      "uid": "ca88dba5-dbfc-4b84-ba40-590ca5afb7f4"
+    },
+    "spec": {
+      "template": {
+        "metadata": {
+          "creationTimestamp": null
+        },
+        "spec": {
+          "containerConcurrency": 0,
+          "containers": [
+            {
+              "image": "index.docker.io/agrawals/helloworld",
+              "name": "user-container",
+              "readinessProbe": {
+                "successThreshold": 1,
+                "tcpSocket": {
+                  "port": 0
+                }
+              },
+              "resources": {}
+            }
+          ],
+          "timeoutSeconds": 300
+        }
+      },
+      "traffic": [
+        {
+          "latestRevision": true,
+          "percent": 100
+        }
+      ]
+    },
+    "status": {
+      "conditions": [
+        {
+          "lastTransitionTime": "2020-02-28T11:45:08Z",
+          "message": "Revision \"yeah4-92vf5\" failed with message: Unable to fetch image \"index.docker.io/agrawals/helloworld\": UNAUTHORIZED: authentication required; [map[Action:pull Class: Name:agrawals/helloworld Type:repository]].",
+          "reason": "RevisionFailed",
+          "status": "False",
+          "type": "ConfigurationsReady"
+        },
+        {
+          "lastTransitionTime": "2020-02-28T17:33:39Z",
+          "message": "Configuration \"yeah4\" does not have any ready Revision.",
+          "reason": "RevisionMissing",
+          "status": "False",
+          "type": "Ready"
+        },
+        {
+          "lastTransitionTime": "2020-02-12T21:24:42Z",
+          "message": "Configuration \"yeah4\" does not have any ready Revision.",
+          "reason": "RevisionMissing",
+          "status": "False",
+          "type": "RoutesReady"
+        }
+      ],
+      "latestCreatedRevisionName": "yeah4-92vf5",
+      "observedGeneration": 1,
+      "url": "http://yeah4.dc06f6638837.us-south.knative.test.appdomain.cloud"
+    }
+  }
+]

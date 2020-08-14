@@ -1,0 +1,24 @@
+.list-page {
+  .bx--data-table-container {
+    padding-top: 0;
+  }
+
+  // project list specific styles
+  &.clg-project-list-page {
+    // align the header with the content on wide screens
+    .pal--page-header {
+      max-width: 99rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    // the name column should use more space
+    .bx--data-table:not(.clg-table-emptystate) thead tr th:nth-child(2) {
+      width: 30%;
+    }
+
+    .bx--data-table.clg-table-emptystate thead tr th:nth-child(1) {
+      width: 30%;
+    }
+  }
+}

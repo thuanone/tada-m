@@ -1,0 +1,36 @@
+{
+  "apiVersion": "codeengine.cloud.ibm.com/v1alpha1",
+  "kind": "JobDefinition",
+  "metadata": {
+    "creationTimestamp": "2020-04-07T14:50:45Z",
+    "generateName": "my-new-job-",
+    "generation": 1,
+    "labels": {
+      "prefix": "my-new-job"
+    },
+    "name": "my-new-job-mdhx8",
+    "namespace": "365c8c6b-97e0",
+    "resourceVersion": "36992553",
+    "selfLink": "/apis/codeengine.cloud.ibm.com/v1alpha1/namespaces/365c8c6b-97e0/jobdefinitions/my-new-job-mdhx8",
+    "uid": "6cedfbd8-4b87-4f9c-9754-3de53078520a"
+  },
+  "spec": {
+    "containers": [
+      {
+        "command": [
+          "/bin/sh",
+          "-c",
+          "date; echo Hello $JOB_INDEX"
+        ],
+        "image": "busybox",
+        "name": "my-new-job-a1c359f9",
+        "resources": {
+          "requests": {
+            "cpu": "1",
+            "memory": "1024Mi"
+          }
+        }
+      }
+    ]
+  }
+}

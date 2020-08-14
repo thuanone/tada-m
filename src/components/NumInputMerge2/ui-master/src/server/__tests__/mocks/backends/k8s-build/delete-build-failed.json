@@ -1,0 +1,14 @@
+{
+  "kind": "Status",
+  "apiVersion": "v1",
+  "metadata": {},
+  "status": "Failure",
+  "message": "builds.build.dev \"some-build\" not found",
+  "reason": "NotFound",
+  "details": {
+    "name": "some-build",
+    "group": "build.dev",
+    "kind": "builds"
+  },
+  "code": 404
+}

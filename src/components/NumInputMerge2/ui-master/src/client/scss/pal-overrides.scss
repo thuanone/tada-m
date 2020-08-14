@@ -1,0 +1,200 @@
+// add all coligo specific overrides here
+
+// in order to remove the vertical-scrollbar, we need to compensate the margin-top of the ibm-cloud-app definition
+.global-header-container.v6 ~ main .ibm-cloud-app.coligo-page,
+.global-header-container.v6 ~ main.ibm-cloud-app.coligo-page,
+.global-header-container.v6 ~ #main-content .ibm-cloud-app.coligo-page,
+.global-header-container.v6 ~ #main-content.ibm-cloud-app.coligo-page {
+  margin-top: 0;
+  padding-top: 50px;
+}
+
+.coligo-page {
+  .coligo-form {
+    padding-top: $layout-03;
+  }
+
+  // we need some spacing right after a form items
+  .coligo-form .bx--form-item:not(.bx--skeleton) {
+    margin-bottom: $layout-03;
+  }
+
+  // make sure pagination elements are not affected by the margin above
+  .coligo-form .bx--pagination .bx--form-item {
+    margin-bottom: 0;
+  }
+
+  .coligo-tab,
+  .coligo-panel {
+    // we need some spacing below each form item in the tab
+    .bx--form-item:not(.bx--skeleton) {
+      margin-bottom: $layout-03;
+    }
+
+    // the last item does not require spacing at the bottom
+    .is-last-item .bx--form-item {
+      margin-bottom: 0;
+    }
+
+    // make sure pagination elements are not affected by the margin above
+    .bx--pagination {
+      margin-bottom: 0;
+    }
+  }
+
+
+  .coligo-panel {
+    // in FF the scrolling behavior of the sidebar has a bug
+    .is-last-row {
+      padding-bottom: $layout-05;
+    }
+  }
+
+  .bx--form-item .bx--dropdown__wrapper,
+  .bx--form-item .bx--list-box__wrapper,
+  .clg--combo-box .bx--form-item {
+    width: 100%;
+  }
+
+  .bx--grid [class*='bx--col'] {
+    z-index: initial;
+  }
+
+  .productive-heading-01 {
+    @include type-style(productive-heading-01);
+
+    margin-bottom: $spacing-03;
+  }
+
+  .productive-heading-02 {
+    @include type-style(productive-heading-02);
+
+    margin-bottom: $spacing-03;
+  }
+
+  .productive-heading-03 {
+    @include type-style(productive-heading-03);
+
+    margin-bottom: $spacing-03;
+  }
+
+  .productive-heading-04 {
+    @include type-style(productive-heading-04);
+
+    margin-bottom: $spacing-03;
+  }
+
+  .productive-heading-05 {
+    @include type-style(productive-heading-05);
+
+    margin-bottom: $spacing-03;
+  }
+
+  .productive-heading-06 {
+    @include type-style(productive-heading-06);
+
+    margin-bottom: $spacing-03;
+  }
+
+  .productive-heading-07 {
+    @include type-style(productive-heading-07);
+
+    margin-bottom: $spacing-03;
+  }
+
+  .code-01 {
+    @include type-style(code-01);
+  }
+
+  .body-short-01 {
+    @include type-style(body-short-01);
+  }
+
+  .body-long-01 {
+    @include type-style(body-long-01);
+  }
+
+  .body-short-02 {
+    @include type-style(body-short-02);
+  }
+
+  .body-long-02 {
+    @include type-style(body-long-02);
+  }
+
+  // the ErrorState component renders the message in a white box on gray background without any padding
+  .pal--error-state {
+    .pal--message {
+      padding: $spacing-05;
+    }
+  }
+
+  // data table headers should have a gray background nowadays
+  .bx--data-table-header {
+    background-color: $ui-02;
+  }
+}
+
+// our UI would look much cleaner if we could use the full width for rendering the tabslist
+// see: https://github.ibm.com/coligo/ui/issues/253
+.clg-full-width-tabnav.bx--tabs {
+  .bx--tabs__nav,
+  .bx--tabs__nav-link {
+    width: 100%;
+  }
+}
+
+// tooltip definitions in the page header
+.pal--page-header {
+  .bx--tooltip--definition {
+    // the max-width should prevent that long tooltip texts span over the whole page
+    .bx--assistive-text {
+      max-width: 200px;
+    }
+  }
+}
+
+// ensures that toast nofications are rendered in the top-right corner of the page
+.pal--toast-manager {
+  position: fixed;
+  z-index: 10000;
+  right: 0;
+  top: 3rem;
+}
+
+// we are using tooltip labels as replacement for form labels.
+// therefor we need some space at the bottom
+.bx--tooltip__label {
+  margin-bottom: $spacing-03;
+}
+
+// in stage the tooltip footer is rendered with a larger font than in devtest/devprod
+.bx--tooltip__footer {
+  @include type-style(body-short-01);
+}
+
+.clg-card-container {
+  // we need some space, if the cards are stacked on smaller screens
+  margin-bottom: $layout-02;
+}
+
+.clg-card-container:last-of-type {
+  // the last card in a row should always use as much height as possible
+  .pal--card {
+    height: 100%;
+  }
+}
+
+// recently the carbon component introduced a skeleton loading animation for the table title and description
+// as the coligo tablewrapper renders them without the loading animation, we need hide the skeleton otherwise we would see two table headers
+.cfn-table-wrapper {
+  .bx--skeleton {
+    .bx--data-table-header {
+      display: none;
+    }
+
+    .bx--table-toolbar {
+      display: none;
+    }
+  }
+}

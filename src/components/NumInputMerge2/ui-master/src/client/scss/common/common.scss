@@ -1,0 +1,171 @@
+// it seems that there are other default typestyles are applied per environment
+// this rule should help to align our elements
+$black: #000;
+
+body .coligo-ui {
+  @include type-style(body-short-01);
+}
+
+.clg-nav__header__icon {
+  width: 16px;
+  height: 16;
+}
+
+.unsaved-changes {
+  height: 8px;
+  width: 8px;
+  background-color: $brand-01;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: $spacing-03;
+  vertical-align: middle;
+}
+
+.page-content {
+  padding-bottom: $layout-02;
+}
+
+.truncate-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// these definitions are used to style the status indicators of an resource (e.g. application, job-definition)
+.resource-status {
+  margin-top: $spacing-2xs;
+  height: $spacing-sm;
+  width: $spacing-sm;
+  border-radius: 50%;
+  display: inline-block;
+  background-color: $brand-01;
+
+  &.green {
+    background-color: $support-02;
+  }
+
+  &.red {
+    background-color: $support-01;
+  }
+
+  &.yellow {
+    background-color: $support-03;
+  }
+
+  &.gray {
+    background-color: $text-03;
+  }
+
+  &--separator {
+    font-size: 0.875rem;
+    vertical-align: top;
+    display: inline-block;
+  }
+
+  &--text {
+    margin-left: $spacing-xs;
+    font-size: 0.875rem;
+    vertical-align: top;
+    display: inline-block;
+  }
+}
+
+// this is just for test purposes until we have a final decision
+// see: https://github.ibm.com/coligo/design/issues/71
+.coligo-id {
+  @include type-style(label-01);
+
+  text-align: right;
+  margin-top: -1rem;
+  font-style: italic;
+
+  @media (min-width: 42rem) {
+    max-width: 38rem;
+  }
+
+  @media (min-width: 66rem) {
+    max-width: 46rem;
+  }
+
+  @media (min-width: 99rem) {
+    max-width: 52rem;
+  }
+}
+
+.clg-item {
+  &--caption {
+    margin-left: $spacing-03;
+  }
+
+  &--icon {
+    width: 20px;
+    vertical-align: middle;
+  }
+
+  &--status {
+    display: flex;
+
+    &.deploying,
+    &.loading,
+    &.deleting,
+    &.provisioning,
+    &.deprovisioning {
+      margin-left: -$spacing-03;
+      margin-top: -$spacing-03;
+
+      .clg-item--status-caption {
+        margin-top: $spacing-03;
+        margin-left: $spacing-03;
+      }
+    }
+
+    &.warning path[opacity='0'] {
+      fill: $icon-01;
+      opacity: 1;
+    }
+
+    &-icon {
+      width: 20px;
+      vertical-align: middle;
+    }
+
+    &-loading-small {
+      margin-left: -4px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: -5px;
+    }
+  }
+}
+
+.fill-success {
+  fill: $support-02;
+}
+
+.fill-failed {
+  fill: $support-01;
+}
+
+.fill-waiting {
+  fill: $icon-01;
+}
+
+.fill-running {
+  fill: $icon-02;
+}
+
+.fill-warning {
+  fill: $support-03;
+
+  [data-icon-path='inner-path'] {
+    fill: $black;
+    opacity: 1;
+  }
+}
+
+.clg--side-panel {
+  .bx--row {
+    margin-right: 0;
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "display_name": "Code Engine",
+  "description": "Run your application, job, or container on a managed serverless platform.",
+  "long_description": "Run your application, job, or container on a managed serverless platform. Auto-scale your workloads and only pay for the resources you consume.",
+  "bullet1Title":"Go live in seconds",
+  "bullet1Description":"Build great applications in any language, using your favorite libraries, dependencies and tools, and then deploy them to our serverless container platform in seconds.",
+  "bullet2Title":"No cluster management",
+  "bullet2Description":"Managing and securing your clusters can be hard and is often in the way of actual development. Code Engine does the cluster management for you and provides monitoring and logging for your workloads. This means that you can concentrate on what is important - developing your applications.",
+  "bullet3Title":"Truly serverless",
+  "bullet3Description":"Code Engine automatically scales your workloads up and down and abstracts away all infrastucture management. When your containers receive no traffic, Code Engine can even scale them down to zero. You pay for only the exact resources you use.",
+  "bullet4Title": "Based on Kubernetes",
+  "bullet4Description": "Containers have become a standard way to package and deploy workloads. Code Engine is built on technologies like Kubernetes, knative, Istio, allowing you full access to the container ecosystem tooling and making sure that your workloads remain portable.",
+  "bullet5Title": "Run your batch jobs",
+  "bullet5Description": "Make run-to-completion components part of your application. Easily offload long-running and resource-hungry tasks to asynchronous jobs that allow for optimized scale and cost efficiency."
+}

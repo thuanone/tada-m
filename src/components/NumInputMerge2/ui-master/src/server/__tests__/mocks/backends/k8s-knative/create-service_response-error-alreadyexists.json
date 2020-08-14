@@ -1,0 +1,14 @@
+{
+  "kind": "Status",
+  "apiVersion": "v1",
+  "metadata": {},
+  "status": "Failure",
+  "message": "services.serving.knative.dev \"yeah2\" already exists",
+  "reason": "AlreadyExists",
+  "details": {
+      "name": "yeah2",
+      "group": "serving.knative.dev",
+      "kind": "services"
+  },
+  "code": 409
+}

@@ -1,0 +1,19 @@
+{
+  "apiVersion": "build.dev/v1alpha1",
+  "kind": "BuildRun",
+  "metadata": {
+    "creationTimestamp": "2020-07-03T13:22:48Z",
+    "generateName": "some-build-run-",
+    "generation": 1,
+    "name": "some-build-run-fmmdk",
+    "namespace": "89e41770-c744",
+    "resourceVersion": "45821667",
+    "selfLink": "/apis/build.dev/v1alpha1/namespaces/89e41770-c744/buildruns/some-build-run-fmmdk",
+    "uid": "6b62a864-0906-4bd9-90f2-36f76a427df2"
+  },
+  "spec": {
+    "buildRef": {
+      "name": "some-build"
+    }
+  }
+}

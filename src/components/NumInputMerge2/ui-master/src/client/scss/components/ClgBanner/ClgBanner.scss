@@ -1,0 +1,54 @@
+
+
+
+.clg--banner {
+  margin-bottom: $layout-03;
+  margin-top: -$layout-01;
+
+  .pal--card__body {
+    padding: 0 $layout-02 $layout-02 $layout-01;
+  }
+
+  &__card {
+    display: flex;
+  }
+
+  &__content {
+    width: 100%;
+  }
+
+  &__image {
+    padding-right: 0;
+    padding-left: 0;
+    height: 100%;
+    margin: auto;
+    margin-left: 0;
+    margin-right: 0;
+    display: none;
+
+    @media (min-width: 1056px) {
+      display: block;
+    }
+
+    img {
+      max-width: 136px;
+      max-height: 136px;
+      vertical-align: middle;
+      margin: auto;
+    }
+
+  }
+
+  &__text {
+    margin-bottom: $spacing-03;
+
+    @media (min-width: 1312px) {
+      margin-bottom: 0;
+    }
+  }
+
+  &__morelink {
+    display: flex;
+    justify-content: flex-end;
+  }
+}

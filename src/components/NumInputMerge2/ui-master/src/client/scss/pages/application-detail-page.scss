@@ -1,0 +1,240 @@
+.clg-application-detail-page {
+  &--configuration {
+    // this section takes care of styling the current selected revision section
+    .current-revision {
+      display: flex;
+      padding-bottom: $spacing-lg;
+
+      &__name {
+        flex: 1;
+
+        // we need to adjust the error notification, to not break the flex alignment
+        .bx--inline-notification {
+          margin-top: 1.3rem;
+          margin-bottom: 0;
+        }
+
+        .new-name {
+          display: flex;
+          width: 100%;
+
+          &__base-part {
+            @include type-style(body-short-01);
+
+            margin-top: 0.7rem;
+            padding-right: $spacing-03;
+
+            // the new name should never break
+            white-space: nowrap;
+          }
+
+          &__custom-part {
+            &.bx--text-input {
+              padding-left: $spacing-03;
+            }
+          }
+        }
+
+        // loading animation for the revision selector
+        .application-revision-loading {
+          margin-top: $spacing-06;
+        }
+      }
+
+      &__actions {
+        // ensures that the loading animation and the cancel button are rendered next to each other
+        display: flex;
+
+        // we need some space between the cancel and save button
+        .bx--btn--secondary {
+          margin-right: $spacing-05;
+        }
+      }
+    }
+
+    .section.revision-configuration {
+      .bx--tab-content,
+      .bx--tabs__nav-item--selected {
+        background-color: $ui-02;
+      }
+    }
+
+    .form-section {
+      .form-section--header {
+        padding-top: $spacing-03;
+        padding-bottom: $spacing-04;
+      }
+
+      // input fields should span the whole width of the column
+      .resource-limit-input {
+        width: 100%;
+      }
+    }
+
+    .section.invocations {
+      .application-invoke {
+        &--no-invocations {
+          padding: $spacing-05;
+
+          @media (min-width: 1312px) {
+            padding: $spacing-09;
+          }
+
+          &__title {
+            margin-top: $spacing-06;
+          }
+
+          &__description {
+            margin-top: $spacing-03;
+          }
+
+          &__morelink {
+            margin-top: $spacing-07;
+          }
+        }
+
+        .invocation-result {
+          margin: 0 -1rem $spacing-01;
+
+          &__pending {
+            background-color: $notification-info-background-color;
+            border-left: 4px solid $support-04;
+          }
+
+          &__success {
+            background-color: $notification-success-background-color;
+            border-left: 4px solid $support-02;
+          }
+
+          &__failure {
+            background-color: $notification-error-background-color;
+            border-left: 4px solid $support-01;
+          }
+
+          &__header {
+            padding-top: $spacing-03;
+            padding-left: $spacing-04;
+            padding-right: $spacing-04;
+
+            // this is necessary to be aligned with the invocation headline
+            .bx--inline-loading {
+              margin-top: -0.4rem;
+              margin-left: -0.4rem;
+              margin-right: 0.1rem;
+            }
+
+            svg:not(.bx--loading__svg) {
+              margin-right: $spacing-04;
+            }
+
+            .header-row {
+              display: flex;
+            }
+
+            &-title {
+              width: 100%;
+            }
+
+            &-duration {
+              width: 100%;
+              text-align: right;
+            }
+          }
+
+          &__details {
+            padding: 0 $spacing-06 $spacing-02 $spacing-08;
+
+            &__section-content {
+              margin: $spacing-01 0 $spacing-02;
+
+              &.content-code {
+                margin: 0 0 $spacing-md;
+                display: block;
+                word-break: break-all;
+                word-wrap: break-word;
+              }
+            }
+
+            &__section-header {
+              margin-top: $spacing-02;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  &--traffic {
+    // the name column should use more space
+    .bx--data-table thead tr th:nth-child(1) {
+      width: 40%;
+    }
+  }
+
+  .debug-information {
+    padding-top: $spacing-lg;
+  }
+
+  .clg--side-panel {
+    // the collapse/expand icons must be aligned
+    .status-condition svg,
+    .toogle-section svg {
+      vertical-align: middle;
+      margin-right: $spacing-03;
+    }
+
+    &__section-heading {
+      margin-bottom: $spacing-05;
+
+      &.first {
+        margin-top: 0;
+      }
+    }
+
+    &__section-content {
+      word-wrap: break-word;
+
+      .bx--row {
+        margin-bottom: $spacing-05;
+      }
+
+      .bx--label {
+        margin-bottom: $spacing-01;
+      }
+
+      .bx--form-item {
+        word-wrap: break-word;
+        word-break: break-all;
+      }
+
+      .status-condition--type {
+        @include type-style(body-short-01);
+      }
+
+      .status-condition--date {
+        @include type-style(helper-text-01);
+
+        text-align: right;
+      }
+
+      .status-condition--message {
+        margin-top: $spacing-03;
+
+        .message-text {
+          @include type-style(helper-text-01);
+
+          word-break: initial;
+        }
+      }
+    }
+
+    &__section-separator {
+      margin-top: $spacing-06;
+      margin-bottom: $spacing-06;
+      height: 2px;
+      border-width: 0;
+      color: $ui-03;
+      background-color: $ui-03;
+    }
+  }
+}

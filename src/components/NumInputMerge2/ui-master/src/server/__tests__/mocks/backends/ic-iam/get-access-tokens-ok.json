@@ -1,0 +1,9 @@
+{
+  "access_token": "eyJraWQiOi....",
+  "refresh_token": "n-dItg9DmSuOEu....",
+  "token_type": "Bearer",
+  "expires_in": 3600,
+  "delegated_refresh_token": "n-dG4RpnPtopOLZirQ....",
+  "expiration": 1594083467,
+  "scope": "ibm openid"
+}

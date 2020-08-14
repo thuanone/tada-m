@@ -1,0 +1,13 @@
+{
+  "txnid": "REPOSREQ-86b...",
+  "message": "tag 'list' not found",
+  "errinfo": {
+    "api_call_docker_id": "a17c2c...",
+    "api_call_name": "GetRepositoryTag",
+    "api_call_start": "2020-07-31T23:07:34.069791122Z",
+    "api_call_txnid": "REPOSREQ-86b...",
+    "namespace": "reggeenr",
+    "repository": "self-signed-cert",
+    "tag": "list"
+  }
+}

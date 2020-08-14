@@ -1,0 +1,44 @@
+.page.cli-page {
+  .cli-page--action-link,
+  .cli-page--action-link:visited,
+  .cli-page--action-link:hover {
+    color: $ui-01;
+    text-decoration: none;
+  }
+
+  .cli-page--setup-step {
+    margin-top: $layout-03;
+    margin-bottom: $layout-03;
+  }
+
+  .cli-page--snippet {
+    margin-top: $layout-01;
+    margin-left: -$spacing-04;
+  }
+
+  .cli-page--text {
+    margin-top: $layout-01;
+  }
+
+  .cli-page--output {
+    margin-top: $layout-01;
+    margin-left: -$spacing-04;
+
+    .bx--copy-btn {
+      display: none;
+    }
+
+    // we need to adjust the height of the sample output code snippet container
+    .bx--snippet-container {
+      min-height: initial;
+
+      pre {
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  .bx--snippet--multi .bx--snippet-container pre {
+    overflow-x: hidden;
+  }
+}

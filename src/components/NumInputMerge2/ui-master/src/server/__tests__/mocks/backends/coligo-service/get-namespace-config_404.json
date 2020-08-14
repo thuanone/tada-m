@@ -1,0 +1,7 @@
+{
+  "x-request-id": "b51b340b-52a4-42ec-a622-67d4a034c69e",
+  "timestamp": "2019-10-23T18:40:49.447841302Z",
+  "messageid": "M1001",
+  "message": "Not Found. The requested namespace cannot be located. Check that the namespace ID is correct and try your request again.",
+  "statuscode": 404
+}

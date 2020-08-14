@@ -1,0 +1,12 @@
+{
+  "errors": [
+    {
+      "code": "forbidden",
+      "message_code": "BXNIM0513E",
+      "message": "You are not authorized to use this API",
+      "details": "Reason: Access check for action 'iam-identity.apikey.get' for subject 'iam-ServiceId-121c6e37-6753-4ede-af5d-0e413581b8b9' for resource 'ServiceId-121c6e37-6753-4ede-af5d-0e413581b8b9' was denied. Outbound transaction id 'coligo-ui-qhjmlokn-000'"
+    }
+  ],
+  "trace": "coligo-ui-qhjmlokn",
+  "status_code": 403
+}

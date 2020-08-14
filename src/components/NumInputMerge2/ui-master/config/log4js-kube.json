@@ -1,0 +1,6 @@
+{
+  "appenders": {
+    "console": { "type": "console", "layout": { "type": "basic" } }
+  },
+  "categories": { "default": { "appenders": ["console"], "level": "info" } }
+}

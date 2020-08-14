@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="63px" height="69px" viewBox="0 0 63 69" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: sketchtool 64 (101010) - https://sketch.com -->
+    <title>3E94DD8F-E736-4FC3-AC86-FF335DE73F9D</title>
+    <desc>Created with sketchtool.</desc>
+    <g id="Empty-states" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="02.1.1-CodeEngine-Project-Components" transform="translate(-329.000000, -369.000000)">
+            <g id="Group-16" transform="translate(320.000000, 364.000000)">
+                <g id="Group-10" transform="translate(8.767123, 0.000000)">
+                    <polygon id="Rectangle-Copy-12" fill-opacity="0.5" fill="#DCDCDC" transform="translate(23.561644, 59.726027) scale(-1, 1) rotate(60.000000) translate(-23.561644, -59.726027) " points="12.0547945 53.0399802 35.0684932 39.4520548 35.0684932 66.552536 12.0547945 80"></polygon>
+                    <g id="Group-4" transform="translate(0.547945, 0.000000)">
+                        <polygon id="Rectangle" fill="#BEBEBE" points="23.6712329 33.8230049 46.9041096 20.239957 46.9041096 47.3307104 23.6712329 60.7733474"></polygon>
+                        <polygon id="Rectangle" fill="#A4A4A4" transform="translate(12.054795, 40.559734) scale(-1, 1) translate(-12.054795, -40.559734) " points="0.438356164 33.8760871 23.6712329 20.2930391 23.6712329 47.3837926 0.438356164 60.8264296"></polygon>
+                        <polygon id="Rectangle" fill="#DCDCDC" transform="translate(23.549253, 20.266695) scale(-1, 1) rotate(60.000000) translate(-23.549253, -20.266695) " points="11.9328148 13.5830479 35.1656915 -3.44050713e-13 35.1656915 27.0907534 11.9328148 40.5333904"></polygon>
+                    </g>
+                    <g id="icon/image/code/16-copy" transform="translate(16.986301, 13.506849)" fill="#8C8C8C">
+                        <path d="M14.3321918,5.39726027 L11.0958904,8.63356164 L10.4440068,7.98167808 L13.0238014,5.39726027 L10.4440068,2.81284247 L11.0958904,2.1609589 L14.3321918,5.39726027 Z M0.462328767,5.39726027 L3.69863014,2.1609589 L4.3505137,2.81284247 L1.77071918,5.39726027 L4.3505137,7.98167808 L3.69863014,8.63356164 L0.462328767,5.39726027 Z M5.74212329,9.7819863 L8.15547945,0.773972603 L9.04869863,1.01299658 L6.63534247,10.0205479 L5.74212329,9.7819863 Z" id="Fill"></path>
+                    </g>
+                    <polygon id="Star" fill="#DCDCDC" points="50.1377092 12.3280442 45.4794521 10.9589041 50.1377092 9.58976399 51.5068493 4.93150685 52.8759894 9.58976399 57.5342466 10.9589041 52.8759894 12.3280442 51.5068493 16.9863014"></polygon>
+                    <polygon id="Star-Copy" fill="#DCDCDC" points="57.2981925 21.0579719 53.6986301 20 57.2981925 18.9420281 58.3561644 15.3424658 59.4141363 18.9420281 63.0136986 20 59.4141363 21.0579719 58.3561644 24.6575342"></polygon>
+                </g>
+                <rect id="Rectangle" x="0" y="0" width="80" height="80"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

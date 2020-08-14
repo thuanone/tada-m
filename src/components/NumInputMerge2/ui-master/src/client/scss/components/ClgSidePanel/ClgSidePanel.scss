@@ -1,0 +1,66 @@
+.clg--sidepanel-container {
+  .clg--sidepanel-description {
+    padding-bottom: $layout-03;
+  }
+
+  .bx--form-item {
+    // The following override is needed to make text input fields span the whole width of a form inside a SidePanel
+    div.clg--text-input {
+      width: 100%;
+    }
+  }
+
+  // provide some classes (taken from Pal's EnhancedDataTable) for small tables in a SidePanel
+  .clg-table-wrapper__sm {
+    overflow-x: auto;
+
+    .bx--data-table-container {
+      overflow: hidden;
+      min-width: unset;
+
+      .bx--data-table-header {
+        background: transparent;
+      }
+    }
+
+    .bx--pagination {
+      justify-content: space-between;
+
+      .bx--pagination__left > * {
+        display: none;
+      }
+    }
+  }
+
+  .clg-table-wrapper__pagination--sm {
+    justify-content: space-between;
+
+    .bx--pagination__left > * {
+      display: none;
+    }
+  }
+}
+
+// this override allows us to use grid rows within the sidepanel
+.clg--side-panel {
+  .bx--row {
+    margin-left: -$layout-01;
+    margin-right: -$layout-01;
+  }
+
+  .subtitle {
+    margin-bottom: $spacing-05;
+  }
+
+  .clg-progress-indicator {
+    margin-bottom: $layout-03;
+
+    .bx--progress-step {
+      width: 11rem;
+
+      .bx--progress-line {
+        width: 100%;
+      }
+    }
+  }
+}

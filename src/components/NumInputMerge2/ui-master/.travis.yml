@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+  - 12
+
+sudo: true
+
+# So the only reason we add docker is because it pulls in the C++ compiler we need for node-sass
+services:
+  - docker
+
+install:
+  - npm install --loglevel=warn
+  - npm run deploy
+
+before_script:
+  - npm run lint
+
+script:
+  - npm test
+
+after_success:
+  - ./publishCoverage.sh

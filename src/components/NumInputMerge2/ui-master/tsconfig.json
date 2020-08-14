@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "alwaysStrict": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "allowJs": false,
+    "outDir": "dist",
+    "jsx": "react"
+  },
+  "include": [
+    "./src/server/ts/**/*",
+    "./src/common/**/*",
+    "./src/e2e"
+  ],
+  "exclude": [
+    "node_modules",
+    "coverage",
+    "reports",
+    "dist",
+    "**/*.jsx",
+    "**/*.js"
+  ]
+}

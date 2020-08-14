@@ -1,0 +1,146 @@
+.overview-page {
+  background-color: $ui-01;
+
+  .hero-teaser {
+    padding-top: $layout-03;
+    padding-bottom: $layout-02;
+
+    &__tag {
+      margin-top: -$spacing-05;
+      margin-bottom: $spacing-05;
+
+      .bx--tag {
+        margin: 0;
+      }
+    }
+
+    &__text {
+      &-title.productive-heading-04 {
+        margin-bottom: $spacing-06;
+      }
+
+      &-subtitle.productive-heading-03 {
+        margin-bottom: $spacing-06;
+      }
+
+      &-actions {
+        .bx--btn {
+          margin-right: $spacing-05;
+          margin-bottom: $spacing-05;
+        }
+
+        a.bx--btn:focus,
+        a.bx--btn:hover {
+          color: $text-04;
+          text-decoration: none;
+        }
+      }
+    }
+
+    &__image {
+      // the teaser image shall be hidden on small screens
+      display: none;
+
+      @media (min-width: 1056px) {
+        display: block;
+
+        img {
+          width: 100%;
+          max-width: 602px;
+
+          margin-top: -$layout-03;
+          margin-bottom: -$layout-02;
+        }
+      }
+    }
+  }
+
+  .overview-section {
+    padding: $layout-md 0;
+
+    .section--headline {
+      margin-bottom: $spacing-06;
+    }
+
+    .bx--btn {
+      margin-bottom: $spacing-05;
+    }
+
+    a.bx--btn:focus,
+    a.bx--btn:hover {
+      color: $text-04;
+      text-decoration: none;
+    }
+  }
+
+  .clg--teaser__title {
+    @include type-style(productive-heading-02);
+
+    margin-bottom: $layout-01;
+  }
+
+  .clg--teaser__text {
+    @include type-style(body-short-02);
+  }
+}
+
+.clg-overview-page {
+
+  .clg-experimental-banner {
+    width: 100%;
+
+    .bx--inline-notification {
+      margin-top: 0;
+      margin-bottom: 0;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    .bx--inline-notification--info {
+      border-left: 0;
+    }
+
+    .bx--inline-notification--info .bx--inline-notification__icon {
+      fill: $icon-03;
+    }
+
+    .bx--inline-notification__action-button.bx--btn--ghost:hover {
+      text-decoration: none;
+    }
+  }
+
+  .overview-content.coligo-concepts {
+    background-color: $ui-02;
+  }
+
+  // due to the fact that not all teaser icons have the same height, we need to align the spaces here
+  .explore-capabilties {
+    .clg--teaser__image {
+      min-height: 39px;
+    }
+
+    // we need some space below the teaser
+    .section--content {
+      margin-bottom: $layout-02;
+    }
+  }
+
+  .coligo-concepts {
+    // each of the create buttons should have the same width
+    .bx--btn {
+      min-width: 210px;
+    }
+
+    // we need some space below the teaser
+    .section--content {
+      margin-bottom: $layout-02;
+    }
+  }
+
+  .tutorials {
+    // we need some space below the teaser
+    .section--content {
+      margin-bottom: $layout-02;
+    }
+  }
+}

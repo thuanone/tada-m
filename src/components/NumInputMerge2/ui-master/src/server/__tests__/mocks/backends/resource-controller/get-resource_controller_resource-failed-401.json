@@ -1,0 +1,6 @@
+{
+  "error_code": "RC-IamErrorResponse",
+  "message": "Token is expired",
+  "status_code": 401,
+  "transaction_id": "bss-b454461a71ee474d"
+}

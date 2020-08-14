@@ -1,0 +1,16 @@
+{
+  "include": [
+    "./src/client/**/*.ts?",
+    "./src/server/ts/**/*",
+    "./src/common/**/*",
+    "./src/e2e"
+  ],
+  "exclude": [
+    "node_modules",
+    "coverage",
+    "reports",
+    "dist",
+    "**/*.jsx",
+    "**/*.js"
+  ]
+}

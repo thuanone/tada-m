@@ -1,0 +1,47 @@
+.error-page {
+  &-section {
+    display: flex;
+    justify-content: center;
+    padding: 3rem 0;
+    position: relative;
+
+    &:nth-child(odd) {
+      background: $ui-01;
+    }
+  }
+
+  &-container {
+    width: 100%;
+    max-width: 90%;
+  }
+
+  &-hero-text {
+    .bx--type-alpha {
+      font-weight: 600;
+    }
+
+    .subtitle {
+      color: $text-02;
+      font-size: .875rem;
+      margin-top: -$spacing-xs;
+      margin-bottom: $spacing-md;
+    }
+
+    .bx--type-beta {
+      max-width: 60%;
+      word-wrap: break-word;
+      margin-bottom: $spacing-lg;
+    }
+  }
+}
+
+.error-page-section.error-page-hero {
+  background-color: $ui-01;
+  height: 600px;
+
+  .error-page-container.hero-image {
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: 25rem;
+  }
+}

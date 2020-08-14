@@ -1,0 +1,8 @@
+{?coligoUsabillaEnabled}
+<script>
+    /* Initialize Usabilla */
+    if (!window.isChinaLandingEnabled && window.Bluemix && window.Bluemix.initUsabilla) {  
+      window.Bluemix.initUsabilla();  
+    }
+</script>
+{/coligoUsabillaEnabled}

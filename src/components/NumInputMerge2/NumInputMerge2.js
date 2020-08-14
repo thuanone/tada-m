@@ -1,8 +1,32 @@
 import React from "react";
 
+import PropTypes from 'prop-types';
+
 // TODO: add PropTypes
 
 class NumInputMerge2 extends React.Component {
+  static propTypes = {
+    /**
+     * optional starting value
+     */
+    defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    /**
+     * Optional helper Text //-> to replace this.state.message
+     */
+    helperText: PropTypes.string,
+    /**
+     * Specify the Units to use in Format [{**FIRSTUNIT**}, {**SECONDUNIT**}]
+     */
+    unitConfig: PropTypes.array,
+    /**
+     * optional: the minimal value, by default set to 0
+     */
+    minVal: PropTypes.number,
+    /**
+     * optional: the maximum value, by default set to undefined
+     */
+    maxVal: PropTypes.number,
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -192,6 +216,7 @@ class NumInputMerge2 extends React.Component {
     /** ==>*/ return report;
   }
   onClick(buttonID, unitInUsePTR, Config) {
+    console.log('hi');
     if (!this.state.isValid) {
       return;
     } else {
@@ -237,7 +262,7 @@ class NumInputMerge2 extends React.Component {
         ? report.newPTR
         : this.state.unitInUsePTR,
     }, () => {
-      this.populateToParent(userInput);
+      this.populateToParent(userInput + "asd");
     });
   }
 

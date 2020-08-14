@@ -1,0 +1,215 @@
+{
+  "apiVersion": "build.dev/v1alpha1",
+  "items": [
+    {
+      "apiVersion": "build.dev/v1alpha1",
+      "kind": "Build",
+      "metadata": {
+        "annotations": {
+          "build.build.dev/build-run-deletion": "true"
+        },
+        "creationTimestamp": "2020-07-03T13:21:04Z",
+        "finalizers": [
+          "finalizer.build.build.dev"
+        ],
+        "generation": 1,
+        "name": "some-build-2",
+        "namespace": "89e41770-c744",
+        "resourceVersion": "45821009",
+        "selfLink": "/apis/build.dev/v1alpha1/namespaces/89e41770-c744/builds/some-build-2",
+        "uid": "bdd5da82-8995-4679-9a5b-13af4041d81a"
+      },
+      "spec": {
+        "output": {
+          "credentials": {
+            "name": "foobar-icr"
+          },
+          "image": "us.icr.io/foobar/foo:bar"
+        },
+        "source": {
+          "url": "https://github.com/foobar/taxi"
+        },
+        "strategy": {
+          "kind": "ClusterBuildStrategy",
+          "name": "kaniko"
+        }
+      },
+      "status": {
+        "reason": "Succeeded",
+        "registered": "True"
+      }
+    },
+    {
+      "apiVersion": "build.dev/v1alpha1",
+      "kind": "Build",
+      "metadata": {
+        "annotations": {
+          "build.build.dev/build-run-deletion": "true"
+        },
+        "creationTimestamp": "2020-07-03T13:16:26Z",
+        "finalizers": [
+          "finalizer.build.build.dev"
+        ],
+        "generation": 1,
+        "name": "some-build",
+        "namespace": "89e41770-c744",
+        "resourceVersion": "45819589",
+        "selfLink": "/apis/build.dev/v1alpha1/namespaces/89e41770-c744/builds/some-build",
+        "uid": "6c37f69e-e4dc-4031-ace3-080a46b5957c"
+      },
+      "spec": {
+        "output": {
+          "credentials": {
+            "name": "foobar-icr"
+          },
+          "image": "us.icr.io/foobar/foo:bar2"
+        },
+        "source": {
+          "url": "https://github.com/foobar/taxi"
+        },
+        "strategy": {
+          "kind": "ClusterBuildStrategy",
+          "name": "kaniko"
+        }
+      },
+      "status": {
+        "reason": "Succeeded",
+        "registered": "True"
+      }
+    },
+    {
+      "apiVersion": "build.dev/v1alpha1",
+      "kind": "Build",
+      "metadata": {
+        "creationTimestamp": "2020-07-02T11:35:59Z",
+        "generation": 2,
+        "name": "serviceid-test",
+        "namespace": "89e41770-c744",
+        "resourceVersion": "45274790",
+        "selfLink": "/apis/build.dev/v1alpha1/namespaces/89e41770-c744/builds/serviceid-test",
+        "uid": "63cfa386-e348-44a7-9164-238620151b93"
+      },
+      "spec": {
+        "output": {
+          "credentials": {
+            "name": "icr-namespace-foobar"
+          },
+          "image": "us.icr.io/codeengine/new:taxi"
+        },
+        "source": {
+          "url": "https://github.com/foobar/taxi"
+        },
+        "strategy": {
+          "kind": "ClusterBuildStrategy",
+          "name": "kaniko"
+        }
+      },
+      "status": {
+        "reason": "Succeeded",
+        "registered": "True"
+      }
+    },
+    {
+      "apiVersion": "build.dev/v1alpha1",
+      "kind": "Build",
+      "metadata": {
+        "creationTimestamp": "2020-07-02T10:47:41Z",
+        "generation": 5,
+        "name": "my-taxi-app",
+        "namespace": "89e41770-c744",
+        "resourceVersion": "45255481",
+        "selfLink": "/apis/build.dev/v1alpha1/namespaces/89e41770-c744/builds/my-taxi-app",
+        "uid": "4aaa04c7-6e55-4123-8619-b324a11c0e77"
+      },
+      "spec": {
+        "output": {
+          "credentials": {
+            "name": "foobar-icr"
+          },
+          "image": "us.icr.io/foobar/myapp:taxi"
+        },
+        "source": {
+          "url": "https://github.com/foobar/taxi"
+        },
+        "strategy": {
+          "kind": "ClusterBuildStrategy",
+          "name": "kaniko"
+        }
+      },
+      "status": {
+        "reason": "Succeeded",
+        "registered": "True"
+      }
+    },
+    {
+      "apiVersion": "build.dev/v1alpha1",
+      "kind": "Build",
+      "metadata": {
+        "creationTimestamp": "2020-07-01T23:26:07Z",
+        "generation": 2,
+        "name": "second-build",
+        "namespace": "89e41770-c744",
+        "resourceVersion": "45008049",
+        "selfLink": "/apis/build.dev/v1alpha1/namespaces/89e41770-c744/builds/second-build",
+        "uid": "fc4ed629-05f8-4b72-b2d3-9575b8558039"
+      },
+      "spec": {
+        "output": {
+          "credentials": {
+            "name": "foobar-icr"
+          },
+          "image": "us.icr.io/foobar/apps:taxi-v2"
+        },
+        "source": {
+          "url": "https://github.com/foobar/taxi"
+        },
+        "strategy": {
+          "kind": "ClusterBuildStrategy",
+          "name": "kaniko"
+        }
+      },
+      "status": {
+        "reason": "Succeeded",
+        "registered": "True"
+      }
+    },
+    {
+      "apiVersion": "build.dev/v1alpha1",
+      "kind": "Build",
+      "metadata": {
+        "creationTimestamp": "2020-06-30T12:52:54Z",
+        "generation": 9,
+        "name": "dsdfa",
+        "namespace": "89e41770-c744",
+        "resourceVersion": "45001483",
+        "selfLink": "/apis/build.dev/v1alpha1/namespaces/89e41770-c744/builds/dsdfa",
+        "uid": "1656c900-f4d6-43e8-9ac9-c21c5e7dbd1d"
+      },
+      "spec": {
+        "output": {
+          "credentials": {
+            "name": "foobar-icr"
+          },
+          "image": "us.icr.io/foobar/taxi:v1"
+        },
+        "source": {
+          "url": "https://github.com/foobar/taxi"
+        },
+        "strategy": {
+          "kind": "ClusterBuildStrategy",
+          "name": "kaniko"
+        }
+      },
+      "status": {
+        "reason": "Succeeded",
+        "registered": "True"
+      }
+    }
+  ],
+  "kind": "BuildList",
+  "metadata": {
+    "continue": "",
+    "resourceVersion": "45825023",
+    "selfLink": "/apis/build.dev/v1alpha1/namespaces/89e41770-c744/builds"
+  }
+}
