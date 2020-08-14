@@ -1,12 +1,14 @@
 import React from "react";
-
 import PropTypes from "prop-types";
+
+import {MemoryOld, Memory } from "./units";
 
 // TODO: add PropTypes
 
 class NumInputMerge2 extends React.Component {
   constructor(props) {
     super(props);
+    console.log(MemoryOld);
     this.state = {
       //actively used properties
       value: props.value || "", // if no unit -> handle as bytes and calculate the best unit
@@ -25,6 +27,7 @@ class NumInputMerge2 extends React.Component {
     this.Configuration = this.props;
   }
 
+  
   //currently not in use
   onComponentUpdate(prevProps) {
     console.log("hello ");
@@ -32,7 +35,10 @@ class NumInputMerge2 extends React.Component {
       this.setState({ value: this.props.value });
     }
   }
-
+  
+  componentDidMount() { 
+    this.populateToParent(this.state.value);
+  }
   increment(number, unitInUsePTR, Config) {
     if (number === "-") {
       return { number: 1, message: "" };
