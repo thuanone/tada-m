@@ -184,7 +184,7 @@ describe("validate()", () => {
   it("is inValid: Special Characters included", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("ÄÜ?", Config);
+    const report = instance.validate("10 ?? mi", Config);
     expect(report.isValid).toBe(false);
   });
   it("is inValid: Number in conjunction with random letters", () => {
@@ -265,16 +265,16 @@ describe("validate()", () => {
     const report = instance.validate("10 MiB GiB", Config);
     expect(report.isValid).toBe(false);
   });
-  it("test: invoked on undefined", () => {
+  it("is inValid test: invoked on undefined", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const returnValue = instance.validate(undefined);
+    const returnValue = instance.validate(undefined, Config);
     expect(returnValue.isValid).toBe(false);
   });
-  it("test: invoked on null", () => {
+  it("is inValid test: invoked on null", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const returnValue = instance.validate(null);
+    const returnValue = instance.validate(null, Config);
     expect(returnValue.isValid).toBe(false);
   });
 });

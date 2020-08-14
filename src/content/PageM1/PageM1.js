@@ -34,21 +34,41 @@ const Memory_Units = {
   ],
 };
 
-const PageM1 = () => {
-  return (
-    <div>
-      <h1>PageM1</h1>
+class PageM1 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: '12345678765', 
+    };
 
-      <label>
-        NumberInput Merge
-        <NumInputMerge1 {...Memory_Units} />
-      </label>
-      <label>
-          NumberInputMerge 2
-          <NumInputMerge2 {...Memory_Units} />
-      </label>
-    </div>
-  );
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange(newValue) {
+
+    this.setState({value: newValue});
+  };
+
+  render() {
+    return (   
+      <div>
+        <h1>PageM1</h1>
+
+        <label>
+          NumberInput Merge
+          <NumInputMerge1 {...Memory_Units} />
+        </label>
+        <label>
+            NumberInputMerge 2
+            <NumInputMerge2 {...Memory_Units} onUpdate={this.onChange} value={this.state.value}/>
+        </label>
+
+        <label>
+          Output: {this.state.value}
+        </label>
+      </div>
+    );
+  }
 };
 
 export default PageM1;

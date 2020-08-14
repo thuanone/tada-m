@@ -1,11 +1,16 @@
 import React from "react";
 
+// TODO: add PropTypes
+
 class NumInputMerge2 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       //actively used properties
-      value: "",
+      value: props.value || "", // if no unit -> handle as bytes and calculate the best unit
+                                // if number -> handle as bytes and calculate the best unit
+                                // if string incl unit -> handle as-is
+                                // if undefined -> print '-'
       unitInUsePTR: props.unitInUsePTR ? props.unitInUsePTR : 0,
       message: "",
       isValid: true,
@@ -14,6 +19,7 @@ class NumInputMerge2 extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.unitMatch = this.unitMatch.bind(this);
     this.validate = this.validate.bind(this);
+
     /*
     this.ConfigBase = this.props.general // Base Config e.g. min/max Value
     this.Confignits = this.props.unitSpec // Units e.g. MiB -> stepsize , GiB -> stepsize
@@ -21,6 +27,13 @@ class NumInputMerge2 extends React.Component {
 
     this.Configuration = this.props;
   }
+
+  onComponentUpdate(prevProps) {
+    if(prevProps && prevProps.value !== this.props.value) {
+      this.setState({value: this.props.value});
+    }
+  }
+
   increment(number, unitInUsePTR, Config) {
     if (number === "-") {
       return { number: 1, message: "" };
@@ -69,8 +82,9 @@ class NumInputMerge2 extends React.Component {
     //const numbersOnly = /(-?[0-9]+)(\.?)([0-9]+)?/gm;
     let numbersMatch;
     let number;
-    
-    try {//null / undefined
+
+    try {
+      //null / undefined
       numbersMatch = input.match(numbersOnly);
     } catch (error) {
       input = "-";
@@ -78,7 +92,6 @@ class NumInputMerge2 extends React.Component {
         message: `undefined/null has been passed into get Number -> input turned to '-'`,
       });
     }
-    
 
     number =
       input === ""
@@ -88,12 +101,13 @@ class NumInputMerge2 extends React.Component {
         : numbersMatch
         ? parseFloat(numbersMatch.join(""))
         : "-";
-        console.log(input, numbersMatch, number, this.state.message);
+    console.log(input, numbersMatch, number, this.state.message);
     return number;
   }
 
   unitMatch(string, Config) {
-    if (!string) {//null / undefined '', falsy
+    if (!string) {
+      //null / undefined '', falsy
       return "notValid";
     }
     var i;
@@ -115,14 +129,15 @@ class NumInputMerge2 extends React.Component {
     const regexNum = /-?[0-9]+/gi;
     const regexString = /[a-z]+/gi;
     const regexNumberAfterUnit = /.[a-z]+.[0-9]+/gi;
-
+    //const regexSpecialCharacters = //
     let report = { message: " ", isValid: true, newPTR: 0 };
     let returnUnitMatch;
-    let matchedNumRX; //= userInput.match(regexNum);
-    let matchedStringRX; // = userInput.match(regexString);
-    let matchedNum, matchedString;
+    //let matchedNumRX; //= userInput.match(regexNum);
+    //let matchedStringRX; // = userInput.match(regexString);
+    let matchedNumRX, matchedStringRX, matchedNum, matchedString;
 
     try {
+      // undefined / null userInput
       matchedNumRX = userInput.match(regexNum);
       matchedStringRX = userInput.match(regexString);
     } catch {
@@ -136,16 +151,18 @@ class NumInputMerge2 extends React.Component {
       report.isValid = true;
       return report;
     }
-    
+
     if (userInput.match(regexNumberAfterUnit)) {
+      // 10 mb 10 invalid , or mb 10
       report.isValid = false;
-      report.message = 'please input in this format : [Number] [Unit]';
+      report.message = "please input in this format : [Number] [Unit]";
       return report;
     }
-
-    /** ==>*/ matchedNum = matchedNumRX !== null ? matchedNumRX.join("") : "";
+    /** ==>*/ matchedNum = 
+      matchedNumRX !== null ? matchedNumRX.join("") : "";
     /** ==>*/ matchedString =
       matchedStringRX !== null ? matchedStringRX.join("") : "";
+
     if (isNaN(parseFloat(matchedNum))) {
       // Checks if a number comes first
       report.message = `${matchedNum}  is not a valid number`;
@@ -164,6 +181,7 @@ class NumInputMerge2 extends React.Component {
       report.newPTR = returnUnitMatch;
     } else {
       if (matchedString === "") {
+        //if no unit is input -> just takes number and applies unitInUse
         //report.message = "please enter a valid unit";
         report.isValid = true;
       } else {
@@ -171,8 +189,7 @@ class NumInputMerge2 extends React.Component {
         report.isValid = false;
       }
     }
-
-    return report;
+    /** ==>*/ return report;
   }
   onClick(buttonID, unitInUsePTR, Config) {
     if (!this.state.isValid) {
@@ -201,6 +218,8 @@ class NumInputMerge2 extends React.Component {
         value: `${returnConverted.number} ${returnConverted.unit}`,
         unitInUsePTR: returnConverted.unitPTR,
         message: newNumber.message,
+      }, () => {
+        this.populateToParent(this.state.value);
       });
     }
   }
@@ -217,7 +236,19 @@ class NumInputMerge2 extends React.Component {
       unitInUsePTR: !isNaN(report.newPTR)
         ? report.newPTR
         : this.state.unitInUsePTR,
+    }, () => {
+      this.populateToParent(userInput);
     });
+  }
+
+  populateToParent(newValue) {
+    if(this.props.onUpdate) {
+
+      // TODO check whether the value should be populated as string or as number (aka bytes)
+      // if the newValue === '-' -> tbd
+
+      this.props.onUpdate(newValue);
+    }
   }
 
   render() {
