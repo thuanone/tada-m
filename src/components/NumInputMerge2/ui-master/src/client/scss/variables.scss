@@ -1,8 +1,0 @@
-// Colors that do not exist in BluemixComponents
-$transparent: rgba(255, 255, 255, 0);
-$terminal-bg: #000;
-
-// Sizes
-$header-height: 50px;
-$terminal-height: 35vh;
-$terminal-outer-height: calc(100vh - #{$header-height} - #{$terminal-height});

@@ -1,8 +1,0 @@
-reporting:
-  dir: ./coverage
-  reports:
-    - html
-    - cobertura
-    - text-summary
-  report-config:
-    text-summary: { file: text_summary.txt }

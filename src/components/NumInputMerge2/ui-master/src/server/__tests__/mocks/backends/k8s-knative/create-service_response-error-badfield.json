@@ -1,5 +1,0 @@
-{
-  "message": "admission webhook \"validation.webhook.serving.knative.dev\" denied the request: validation failed: Failed to parse image reference: spec.template.spec.containers[0].image\nimage: \"fsdfds  fdds\", error: could not parse reference",
-  "reason": "BadRequest",
-  "status": 400
-}

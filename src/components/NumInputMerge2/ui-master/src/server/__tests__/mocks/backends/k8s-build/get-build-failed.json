@@ -1,1 +1,0 @@
-{"kind":"Status","apiVersion":"v1","metadata":{},"status":"Failure","message":"builds.build.dev \"serviceid-test2\" not found","reason":"NotFound","details":{"name":"serviceid-test2","group":"build.dev","kind":"builds"},"code":404}

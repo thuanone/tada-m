@@ -1,40 +1,18 @@
 import React from "react";
 
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 // TODO: add PropTypes
 
 class NumInputMerge2 extends React.Component {
-  static propTypes = {
-    /**
-     * optional starting value
-     */
-    defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    /**
-     * Optional helper Text //-> to replace this.state.message
-     */
-    helperText: PropTypes.string,
-    /**
-     * Specify the Units to use in Format [{**FIRSTUNIT**}, {**SECONDUNIT**}]
-     */
-    unitConfig: PropTypes.array,
-    /**
-     * optional: the minimal value, by default set to 0
-     */
-    minVal: PropTypes.number,
-    /**
-     * optional: the maximum value, by default set to undefined
-     */
-    maxVal: PropTypes.number,
-  }
   constructor(props) {
     super(props);
     this.state = {
       //actively used properties
       value: props.value || "", // if no unit -> handle as bytes and calculate the best unit
-                                // if number -> handle as bytes and calculate the best unit
-                                // if string incl unit -> handle as-is
-                                // if undefined -> print '-'
+      // if number -> handle as bytes and calculate the best unit
+      // if string incl unit -> handle as-is
+      // if undefined -> print '-'
       unitInUsePTR: props.unitInUsePTR ? props.unitInUsePTR : 0,
       message: "",
       isValid: true,
@@ -44,17 +22,14 @@ class NumInputMerge2 extends React.Component {
     this.unitMatch = this.unitMatch.bind(this);
     this.validate = this.validate.bind(this);
 
-    /*
-    this.ConfigBase = this.props.general // Base Config e.g. min/max Value
-    this.Confignits = this.props.unitSpec // Units e.g. MiB -> stepsize , GiB -> stepsize
-    */
-
     this.Configuration = this.props;
   }
 
+  //currently not in use
   onComponentUpdate(prevProps) {
-    if(prevProps && prevProps.value !== this.props.value) {
-      this.setState({value: this.props.value});
+    console.log("hello ");
+    if (prevProps && prevProps.value !== this.props.value) {
+      this.setState({ value: this.props.value });
     }
   }
 
@@ -182,8 +157,7 @@ class NumInputMerge2 extends React.Component {
       report.message = "please input in this format : [Number] [Unit]";
       return report;
     }
-    /** ==>*/ matchedNum = 
-      matchedNumRX !== null ? matchedNumRX.join("") : "";
+    /** ==>*/ matchedNum = matchedNumRX !== null ? matchedNumRX.join("") : "";
     /** ==>*/ matchedString =
       matchedStringRX !== null ? matchedStringRX.join("") : "";
 
@@ -216,17 +190,16 @@ class NumInputMerge2 extends React.Component {
     /** ==>*/ return report;
   }
   onClick(buttonID, unitInUsePTR, Config) {
-    console.log('hi');
     if (!this.state.isValid) {
       return;
     } else {
       let nullIfNoMatch = this.state.value.match(/[a-z]+/gi); //produces null if no match
       let unit = nullIfNoMatch
-        ? nullIfNoMatch.join()
-        : Config.unitConfig[unitInUsePTR].unit; //unit equals either typedInput or unitInUse
+        ? nullIfNoMatch.join() //if theres a match take unit
+        : Config.unitConfig[unitInUsePTR].unit; //if no match get unitInUse
       let number = this.getNumber(this.state.value); //if no number returns 0
       let newNumber = { number: number, message: "" };
-      let returnConverted /** = {number: number, unit: unit, unitPTR: unitInUsePTR} */;
+      let returnConverted  = {number: number, unit: unit, unitPTR: unitInUsePTR};
 
       if (buttonID === "Increment") {
         newNumber = this.increment(number, unitInUsePTR, Config);
@@ -239,13 +212,16 @@ class NumInputMerge2 extends React.Component {
         unit,
         Config
       );
-      this.setState({
-        value: `${returnConverted.number} ${returnConverted.unit}`,
-        unitInUsePTR: returnConverted.unitPTR,
-        message: newNumber.message,
-      }, () => {
-        this.populateToParent(this.state.value);
-      });
+      this.setState(
+        {
+          value: `${returnConverted.number} ${returnConverted.unit}`,
+          unitInUsePTR: returnConverted.unitPTR,
+          message: newNumber.message,
+        },
+        () => {
+          this.populateToParent(this.state.value);
+        }
+      );
     }
   }
 
@@ -254,24 +230,28 @@ class NumInputMerge2 extends React.Component {
     let userInput = event.target.value;
     let report = this.validate(userInput, Config, this.state.unitInUsePTR);
     //
-    this.setState({
-      value: userInput,
-      message: report.message,
-      isValid: report.isValid,
-      unitInUsePTR: !isNaN(report.newPTR)
-        ? report.newPTR
-        : this.state.unitInUsePTR,
-    }, () => {
-      this.populateToParent(userInput + "asd");
-    });
+    this.setState(
+      {
+        value: userInput,
+        message: report.message,
+        isValid: report.isValid,
+        unitInUsePTR: !isNaN(report.newPTR)
+          ? report.newPTR
+          : this.state.unitInUsePTR,
+      },
+      () => {
+        this.populateToParent(userInput);
+      }
+    );
   }
 
-  populateToParent(newValue) {
-    if(this.props.onUpdate) {
-
-      // TODO check whether the value should be populated as string or as number (aka bytes)
+  populateToParent(value) {
+    if (this.props.onUpdate) {
+      let newValue;
+      newValue =
+        value === "" ? "-" : isNaN(value) ? value : this.getNumber(value);
+      // TODO check whether the value should be populated as string or as number (aka bytes) : √
       // if the newValue === '-' -> tbd
-
       this.props.onUpdate(newValue);
     }
   }
@@ -377,5 +357,31 @@ class NumInputMerge2 extends React.Component {
     );
   }
 }
+NumInputMerge2.propTypes = {
+  /**
+   * optional starting value
+   */
+  defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  /**
+   * Optional helper Text //-> to replace this.state.message
+   */
+  helperText: PropTypes.string,
+  /**
+   * Array of UnitObjects
+   */
+  unitConfig: PropTypes.array,
+  /**
+   * optional: the minimal value, by default set to 0
+   */
+  minVal: PropTypes.number,
+  /**
+   * optional: the maximum value, by default set to undefined
+   */
+  maxVal: PropTypes.number,
+};
+
+NumInputMerge2.defaultProps = {
+  
+};
 
 export default NumInputMerge2;

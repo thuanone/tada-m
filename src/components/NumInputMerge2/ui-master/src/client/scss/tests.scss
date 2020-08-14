@@ -1,9 +1,0 @@
-body[data-integration-tests='true'] {
-  #add-space-dialog,
-  .intercom-block,
-  .notifyjs-corner,
-  .tc-feedback-button,
-  .tourDialog {
-    display: none !important; // sass-lint:disable-line no-important
-  }
-}

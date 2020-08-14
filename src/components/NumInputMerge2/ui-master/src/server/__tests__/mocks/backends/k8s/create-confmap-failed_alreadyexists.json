@@ -1,9 +1,0 @@
-{
-  "message": "configmaps \"some-config\" already exists",
-  "reason": "AlreadyExists",
-  "details": {
-    "name": "some-config",
-    "kind": "configmaps"
-  },
-  "status": 409
-}

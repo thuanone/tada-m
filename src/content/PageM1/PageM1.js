@@ -38,7 +38,7 @@ class PageM1 extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '12345678765', 
+      value: '', 
     };
 
     this.onChange = this.onChange.bind(this);

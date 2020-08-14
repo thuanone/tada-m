@@ -1,7 +1,0 @@
-{
-  "x-request-id": "4566c7b6-4512-44d1-92ed-c8429e05970b",
-  "timestamp": "2020-05-15T12:43:34.114841675Z",
-  "messageid": "M1004",
-  "message": "Unauthorized. The IAM token is invalid or expired. To retrieve your IAM token, run `ibmcloud login` and then `ibmcloud iam oauth-tokens`.",
-  "statuscode": 401
-}
