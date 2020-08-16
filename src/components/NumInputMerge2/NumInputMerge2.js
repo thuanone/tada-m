@@ -30,7 +30,6 @@ class NumInputMerge2 extends React.Component {
   
   //currently not in use
   onComponentUpdate(prevProps) {
-    console.log("hello ");
     if (prevProps && prevProps.value !== this.props.value) {
       this.setState({ value: this.props.value });
     }
@@ -66,12 +65,12 @@ class NumInputMerge2 extends React.Component {
     let convertedNumber = { number, unit, unitPTR: unitInUsePTR };
     let unitConfig = Config.unitConfig;
 
-    if (number >= 1024 && unitConfig[unitInUsePTR + 1] !== undefined) {
+    if (number >= 1024 && unitConfig[unitInUsePTR + 1] !== undefined) {//up a unit
       convertedNumber.number = Math.round(number / 1024);
       convertedNumber.unit = unitConfig[unitInUsePTR + 1].unit; //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR + 1;
     }
-    if (number < 1 && unitConfig[unitInUsePTR - 1] !== undefined) {
+    if (number < 1 && unitConfig[unitInUsePTR - 1] !== undefined) {//down a unit
       convertedNumber.number =
         1024 - Config.unitConfig[unitInUsePTR - 1].standardStepSize;
       convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit; //{unit:} is assigned to String
@@ -106,7 +105,7 @@ class NumInputMerge2 extends React.Component {
         : numbersMatch
         ? parseFloat(numbersMatch.join(""))
         : "-";
-    console.log(input, numbersMatch, number, this.state.message);
+    console.log('get num',input, numbersMatch, number, this.state.message);
     return number;
   }
 
@@ -203,6 +202,7 @@ class NumInputMerge2 extends React.Component {
       let unit = nullIfNoMatch
         ? nullIfNoMatch.join() //if theres a match take unit
         : Config.unitConfig[unitInUsePTR].unit; //if no match get unitInUse
+      //-> diese 4 Zeilen ermöglichen Increments auf nur Zahlen
       let number = this.getNumber(this.state.value); //if no number returns 0
       let newNumber = { number: number, message: "" };
       let returnConverted  = {number: number, unit: unit, unitPTR: unitInUsePTR};
@@ -384,6 +384,10 @@ NumInputMerge2.propTypes = {
    * optional: the maximum value, by default set to undefined
    */
   maxVal: PropTypes.number,
+  /**
+   * Define at which unit to start at
+   */
+  startingUnit: PropTypes.number,
 };
 
 NumInputMerge2.defaultProps = {
