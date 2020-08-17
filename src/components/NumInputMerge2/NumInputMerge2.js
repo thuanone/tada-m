@@ -22,8 +22,6 @@ class NumInputMerge2 extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.unitMatch = this.unitMatch.bind(this);
     this.validate = this.validate.bind(this);
-
-    this.Configuration = this.props;
   }
 
   
@@ -295,7 +293,7 @@ class NumInputMerge2 extends React.Component {
                       this.onClick(
                         "Increment",
                         this.state.unitInUsePTR,
-                        this.Configuration
+                        this.props
                       )
                     }
                   >
@@ -327,7 +325,7 @@ class NumInputMerge2 extends React.Component {
                       this.onClick(
                         "Decrement",
                         this.state.unitInUsePTR,
-                        this.Configuration
+                        this.props
                       )
                     }
                   >
@@ -353,7 +351,7 @@ class NumInputMerge2 extends React.Component {
 
         <div class="bx--form__helper-text">
           Active Unit:{" "}
-          {this.Configuration.unitConfig[this.state.unitInUsePTR].unit}
+          {this.props.unitConfig[this.state.unitInUsePTR].unit}
         </div>
 
         <div class="bx--form__helper-text">{this.state.message}</div>
