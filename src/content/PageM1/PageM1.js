@@ -2,6 +2,46 @@ import React from "react";
 import NumInputMerge1 from "../../components/NumInputMerge1/NumInputMerge1";
 import NumInputMerge2 from "../../components/NumInputMerge2/NumInputMerge2";
 
+const Memory = [
+  /*
+  {
+    unit: "Byte",
+    shortUnit: "byte",
+    standardStepSize: 1,
+    standardChunk: 128,
+    convertUpAt: 1024,
+  },
+  {
+    unit: "KiB",
+    shortUnit: "Ki",
+    standardStepSize: 1,
+    standardChunk: 128,
+    convertUpAt: 1024,
+  },
+  */
+  {
+    unit: "MiB",
+    shortUnit: "Mi",
+    standardStepSize: 1,
+    standardChunk: 128,
+    convertUpAt: 1024,
+  },
+  {
+    unit: "GiB",
+    shortUnit: "Gi",
+    standardStepSize: 0.25,
+    standardChunk: 0.5,
+    convertUpAt: 1024,
+  },
+  {
+    unit: "TiB",
+    shortUnit: "Ti",
+    standardStepSize: 0.1,
+    standardChunk: 0.5,
+    convertUpAt: 1024,
+  },
+];
+
 const Memory_Units = {
   general: {
     // base config

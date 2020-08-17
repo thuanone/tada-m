@@ -8,7 +8,6 @@ import {MemoryOld, Memory } from "./units";
 class NumInputMerge2 extends React.Component {
   constructor(props) {
     super(props);
-    console.log(MemoryOld);
     this.state = {
       //actively used properties
       value: props.value || "", // if no unit -> handle as bytes and calculate the best unit
@@ -105,7 +104,6 @@ class NumInputMerge2 extends React.Component {
         : numbersMatch
         ? parseFloat(numbersMatch.join(""))
         : "-";
-    console.log('get num',input, numbersMatch, number, this.state.message);
     return number;
   }
 
