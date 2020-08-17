@@ -604,7 +604,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config
+      Config.unitConfig
     );
     expect(returnConverted).toEqual({
       number: 1,
@@ -622,7 +622,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config
+      Config.unitConfig
     );
     expect(returnConverted).toEqual({
       number: 1,
@@ -640,7 +640,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config
+      Config.unitConfig
     );
     expect(returnConverted).toEqual({
       number: 1023.75,
@@ -658,7 +658,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config
+      Config.unitConfig
     );
     expect(returnConverted).toEqual({
       number: 1023,
@@ -676,7 +676,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config
+      Config.unitConfig
     );
     expect(returnConverted).toEqual({
       number: 10225,
@@ -694,7 +694,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config
+      Config.unitConfig
     );
     expect(returnConverted).toEqual({
       number: 0.9,
@@ -712,7 +712,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config
+      Config.unitConfig
     );
     expect(returnConverted).toEqual({
       number: "-",
@@ -730,7 +730,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config
+      Config.unitConfig
     );
     expect(returnConverted).toEqual({
       number: "-",
@@ -748,7 +748,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config
+      Config.unitConfig
     );
     expect(returnConverted).toEqual({
       number: "-",

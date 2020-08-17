@@ -65,9 +65,8 @@ class NumInputMerge2 extends React.Component {
       : { number: newNumber, message: "" }; //false -> return new Number
   }
 
-  convert(number, unitInUsePTR, unit, Config) {
+  convert(number, unitInUsePTR, unit, unitConfig) {
     let convertedNumber = { number, unit, unitPTR: unitInUsePTR };
-    let unitConfig = Config.unitConfig;
 
     if (number >= 1024 && unitConfig[unitInUsePTR + 1] !== undefined) {//up a unit
       convertedNumber.number = Math.round(number / 1024);
@@ -219,7 +218,7 @@ class NumInputMerge2 extends React.Component {
         newNumber.number,
         unitInUsePTR,
         unit,
-        props
+        props.unitConfig
       );
       this.setState(
         {
