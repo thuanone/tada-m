@@ -469,6 +469,7 @@ describe("increment()/decrement()", () => {
     ],
   };
   let Config = Memory_Units;
+  let units = Memory;
   let unitOne, unitTwo;
   [unitOne, unitTwo] = [0, 1];
   //tests for correct stepsize is Missing
@@ -478,15 +479,15 @@ describe("increment()/decrement()", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     let number = 0;
-    const returnValue = instance.increment(number, unitOne, Config);
+    const returnValue = instance.increment(number, unitOne, units, Config.general.maxVal);
     expect(returnValue.number).toBeGreaterThan(number);
   });
   it("increments twice normally", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     let number = 0;
-    const newNumber = instance.increment(number, unitOne, Config);
-    const returnValue = instance.increment(newNumber.number, unitOne, Config);
+    const newNumber = instance.increment(number, unitOne, units, Config.general.maxVal);
+    const returnValue = instance.increment(newNumber.number, unitOne, units, Config.general.maxVal);
     expect(newNumber.number).toBeGreaterThan(number);
     expect(returnValue.number).toBeGreaterThan(newNumber.number);
   });
@@ -500,7 +501,7 @@ describe("increment()/decrement()", () => {
     let newNumber;
     let i;
     for (i = 0; i < maxVal + 10; i++) {
-      newNumber = instance.increment(number, unitOne, Config);
+      newNumber = instance.increment(number, unitOne, units, Config.general.maxVal);
       number = newNumber.number;
     }
     const returnValue = newNumber;
@@ -510,7 +511,7 @@ describe("increment()/decrement()", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
     let number = 2;
-    const returnValue = instance.decrement(number, unitOne, Config);
+    const returnValue = instance.decrement(number, unitOne, units, Config.general.minVal);
     expect(returnValue.number).toBeLessThan(number);
   });
   it("decrements twice normally", () => {
@@ -518,8 +519,8 @@ describe("increment()/decrement()", () => {
     const instance = wrapper.instance({ ...Memory_Units });
 
     let number = 2;
-    const newNumber = instance.decrement(number, unitOne, Config);
-    const returnValue = instance.decrement(newNumber.number, unitOne, Config);
+    const newNumber = instance.decrement(number, unitOne, units, Config.general.minVal);
+    const returnValue = instance.decrement(newNumber.number, unitOne, units, Config.general.minVal);
     expect(newNumber.number).toBeLessThan(number);
     expect(returnValue.number).toBeLessThan(newNumber.number);
   });
@@ -534,7 +535,7 @@ describe("increment()/decrement()", () => {
     let newNumber;
     let i;
     for (i = 0; i < maxVal + 10; i++) {
-      newNumber = instance.decrement(number, unitOne, Config);
+      newNumber = instance.decrement(number, unitOne, units ,Config.general.minVal);
       number = newNumber.number;
     }
     const returnValue = newNumber;
@@ -545,7 +546,7 @@ describe("increment()/decrement()", () => {
     const instance = wrapper.instance({ ...Memory_Units });
 
     let number = "-";
-    const returnValue = instance.increment(number, unitOne, Config);
+    const returnValue = instance.increment(number, unitOne, units, Config.general.maxVal);
     expect(returnValue.number).toBe(1);
   });
   it(`'-'decremented equals 0`, () => {
@@ -553,7 +554,7 @@ describe("increment()/decrement()", () => {
     const instance = wrapper.instance({ ...Memory_Units });
 
     let number = "-";
-    const returnValue = instance.decrement(number, unitOne, Config);
+    const returnValue = instance.decrement(number, unitOne, units, Config.general.minVal);
     expect(returnValue.number).toBe(0);
   });
 });

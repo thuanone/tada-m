@@ -42,25 +42,25 @@ class NumInputMerge2 extends React.Component {
   componentDidMount() { 
     this.populateToParent(this.state.value);
   }
-  increment(number, unitInUsePTR, Config) {
+  increment(number, unitInUsePTR, unitConfig ,maxVal) {
     if (number === "-") {
       return { number: 1, message: "" };
     }
-    let stepsize = Config.unitConfig[unitInUsePTR].standardStepSize;
+    let stepsize = unitConfig[unitInUsePTR].standardStepSize;
     let newNumber = number + stepsize;
-    return newNumber > Config.general.maxVal //is incrementedNumber bigger than maxVal? //funktioniert weil newNum> undefined
+    return newNumber > maxVal //is incrementedNumber bigger than maxVal? //funktioniert weil newNum> undefined
       ? { number: number, message: "maxVal reached" } //true -> return current number
       : { number: newNumber, message: "" }; //false -> return new Number
   }
 
-  decrement(number, unitInUsePTR, Config) {
+  decrement(number, unitInUsePTR, unitConfig, minVal) {
     if (number === "-") {
       return { number: 0, message: "" };
     }
-    let stepsize = Config.unitConfig[unitInUsePTR].standardStepSize;
+    let stepsize = unitConfig[unitInUsePTR].standardStepSize;
     let newNumber = number - stepsize;
 
-    return newNumber < Config.general.minVal //is decrementedNumber smaller than minVal
+    return newNumber < minVal //is decrementedNumber smaller than minVal
       ? { number: number, message: "minVal reached" } //true -> return current number
       : { number: newNumber, message: "" }; //false -> return new Number
   }
@@ -210,9 +210,9 @@ class NumInputMerge2 extends React.Component {
       let returnConverted  = {number: number, unit: unit, unitPTR: unitInUsePTR};
 
       if (buttonID === "Increment") {
-        newNumber = this.increment(number, unitInUsePTR, props);
+        newNumber = this.increment(number, unitInUsePTR, props.unitConfig, props.general.maxVal);
       } else if (buttonID === "Decrement") {
-        newNumber = this.decrement(number, unitInUsePTR, props);
+        newNumber = this.decrement(number, unitInUsePTR, props.unitConfig, props.general.minVal);
       }
       /* ==> */ returnConverted = this.convert(
         newNumber.number,
@@ -298,7 +298,7 @@ class NumInputMerge2 extends React.Component {
                       this.onClick(
                         "Increment",
                         this.state.unitInUsePTR,
-                        this.props
+                        this.props.unitConfig
                       )
                     }
                   >
