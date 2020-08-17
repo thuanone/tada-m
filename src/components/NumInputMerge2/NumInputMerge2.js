@@ -392,7 +392,8 @@ NumInputMerge2.propTypes = {
 };
 
 NumInputMerge2.defaultProps = {
-  
+  minVal: '0',
+  unitConfig: Memory
 };
 
 export default NumInputMerge2;
