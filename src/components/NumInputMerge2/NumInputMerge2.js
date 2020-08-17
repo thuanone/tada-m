@@ -371,7 +371,7 @@ NumInputMerge2.propTypes = {
   /**
    * Array of UnitObjects
    */
-  unitConfig: PropTypes.array,
+  units: PropTypes.array,
   /**
    * optional: the minimal value, by default set to 0
    */
