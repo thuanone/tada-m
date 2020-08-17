@@ -203,22 +203,22 @@ class NumInputMerge2 extends React.Component {
       let nullIfNoMatch = this.state.value.match(/[a-z]+/gi); //produces null if no match
       let unit = nullIfNoMatch
         ? nullIfNoMatch.join() //if theres a match take unit
-        : props.unitConfig[unitInUsePTR].unit; //if no match get unitInUse
+        : this.props.unitConfig[unitInUsePTR].unit; //if no match get unitInUse
       //-> diese 4 Zeilen ermöglichen Increments auf nur Zahlen
       let number = this.getNumber(this.state.value); //if no number returns 0
       let newNumber = { number: number, message: "" };
       let returnConverted  = {number: number, unit: unit, unitPTR: unitInUsePTR};
 
       if (buttonID === "Increment") {
-        newNumber = this.increment(number, unitInUsePTR, props.unitConfig, props.general.maxVal);
+        newNumber = this.increment(number, unitInUsePTR, this.props.unitConfig, this.props.maxVal);
       } else if (buttonID === "Decrement") {
-        newNumber = this.decrement(number, unitInUsePTR, props.unitConfig, props.general.minVal);
+        newNumber = this.decrement(number, unitInUsePTR, this.props.unitConfig, this.props.minVal);
       }
       /* ==> */ returnConverted = this.convert(
         newNumber.number,
         unitInUsePTR,
         unit,
-        props.unitConfig
+        this.props.unitConfig
       );
       this.setState(
         {
@@ -235,7 +235,7 @@ class NumInputMerge2 extends React.Component {
 
   onChange(event) {
     let userInput = event.target.value;
-    let report = this.validate(userInput, this.props.units, this.state.unitInUsePTR);
+    let report = this.validate(userInput, this.props.unitConfig, this.state.unitInUsePTR);
     //
     this.setState(
       {
