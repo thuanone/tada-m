@@ -471,7 +471,7 @@ describe("convert()", () => {
   //receives a number, an Array Index for the unit used and and Array containing unit Objects
   //returns an Object containg number, unit used and and Array Index
   // (number,unitInUsePTR,unitRX,Config) => let convertedNumber = {number : number, unit : unitRX, unitPTR: unitInUsePTR,}
-  let Config = Memory_Units;
+  let unitConfig = Memory;
   let newNumber, unitInUsePTR, unitRX;
   it("converts 1st unit to 2nd unit", () => {
     const wrapper = shallow(<NumInputMerge2 unitConfig={Memory} minVal= '0' />);
@@ -483,7 +483,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config.unitConfig
+      unitConfig
     );
     expect(returnConverted).toEqual({
       number: 1,
@@ -501,7 +501,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config.unitConfig
+      unitConfig
     );
     expect(returnConverted).toEqual({
       number: 1,
@@ -519,7 +519,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config.unitConfig
+      unitConfig
     );
     expect(returnConverted).toEqual({
       number: 1023.75,
@@ -537,7 +537,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config.unitConfig
+      unitConfig
     );
     expect(returnConverted).toEqual({
       number: 1023,
@@ -555,7 +555,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config.unitConfig
+      unitConfig
     );
     expect(returnConverted).toEqual({
       number: 10225,
@@ -573,7 +573,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config.unitConfig
+      unitConfig
     );
     expect(returnConverted).toEqual({
       number: 0.9,
@@ -591,7 +591,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config.unitConfig
+      unitConfig
     );
     expect(returnConverted).toEqual({
       number: "-",
@@ -609,7 +609,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config.unitConfig
+      unitConfig
     );
     expect(returnConverted).toEqual({
       number: "-",
@@ -627,7 +627,7 @@ describe("convert()", () => {
       newNumber,
       unitInUsePTR,
       unitRX,
-      Config.unitConfig
+      unitConfig
     );
     expect(returnConverted).toEqual({
       number: "-",

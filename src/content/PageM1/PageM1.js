@@ -2,6 +2,7 @@ import React from "react";
 import NumInputMerge1 from "../../components/NumInputMerge1/NumInputMerge1";
 import NumInputMerge2 from "../../components/NumInputMerge2/NumInputMerge2";
 
+import  {Memory as MemoryUnit} from "../../components/NumInputMerge2/units";
 const Memory = [
   /*
   {
@@ -85,7 +86,7 @@ class PageM1 extends React.Component {
   }
 
   onChange(newValue) {
-
+    console.log(MemoryUnit);
     this.setState({value: newValue});
   };
 
@@ -100,7 +101,7 @@ class PageM1 extends React.Component {
         </label>
         <label>
             NumberInputMerge 2
-            <NumInputMerge2  onUpdate={this.onChange} value={this.state.value}/>
+            <NumInputMerge2 unitConfig={MemoryUnit} onUpdate={this.onChange} value={this.state.value}/>
         </label>
 
         <label>

@@ -68,14 +68,14 @@ class NumInputMerge2 extends React.Component {
   convert(number, unitInUsePTR, unit, unitConfig) {
     let convertedNumber = { number, unit, unitPTR: unitInUsePTR };
 
-    if (number >= 1024 && unitConfig[unitInUsePTR + 1] !== undefined) {//up a unit
+    if (number >= unitConfig[unitInUsePTR].convertUpAt && unitConfig[unitInUsePTR + 1] !== undefined) {//up a unit
       convertedNumber.number = Math.round(number / 1024);
       convertedNumber.unit = unitConfig[unitInUsePTR + 1].unit; //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR + 1;
     }
     if (number < 1 && unitConfig[unitInUsePTR - 1] !== undefined) {//down a unit
       convertedNumber.number =
-        1024 - unitConfig[unitInUsePTR - 1].standardStepSize;
+      unitConfig[unitInUsePTR-1].convertUpAt - unitConfig[unitInUsePTR - 1].standardStepSize;
       convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit; //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR - 1;
     }
