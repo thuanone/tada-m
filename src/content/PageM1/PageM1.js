@@ -100,7 +100,7 @@ class PageM1 extends React.Component {
         </label>
         <label>
             NumberInputMerge 2
-            <NumInputMerge2 {...Memory_Units} onUpdate={this.onChange} value={this.state.value}/>
+            <NumInputMerge2 {...Memory_Units} unitConfig={Memory} onUpdate={this.onChange} value={this.state.value}/>
         </label>
 
         <label>

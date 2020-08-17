@@ -8,6 +8,13 @@ import {MemoryOld, Memory } from "./units";
 class NumInputMerge2 extends React.Component {
   constructor(props) {
     super(props);
+    /*
+    console.log(this.props.unitConfig);
+    console.log(this.props.unitConfig[0]);
+    console.log(this.props.unitConfig[1]);
+    console.log(this.props.unitConfig[2]);
+    console.log(this.props.unitConfig[0].standardStepSize);
+    */
     this.state = {
       //actively used properties
       value: props.value || "", // if no unit -> handle as bytes and calculate the best unit
@@ -69,7 +76,7 @@ class NumInputMerge2 extends React.Component {
     }
     if (number < 1 && unitConfig[unitInUsePTR - 1] !== undefined) {//down a unit
       convertedNumber.number =
-        1024 - Config.unitConfig[unitInUsePTR - 1].standardStepSize;
+        1024 - unitConfig[unitInUsePTR - 1].standardStepSize;
       convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit; //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR - 1;
     }
@@ -105,7 +112,7 @@ class NumInputMerge2 extends React.Component {
     return number;
   }
 
-  unitMatch(string, Config) {
+  unitMatch(string, units) {
     if (!string) {
       //null / undefined '', falsy
       return "notValid";
@@ -113,19 +120,19 @@ class NumInputMerge2 extends React.Component {
     var i;
     for (
       i = 0;
-      i < Config.length;
+      i < units.length;
       i++ // Array Size (last one is none)
     )
       if (
-        string.toUpperCase() === Config[i].unit.toUpperCase() ||
-        string.toUpperCase() === Config[i].shortUnit.toUpperCase()
+        string.toUpperCase() === units[i].unit.toUpperCase() ||
+        string.toUpperCase() === units[i].shortUnit.toUpperCase()
       ) {
         return i; // new unitInUsePTR
       }
     return "notValid";
   }
 
-  validate(userInput, Config) {
+  validate(userInput, units) {
     const regexNum = /-?[0-9]+/gi;
     const regexString = /[a-z]+/gi;
     const regexNumberAfterUnit = /.[a-z]+.[0-9]+/gi;
@@ -169,7 +176,7 @@ class NumInputMerge2 extends React.Component {
       return report;
     }
 
-    returnUnitMatch = this.unitMatch(matchedString, Config.unitConfig); // either new unitInUsePTR or 'notValid'
+    returnUnitMatch = this.unitMatch(matchedString, units); // either new unitInUsePTR or 'notValid'
 
     if (returnUnitMatch !== "notValid") {
       if (returnUnitMatch === 0 && !Number.isInteger(parseFloat(matchedNum))) {
@@ -190,29 +197,29 @@ class NumInputMerge2 extends React.Component {
     }
     /** ==>*/ return report;
   }
-  onClick(buttonID, unitInUsePTR, Config) {
+  onClick(buttonID, unitInUsePTR, props) {
     if (!this.state.isValid) {
       return;
     } else {
       let nullIfNoMatch = this.state.value.match(/[a-z]+/gi); //produces null if no match
       let unit = nullIfNoMatch
         ? nullIfNoMatch.join() //if theres a match take unit
-        : Config.unitConfig[unitInUsePTR].unit; //if no match get unitInUse
+        : props.unitConfig[unitInUsePTR].unit; //if no match get unitInUse
       //-> diese 4 Zeilen ermöglichen Increments auf nur Zahlen
       let number = this.getNumber(this.state.value); //if no number returns 0
       let newNumber = { number: number, message: "" };
       let returnConverted  = {number: number, unit: unit, unitPTR: unitInUsePTR};
 
       if (buttonID === "Increment") {
-        newNumber = this.increment(number, unitInUsePTR, Config);
+        newNumber = this.increment(number, unitInUsePTR, props);
       } else if (buttonID === "Decrement") {
-        newNumber = this.decrement(number, unitInUsePTR, Config);
+        newNumber = this.decrement(number, unitInUsePTR, props);
       }
       /* ==> */ returnConverted = this.convert(
         newNumber.number,
         unitInUsePTR,
         unit,
-        Config
+        props
       );
       this.setState(
         {
@@ -228,9 +235,8 @@ class NumInputMerge2 extends React.Component {
   }
 
   onChange(event) {
-    let Config = this.props;
     let userInput = event.target.value;
-    let report = this.validate(userInput, Config, this.state.unitInUsePTR);
+    let report = this.validate(userInput, this.props.units, this.state.unitInUsePTR);
     //
     this.setState(
       {

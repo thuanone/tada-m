@@ -29,7 +29,45 @@ const Memory_Units = {
     },
   ],
 };
-
+const Memory = [
+  /*
+  {
+    unit: "Byte",
+    shortUnit: "byte",
+    standardStepSize: 1,
+    standardChunk: 128,
+    convertUpAt: 1024,
+  },
+  {
+    unit: "KiB",
+    shortUnit: "Ki",
+    standardStepSize: 1,
+    standardChunk: 128,
+    convertUpAt: 1024,
+  },
+  */
+  {
+    unit: "MiB",
+    shortUnit: "Mi",
+    standardStepSize: 1,
+    standardChunk: 128,
+    convertUpAt: 1024,
+  },
+  {
+    unit: "GiB",
+    shortUnit: "Gi",
+    standardStepSize: 0.25,
+    standardChunk: 0.5,
+    convertUpAt: 1024,
+  },
+  {
+    unit: "TiB",
+    shortUnit: "Ti",
+    standardStepSize: 0.1,
+    standardChunk: 0.5,
+    convertUpAt: 1024,
+  },
+];
 describe("getNumber()", () => {
   //receives a String and returns a Number (input) => number
   const Memory_Units = {
@@ -163,118 +201,119 @@ describe("validate()", () => {
     ],
   };
   const Config = Memory_Units;
+  const units = Memory;
   it("isValid: any Numbers only", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("10", Config);
+    const report = instance.validate("10", units);
     expect(report.isValid).toBe(true);
   });
   it("isValid: Decimal Number", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("10.5", Config);
+    const report = instance.validate("10.5", units);
     expect(report.isValid).toBe(true);
   });
   it("is inValid: random Letters only", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("asdjsakldjas", Config);
+    const report = instance.validate("asdjsakldjas", units);
     expect(report.isValid).toBe(false);
   });
   it("is inValid: Special Characters included", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("ÄÜ?", Config);
+    const report = instance.validate("ÄÜ?", units);
     expect(report.isValid).toBe(false);
   });
   it("is inValid: Number in conjunction with random letters", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("10 adsj", Config);
+    const report = instance.validate("10 adsj", units);
     expect(report.isValid).toBe(false);
   });
   it("is inValid: Number Letters Numbers", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("10 daskj 10", Config);
+    const report = instance.validate("10 daskj 10", units);
     expect(report.isValid).toBe(false);
   });
   it("is inValid: only Unit correct", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("MiB", Config);
+    const report = instance.validate("MiB", units);
     expect(report.isValid).toBe(false);
   });
   it("is inValid: only Unit lowercase", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("mib", Config);
+    const report = instance.validate("mib", units);
     expect(report.isValid).toBe(false);
   });
   it("is inValid: only Unit uppercase", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("MIB", Config);
+    const report = instance.validate("MIB", units);
     expect(report.isValid).toBe(false);
   });
   it("isValid: Number with Unit", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("10 MiB", Config);
+    const report = instance.validate("10 MiB", units);
     expect(report.isValid).toBe(true);
   });
   it("isValid: Number with Unit shorthand", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("10 Mi", Config);
+    const report = instance.validate("10 Mi", units);
     expect(report.isValid).toBe(true);
   });
   it("isValid: Number with Unit shorthand lowercase", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("10 mi", Config);
+    const report = instance.validate("10 mi", units);
     expect(report.isValid).toBe(true);
   });
   it("isValid: Number with Unit shorthand uppercase", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("10 MI", Config);
+    const report = instance.validate("10 MI", units);
     expect(report.isValid).toBe(true);
   });
   it("isValid: Number Unit lowercase", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("10 mib", Config);
+    const report = instance.validate("10 mib", units);
     expect(report.isValid).toBe(true);
   });
   it("isValid: Number Unit uppercase", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("10 MIB", Config);
+    const report = instance.validate("10 MIB", units);
     expect(report.isValid).toBe(true);
   });
   it("is inValid: Number Unit Number", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("10 MiB 10", Config);
+    const report = instance.validate("10 MiB 10", units);
     expect(report.isValid).toBe(false);
   });
   it("is inValid: Number Two Units", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const report = instance.validate("10 MiB GiB", Config);
+    const report = instance.validate("10 MiB GiB", units);
     expect(report.isValid).toBe(false);
   });
   it("test: invoked on undefined", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const returnValue = instance.validate(undefined);
+    const returnValue = instance.validate(undefined, units);
     expect(returnValue.isValid).toBe(false);
   });
   it("test: invoked on null", () => {
     const wrapper = shallow(<NumInputMerge2 {...Memory_Units} />);
     const instance = wrapper.instance({ ...Memory_Units });
-    const returnValue = instance.validate(null);
+    const returnValue = instance.validate(null, units);
     expect(returnValue.isValid).toBe(false);
   });
 });
