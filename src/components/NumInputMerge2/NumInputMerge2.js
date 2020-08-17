@@ -196,7 +196,7 @@ class NumInputMerge2 extends React.Component {
     }
     /** ==>*/ return report;
   }
-  onClick(buttonID, unitInUsePTR, props) {
+  onClick(buttonID, unitInUsePTR,) {
     if (!this.state.isValid) {
       return;
     } else {
@@ -380,11 +380,11 @@ NumInputMerge2.propTypes = {
   /**
    * optional: the minimal value, by default set to 0
    */
-  minVal: PropTypes.number,
+  minVal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /**
    * optional: the maximum value, by default set to undefined
    */
-  maxVal: PropTypes.number,
+  maxVal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   /**
    * Define at which unit to start at
    */
