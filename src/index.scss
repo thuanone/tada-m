@@ -1,14 +1,10 @@
 @import "@carbon/grid/scss/grid";
 @import "carbon-components/scss/globals/scss/styles.scss";
 
-h1{
-    text-align: center;
-}
 
 .bx--btn.bx--btn--primary{
     background-color: #393939;
 }
-
-.bx--side-nav__link-text{
-    text-decoration: none;
+.h1{
+    font-size: '70px';
 }

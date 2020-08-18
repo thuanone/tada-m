@@ -94,7 +94,7 @@ class QInputPage extends React.Component {
       <div style={{
         position: 'absolute', left: '50%', top: '30%',
         transform: 'translate(-50%, -50%)'}}>
-        <h1>QInput</h1>
+        <h1 style={{fontSize:'70px', marginBottom: '20px'}}>QInput</h1>
 
         <label>
             
