@@ -17,14 +17,15 @@ class Home extends React.Component {
   render() {
     return (
       <div>
-         <section className="bx--offset-lg-3 bx--col-lg-13">
+
         <h1>Home</h1>
+
         <div className="tasks">
           <h2>Tasks</h2>
           <input type="checkbox" onClick={this.handleCheck} checked={this.state.check1}/> <a>creating a react app</a>
         </div>
+
         <button className="button1" onClick= {this.handleSubmit}>Submit</button>
-        </section>
       </div>
     )
   }
