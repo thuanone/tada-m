@@ -1,18 +1,10 @@
 import React from 'react';
 import './home.scss';
+import { Checkbox } from 'carbon-components-react';
 
 
 class Home extends React.Component {
-  state = {
-    check1: true
-  };
-
-  handleCheck = (event) => {
-    this.setState({check1: event.target.checked});
-  };
-  handleSubmit = (event) => {
-    console.log(this.state)
-  }
+  
 
   render() {
     return (
@@ -20,12 +12,16 @@ class Home extends React.Component {
 
         <h1>Home</h1>
 
-        <div className="tasks">
-          <h2>Tasks</h2>
-          <input type="checkbox" onClick={this.handleCheck} checked={this.state.check1}/> <a>creating a react app</a>
-        </div>
+        <fieldset className="bx--fieldset">
+          <legend className="bx--label"> Tasks</legend>
 
-        <button className="button1" onClick= {this.handleSubmit}>Submit</button>
+          <Checkbox defaultChecked id="checked-1" labelText="creating react app"/> 
+          <Checkbox defaultChecked id="checked-2" labelText="NumInput with CarbonDesign style"/> 
+          <Checkbox defaultChecked id="checked-3" labelText="implement increment/ decrement function "/> 
+          <Checkbox defaultChecked id="checked-4" labelText="-" /> 
+          <Checkbox defaultChecked id="checked-5" labelText="-" /> 
+
+        </fieldset>
       </div>
     )
   }
