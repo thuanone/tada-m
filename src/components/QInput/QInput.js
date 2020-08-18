@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./memory-utils" 
+import "./memory-utils";
 
 import { Memory } from "./units";
 

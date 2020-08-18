@@ -2,6 +2,7 @@ import React from "react";
 import QInput from "../../components/QInput/QInput";
 
 import  {Memory as MemoryUnit} from "../../components/QInput/units";
+import {vCPU} from "../../components/QInput/units";
 
 class QInputPage extends React.Component {
   constructor(props) {
