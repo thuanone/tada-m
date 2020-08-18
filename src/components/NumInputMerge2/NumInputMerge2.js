@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import {MemoryOld, Memory } from "./units";
+import { MemoryOld, Memory } from "./units";
 
 // TODO: add PropTypes
 
@@ -31,18 +31,17 @@ class NumInputMerge2 extends React.Component {
     this.validate = this.validate.bind(this);
   }
 
-  
   //currently not in use
   onComponentUpdate(prevProps) {
     if (prevProps && prevProps.value !== this.props.value) {
       this.setState({ value: this.props.value });
     }
   }
-  
-  componentDidMount() { 
+
+  componentDidMount() {
     this.populateToParent(this.state.value);
   }
-  increment(number, unitInUsePTR, unitConfig ,maxVal) {
+  increment(number, unitInUsePTR, unitConfig, maxVal) {
     if (number === "-") {
       return { number: 1, message: "" };
     }
@@ -68,14 +67,20 @@ class NumInputMerge2 extends React.Component {
   convert(number, unitInUsePTR, unit, unitConfig) {
     let convertedNumber = { number, unit, unitPTR: unitInUsePTR };
 
-    if (number >= unitConfig[unitInUsePTR].convertUpAt && unitConfig[unitInUsePTR + 1] !== undefined) {//up a unit
+    if (
+      number >= unitConfig[unitInUsePTR].convertUpAt &&
+      unitConfig[unitInUsePTR + 1] !== undefined
+    ) {
+      //up a unit
       convertedNumber.number = Math.round(number / 1024);
       convertedNumber.unit = unitConfig[unitInUsePTR + 1].unit; //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR + 1;
     }
-    if (number < 1 && unitConfig[unitInUsePTR - 1] !== undefined) {//down a unit
+    if (number < 1 && unitConfig[unitInUsePTR - 1] !== undefined) {
+      //down a unit
       convertedNumber.number =
-      unitConfig[unitInUsePTR-1].convertUpAt - unitConfig[unitInUsePTR - 1].standardStepSize;
+        unitConfig[unitInUsePTR - 1].convertUpAt -
+        unitConfig[unitInUsePTR - 1].standardStepSize;
       convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit; //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR - 1;
     }
@@ -196,7 +201,7 @@ class NumInputMerge2 extends React.Component {
     }
     /** ==>*/ return report;
   }
-  onClick(buttonID, unitInUsePTR,) {
+  onClick(buttonID, unitInUsePTR) {
     if (!this.state.isValid) {
       return;
     } else {
@@ -207,12 +212,26 @@ class NumInputMerge2 extends React.Component {
       //-> diese 4 Zeilen ermöglichen Increments auf nur Zahlen
       let number = this.getNumber(this.state.value); //if no number returns 0
       let newNumber = { number: number, message: "" };
-      let returnConverted  = {number: number, unit: unit, unitPTR: unitInUsePTR};
+      let returnConverted = {
+        number: number,
+        unit: unit,
+        unitPTR: unitInUsePTR,
+      };
 
       if (buttonID === "Increment") {
-        newNumber = this.increment(number, unitInUsePTR, this.props.unitConfig, this.props.maxVal);
+        newNumber = this.increment(
+          number,
+          unitInUsePTR,
+          this.props.unitConfig,
+          this.props.maxVal
+        );
       } else if (buttonID === "Decrement") {
-        newNumber = this.decrement(number, unitInUsePTR, this.props.unitConfig, this.props.minVal);
+        newNumber = this.decrement(
+          number,
+          unitInUsePTR,
+          this.props.unitConfig,
+          this.props.minVal
+        );
       }
       /* ==> */ returnConverted = this.convert(
         newNumber.number,
@@ -235,7 +254,11 @@ class NumInputMerge2 extends React.Component {
 
   onChange(event) {
     let userInput = event.target.value;
-    let report = this.validate(userInput, this.props.unitConfig, this.state.unitInUsePTR);
+    let report = this.validate(
+      userInput,
+      this.props.unitConfig,
+      this.state.unitInUsePTR
+    );
     //
     this.setState(
       {
@@ -283,7 +306,7 @@ class NumInputMerge2 extends React.Component {
                   value={this.state.value}
                   onChange={this.onChange}
                 />
-                
+
                 <div class="bx--number__controls">
                   <button
                     class="bx--number__control-btn up-icon"
@@ -350,14 +373,12 @@ class NumInputMerge2 extends React.Component {
                   </button>
                 </div>
               </div>
-              <svg focusable="false" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" class="bx--text-input__invalid-icon"><path d="M8,1C4.2,1,1,4.2,1,8s3.2,7,7,7s7-3.1,7-7S11.9,1,8,1z M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2	c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z"></path><path d="M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8	c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z" data-icon-path="inner-path" opacity="0"></path></svg>
             </div>
           </div>
         </div>
 
         <div class="bx--form__helper-text">
-          Active Unit:{" "}
-          {this.props.unitConfig[this.state.unitInUsePTR].unit}
+          Active Unit: {this.props.unitConfig[this.state.unitInUsePTR].unit}
         </div>
 
         <div class="bx--form__helper-text">{this.state.message}</div>
@@ -390,11 +411,15 @@ NumInputMerge2.propTypes = {
    * Define at which unit to start at
    */
   startingUnit: PropTypes.number,
+  /**
+   *
+   */
+  feedByteAsNumbersOnly: PropTypes.bool,
 };
 
 NumInputMerge2.defaultProps = {
-  minVal: '0',
-  unitConfig: Memory
+  minVal: "0",
+  unitConfig: Memory,
 };
 
 export default NumInputMerge2;
