@@ -2,6 +2,47 @@ import React from "react";
 import NumInputMerge1 from "../../components/NumInputMerge1/NumInputMerge1";
 import NumInputMerge2 from "../../components/NumInputMerge2/NumInputMerge2";
 
+import  {Memory as MemoryUnit} from "../../components/NumInputMerge2/units";
+const Memory = [
+  /*
+  {
+    unit: "Byte",
+    shortUnit: "byte",
+    standardStepSize: 1,
+    standardChunk: 128,
+    convertUpAt: 1024,
+  },
+  {
+    unit: "KiB",
+    shortUnit: "Ki",
+    standardStepSize: 1,
+    standardChunk: 128,
+    convertUpAt: 1024,
+  },
+  */
+  {
+    unit: "MiB",
+    shortUnit: "Mi",
+    standardStepSize: 1,
+    standardChunk: 128,
+    convertUpAt: 1024,
+  },
+  {
+    unit: "GiB",
+    shortUnit: "Gi",
+    standardStepSize: 0.25,
+    standardChunk: 0.5,
+    convertUpAt: 1024,
+  },
+  {
+    unit: "TiB",
+    shortUnit: "Ti",
+    standardStepSize: 0.1,
+    standardChunk: 0.5,
+    convertUpAt: 1024,
+  },
+];
+
 const Memory_Units = {
   general: {
     // base config
@@ -34,21 +75,41 @@ const Memory_Units = {
   ],
 };
 
-const PageM1 = () => {
-  return (
-    <div>
-      <h1>PageM1</h1>
+class PageM1 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: '', 
+    };
 
-      <label>
-        NumberInput Merge
-        <NumInputMerge1 {...Memory_Units} />
-      </label>
-      <label>
-          NumberInputMerge 2
-          <NumInputMerge2 {...Memory_Units} />
-      </label>
-    </div>
-  );
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange(newValue) {
+    console.log(MemoryUnit);
+    this.setState({value: newValue});
+  };
+
+  render() {
+    return (   
+      <div>
+        <h1>PageM1</h1>
+
+        <label>
+          NumberInput Merge
+          <NumInputMerge1 {...Memory_Units} />
+        </label>
+        <label>
+            NumberInputMerge 2
+            <NumInputMerge2 unitConfig={MemoryUnit} onUpdate={this.onChange} value={this.state.value}/>
+        </label>
+
+        <label>
+          Output: {this.state.value}
+        </label>
+      </div>
+    );
+  }
 };
 
 export default PageM1;
