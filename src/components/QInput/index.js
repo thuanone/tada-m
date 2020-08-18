@@ -1,6 +1,6 @@
-import NumInputMerge2 from "./NumInputMerge2";
+import QInput from "./QInput";
 import { MemoryOld, vCPU, Memory, noUnit } from "./units";
 
 
 export { MemoryOld, vCPU, Memory, noUnit };
-export default NumInputMerge2;
+export default QInput;

@@ -6,24 +6,8 @@ import { Button } from "carbon-components-react";
 
 import { Document24 as Document} from "@carbon/icons-react";
 
-
-
 import Home from './home';
-import Page1 from './content/Page1';
-import Page2 from './content/Page2';
-import Page3 from './content/Page3';
-import Page4 from './content/Page4';
-import Page5 from './content/Page5';
-import Page6 from './content/Page6';
-import Page7 from './content/Page7';
-import Page8 from './content/Page8';
-
-import Page10 from './content/Page10';
-
-import Page12 from './content/Page12';
-
-import PageM from './content/PageM';
-import PageM1 from './content/PageM1';
+import QInputPage from './content/QInputPage/QInputPage';
 
 const routing = (
 <Router>
@@ -39,74 +23,8 @@ const routing = (
           </div>
           
           <div class="bx--col">
-              <Link to="/Page1"> 
-                <Button><Document /> Page1</Button>
-              </Link>
-          </div>
-
-          <div class="bx--col">
-              <Link to="/Page2"> 
-                <Button><Document /> Page2</Button>
-              </Link>
-          </div>
-  
-          <div class="bx--col">
-              <Link to="/Page3"> 
-                <Button><Document /> Page3</Button>
-              </Link>
-          </div>
-
-          <div class="bx--col">
-              <Link to="/Page4"> 
-                <Button><Document /> Page4</Button>
-              </Link>
-          </div>
-
-          <div class="bx--col">
-              <Link to="/Page5"> 
-                <Button><Document /> Page5</Button>
-              </Link>
-          </div>
-
-          <div class="bx--col">
-              <Link to="/Page6"> 
-                <Button><Document /> Page6</Button>
-              </Link>
-          </div>
-
-          <div class="bx--col">
-              <Link to="/Page7"> 
-                <Button><Document /> Page7</Button>
-              </Link>
-          </div>
-
-          <div class="bx--col">
-              <Link to="/Page8"> 
-                <Button><Document /> Page8</Button>
-              </Link>
-          </div>
-
-          <div class="bx--col">
-              <Link to="/Page10"> 
-                <Button><Document /> Page10</Button>
-              </Link>
-          </div>
-
-          <div class="bx--col">
-              <Link to="/Page12"> 
-                <Button><Document /> Page12</Button>
-              </Link>
-          </div>
-
-          <div class="bx--col">
-              <Link to="/PageM"> 
-                <Button><Document /> PageM Base </Button>
-              </Link>
-          </div>
-          
-          <div class="bx--col">
-              <Link to="/PageM1"> 
-                <Button><Document /> PageM1</Button>
+              <Link to="/QInput"> 
+                <Button><Document /> QInput</Button>
               </Link>
           </div>
           
@@ -116,19 +34,7 @@ const routing = (
     </ul>
 
     <Route exact path="/home" component={Home} />
-    <Route path="/Page1" component={Page1} />
-    <Route path="/Page2" component={Page2} />
-    <Route path="/Page3" component={Page3} />
-    <Route path="/Page4" component={Page4} />
-    <Route path="/Page5" component={Page5} />
-    <Route path="/Page6" component={Page6} />
-    <Route path="/Page7" component={Page7} />
-    <Route path="/Page8" component={Page8} />
-
-    <Route path="/Page10" component={Page10} />
-    <Route path="/Page12" component={Page12} />
-    <Route path="/PageM" component={PageM} />
-    <Route path="/PageM1" component={PageM1} />
+    <Route path="/QInput" component={QInputPage} />
 
   </div>
 </Router>

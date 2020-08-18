@@ -5,7 +5,7 @@ import { MemoryOld, Memory } from "./units";
 
 // TODO: add PropTypes
 
-class NumInputMerge2 extends React.Component {
+class QInput extends React.Component {
   constructor(props) {
     super(props);
     /*
@@ -289,7 +289,7 @@ class NumInputMerge2 extends React.Component {
   render() {
     return (
       <div>
-        <label class="bx--label">NumInputMerge vThuan#AdamsKrank</label>
+        <label class="bx--label">QInput v1.0</label>
 
         <div class="bx--form-item bx--text-input-wrapper">
           <div class="bx--number bx--number--helpertext">
@@ -381,12 +381,14 @@ class NumInputMerge2 extends React.Component {
           Active Unit: {this.props.unitConfig[this.state.unitInUsePTR].unit}
         </div>
 
-        <div class="bx--form__helper-text">{this.state.message}</div>
+        <div class="bx--form__helper-text">
+          {this.state.message}
+        </div>
       </div>
     );
   }
 }
-NumInputMerge2.propTypes = {
+QInput.propTypes = {
   /**
    * optional starting value
    */
@@ -417,9 +419,9 @@ NumInputMerge2.propTypes = {
   feedByteAsNumbersOnly: PropTypes.bool,
 };
 
-NumInputMerge2.defaultProps = {
+QInput.defaultProps = {
   minVal: "0",
   unitConfig: Memory,
 };
 
-export default NumInputMerge2;
+export default QInput;

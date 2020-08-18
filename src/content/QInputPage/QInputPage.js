@@ -1,8 +1,8 @@
 import React from "react";
 import NumInputMerge1 from "../../components/NumInputMerge1/NumInputMerge1";
-import NumInputMerge2 from "../../components/NumInputMerge2/NumInputMerge2";
+import QInput from "../../components/QInput/QInput";
 
-import  {Memory as MemoryUnit} from "../../components/NumInputMerge2/units";
+import  {Memory as MemoryUnit} from "../../components/QInput/units";
 const Memory = [
   /*
   {
@@ -75,7 +75,7 @@ const Memory_Units = {
   ],
 };
 
-class PageM1 extends React.Component {
+class QInputPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,23 +93,20 @@ class PageM1 extends React.Component {
   render() {
     return (   
       <div>
-        <h1>PageM1</h1>
+        <h1>QInput</h1>
 
         <label>
-          NumberInput Merge
-          <NumInputMerge1 {...Memory_Units} />
-        </label>
-        <label>
-            NumberInputMerge 2
-            <NumInputMerge2 unitConfig={MemoryUnit} onUpdate={this.onChange} value={this.state.value}/>
+            QInput
+            <QInput unitConfig={MemoryUnit} onUpdate={this.onChange} value={this.state.value}/>
         </label>
 
-        <label>
-          Output: {this.state.value}
-        </label>
+        <div class="bx--form__helper-text">
+          Output: {this.props.value}
+        </div>
+
       </div>
     );
   }
 };
 
-export default PageM1;
+export default QInputPage;
