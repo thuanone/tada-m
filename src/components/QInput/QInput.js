@@ -92,7 +92,7 @@ class QInput extends React.Component {
 
     try {
       //null / undefined
-      numbersMatch = input.match(numbersOnly);
+      numbersMatch = `${input}`.match(numbersOnly);
     } catch (error) {
       input = "-";
       this.setState({
@@ -200,7 +200,7 @@ class QInput extends React.Component {
     if (!this.state.isValid) {
       return;
     } else {
-      let nullIfNoMatch = this.state.value.match(/[a-z]+/gi); //produces null if no match
+      let nullIfNoMatch = `${this.state.value}`.match(/[a-z]+/gi); //produces null if no match
       let unit = nullIfNoMatch
         ? nullIfNoMatch.join() //if theres a match take unit
         : this.props.unitConfig[unitInUsePTR].unit; //if no match get unitInUse
@@ -236,7 +236,7 @@ class QInput extends React.Component {
       );
       this.setState(
         {
-          value: `${returnConverted.number} ${returnConverted.unit}`,
+          value: returnConverted.unit ? `${returnConverted.number} ${returnConverted.unit}`: returnConverted.number,
           unitInUsePTR: returnConverted.unitPTR,
           message: newNumber.message,
         },

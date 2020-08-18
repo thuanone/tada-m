@@ -162,6 +162,12 @@ describe("functions as is", () => {
       const returnValue = instance.getNumber("-");
       expect(returnValue).toBe("-");
     });
+    it(`test: invoked on Number Number`, () => {
+      const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
+      const instance = wrapper.instance();
+      const returnValue = instance.getNumber(100);
+      expect(returnValue).toBe(100);
+    });
   });
   describe("validate()", () => {
     //(userInput, config) => report {message: '...', isValid: oolean() }
@@ -737,7 +743,7 @@ describe("onClick Functionality", () => {
       let unitPTR = wrapper.state().unitInUsePTR;
 
       wrapper.setState({ value: 1 });
-      instance.onClick("Decrement", unitPTR);
+      instance.onClick("Increment", unitPTR);
       expect(wrapper.state().value).toBe("2 MiB");
     });
     it("increments string numbers", () => {
@@ -816,7 +822,7 @@ describe("onClick Functionality", () => {
       let unitPTR = wrapper.state().unitInUsePTR;
 
       wrapper.setState({ value: 1 });
-      instance.onClick("Decrement", unitPTR);
+      instance.onClick("Increment", unitPTR);
       expect(wrapper.state().value).toBe("2 MiB");
     });
     it("increments string numbers", () => {
@@ -895,7 +901,7 @@ describe("onClick Functionality", () => {
       let unitPTR = wrapper.state().unitInUsePTR;
 
       wrapper.setState({ value: 100 });
-      instance.onClick("Decrement", unitPTR);
+      instance.onClick("Increment", unitPTR);
       expect(wrapper.state().value).toBe("200 m");
     });
     it("increments string numbers", () => {
