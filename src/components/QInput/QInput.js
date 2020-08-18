@@ -1,9 +1,52 @@
 import React from "react";
 import PropTypes from "prop-types";
+import "./memory-utils" 
 
 import { MemoryOld, Memory } from "./units";
 
 // TODO: add PropTypes
+
+const kilobyte = 1000;
+const megabyte = kilobyte * 1000;
+const gigabyte = megabyte * 1000;
+const terabyte = gigabyte * 1000;
+const petabyte = terabyte * 1000;
+const exabyte = petabyte * 1000;
+
+const kibibyte = 1024;
+const mebibyte = kibibyte * 1024;
+const gibibyte = mebibyte * 1024;
+const tebibyte = gibibyte * 1024;
+const pebibyte = tebibyte * 1024;
+const exbibyte = pebibyte * 1024;
+
+const unitsToMultiplier = {
+  e: exabyte,
+  eb: exabyte,
+  ei: exbibyte,
+  eib: exbibyte,
+  g: gigabyte,
+  gb: gigabyte,
+  gi: gibibyte,
+  gib: gibibyte,
+  k: kilobyte,
+  kb: kilobyte,
+  ki: kibibyte,
+  kib: kibibyte,
+  m: megabyte,
+  mb: megabyte,
+  mi: mebibyte,
+  mib: mebibyte,
+  p: petabyte,
+  pb: petabyte,
+  pi: pebibyte,
+  pib: pebibyte,
+  t: terabyte,
+  tb: terabyte,
+  ti: tebibyte,
+  tib: tebibyte,
+};
+
 
 class QInput extends React.Component {
   constructor(props) {
@@ -29,6 +72,25 @@ class QInput extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.unitMatch = this.unitMatch.bind(this);
     this.validate = this.validate.bind(this);
+  }
+  convertValueToNumber(val) {
+    let result;
+    if (typeof val === 'string' && val.length > 0) {
+      const regExp = new RegExp(/([0-9]*\.?[0-9]*)\s*(([kmgtpe]i?b)|([kmgtpe]i?))?/);
+      const results = regExp.exec(val.trim().toLowerCase());
+
+      let unit = '';
+      if (results.length > 0) {
+        if (results.length > 2) {
+          unit = normalizeUnit(results[2]);
+        }
+        result = {
+          unit: unit ? unit.toUpperCase() : unit,
+          value: parseFloat(results[1]),
+        };
+      }
+    }
+    return result;
   }
 
   //currently not in use
@@ -84,6 +146,8 @@ class QInput extends React.Component {
       convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit; //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR - 1;
     }
+    convertedNumber.number = (Math.round(convertedNumber.number*10) /10); // round 0.00 (2 digits)
+
     return convertedNumber;
   }
 
