@@ -1,9 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
+import "./memory-utils" 
 
-import { MemoryOld, Memory } from "./units";
+import { Memory } from "./units";
 
 // TODO: add PropTypes
+
 
 class QInput extends React.Component {
   constructor(props) {
@@ -29,8 +31,9 @@ class QInput extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.unitMatch = this.unitMatch.bind(this);
     this.validate = this.validate.bind(this);
-  }
 
+  }
+  
   //currently not in use
   onComponentUpdate(prevProps) {
     if (prevProps && prevProps.value !== this.props.value) {
@@ -84,6 +87,8 @@ class QInput extends React.Component {
       convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit; //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR - 1;
     }
+    convertedNumber.number = (Math.round(convertedNumber.number*10) /10); // round 0.00 (2 digits)
+
     return convertedNumber;
   }
 
