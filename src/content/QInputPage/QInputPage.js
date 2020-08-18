@@ -91,11 +91,13 @@ class QInputPage extends React.Component {
 
   render() {
     return (   
-      <div>
+      <div style={{
+        position: 'absolute', left: '50%', top: '30%',
+        transform: 'translate(-50%, -50%)'}}>
         <h1>QInput</h1>
 
         <label>
-            QInput
+            
             <QInput unitConfig={MemoryUnit} onUpdate={this.onChange} value={this.state.value}/>
         </label>
 
