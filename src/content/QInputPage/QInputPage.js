@@ -28,7 +28,7 @@ class QInputPage extends React.Component {
 
         <label>
             
-            <QInput unitConfig={MemoryUnit} onUpdate={this.onChange} value={this.state.value}/>
+            <QInput unitConfig={vCPU} onUpdate={this.onChange} value={this.state.value}/>
         </label>
 
         <div class="bx--form__helper-text">

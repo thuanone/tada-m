@@ -10,13 +10,6 @@ import { Memory } from "./units";
 class QInput extends React.Component {
   constructor(props) {
     super(props);
-    /*
-    console.log(this.props.unitConfig);
-    console.log(this.props.unitConfig[0]);
-    console.log(this.props.unitConfig[1]);
-    console.log(this.props.unitConfig[2]);
-    console.log(this.props.unitConfig[0].standardStepSize);
-    */
     this.state = {
       //actively used properties
       value: props.value || "", // if no unit -> handle as bytes and calculate the best unit
@@ -93,10 +86,7 @@ class QInput extends React.Component {
   }
 
   getNumber(input) {
-    //const numbersOnly = /-?[0-9]+/gm;
     const numbersOnly = /-?[0-9]|\.?/gm;
-    //const numbersOnly = /(-?[0-9]+)(\.?[0-9]+)?/gm;
-    //const numbersOnly = /(-?[0-9]+)(\.?)([0-9]+)?/gm;
     let numbersMatch;
     let number;
 

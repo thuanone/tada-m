@@ -35,14 +35,14 @@ const vCPU = [
   {
     unit: "m",
     shortUnit: "m",
-    stepSize: 10,
+    standardStepSize: 100,
     standardChunk: 100,
     convertUpAt: 1000,
   },
   {
     unit: "vCPU",
     shortUnit: "CPU",
-    stepSize: 0.1,
+    standardStepSize: 0.1,
     standardChunk: 1,
     convertUpAt: Infinity,
   },
