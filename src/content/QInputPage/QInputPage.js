@@ -102,7 +102,7 @@ class QInputPage extends React.Component {
         </label>
 
         <div class="bx--form__helper-text">
-          Output: {this.props.value}
+          Output: {this.state.value}
         </div>
 
       </div>
