@@ -8,10 +8,12 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{
+        position: 'absolute', left: '50%', top: '30%',
+        transform: 'translate(-50%, -50%)'}}>
 
-        <h1>Home</h1>
-
+        <h1 style={{fontSize:'70px', marginBottom: '20px'}}>Home</h1>
+        
         <fieldset className="bx--fieldset">
           <legend className="bx--label"> Tasks</legend>
 
