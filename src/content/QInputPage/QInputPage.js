@@ -1,5 +1,4 @@
 import React from "react";
-import NumInputMerge1 from "../../components/NumInputMerge1/NumInputMerge1";
 import QInput from "../../components/QInput/QInput";
 
 import  {Memory as MemoryUnit} from "../../components/QInput/units";
