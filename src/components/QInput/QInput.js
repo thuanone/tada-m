@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./memory-utils";
+import MemoryUtils from "./memory-utils"
 
 import { Memory } from "./units";
 
@@ -25,8 +25,13 @@ class QInput extends React.Component {
     this.unitMatch = this.unitMatch.bind(this);
     this.validate = this.validate.bind(this);
 
+    this.MemoryUtils = new MemoryUtils();
+    
+
+
+
   }
-  
+
   //currently not in use
   onComponentUpdate(prevProps) {
     if (prevProps && prevProps.value !== this.props.value) {
@@ -38,6 +43,8 @@ class QInput extends React.Component {
     this.populateToParent(this.state.value);
   }
   increment(number, unitInUsePTR, unitConfig, maxVal) {
+    console.log('conv', this.MemoryUtils.convertValueToBytes('1 gib'))
+  
     if (number === "-") {
       return { number: 1, message: "" };
     }
@@ -53,7 +60,7 @@ class QInput extends React.Component {
       return { number: 0, message: "" };
     }
     let stepsize = unitConfig[unitInUsePTR].standardStepSize;
-    let newNumber = number - stepsize;
+    let newNumber = number - stepsize; 
 
     return newNumber < minVal //is decrementedNumber smaller than minVal
       ? { number: number, message: "minVal reached" } //true -> return current number
@@ -280,6 +287,7 @@ class QInput extends React.Component {
       this.props.onUpdate(newValue);
     }
   }
+
 
   render() {
     return (

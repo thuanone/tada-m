@@ -1,5 +1,3 @@
-import React from "react";
-
 const kilobyte = 1000;
 const megabyte = kilobyte * 1000;
 const gigabyte = megabyte * 1000;
@@ -41,16 +39,7 @@ const unitsToMultiplier = {
   tib: tebibyte,
 };
 
-class MemoryUtils extends React.Component{
-  constructor(props) {
-    super(props);
-
-    this.normalizeUnit = this.normalizeUnit.bind(this);
-    this.convertValueToNumber = this.convertValueToNumber.bind(this);
-    this.convertValueToBytes = this.convertValueToBytes.bind(this);
-    this.convertNumberToDisplayValueAndUnit = this.convertNumberToDisplayValueAndUnit.bind(this);
-  }
-
+class MemoryUtils {
   normalizeUnit(unit) {
     let result = unit;
 
@@ -80,7 +69,7 @@ class MemoryUtils extends React.Component{
     }
     return result;
   }
-  convertValueToBytes(val) {
+  convertValueToBytes(val) { //takes in e.g. "1 mb" (string) and returns 1000000 (integer)
 
     const result = this.convertValueToNumber(val);
 
@@ -158,9 +147,12 @@ class MemoryUtils extends React.Component{
     if (!divider) {
       divider = mebibyte;
     }
+    console.log('bytes',bytes,'targetUnit',targetUnit,'divider',divider)
 
     return Math.round(bytes / divider);
   }
 }
+
+
 
 export default MemoryUtils;

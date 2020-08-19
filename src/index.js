@@ -13,16 +13,16 @@ const routing = (
 <Router>
   <div>
     <ul>
-      <div class="bx--grid">
-        <div class="bx--row">
+      <div className="bx--grid">
+        <div className="bx--row">
 
-          <div class="bx--col">
+          <div className="bx--col">
             <Link to="/home">
               <Button><Document/> Home </Button> 
             </Link>
           </div>
           
-          <div class="bx--col">
+          <div className="bx--col">
               <Link to="/QInput"> 
                 <Button><Document /> QInput</Button>
               </Link>
