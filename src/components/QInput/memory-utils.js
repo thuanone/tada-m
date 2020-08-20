@@ -162,5 +162,4 @@ class MemoryUtils extends React.Component{
     return Math.round(bytes / divider);
   }
 }
-
 export default MemoryUtils;
