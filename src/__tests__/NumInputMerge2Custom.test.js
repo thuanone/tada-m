@@ -1,6 +1,5 @@
 import React from "react";
-import Enzyme, { shallow } from "enzyme";
-import { mount } from "enzyme";
+import Enzyme, { shallow, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import QInput from "../components/QInput";
 import QInputPage from "../content/QInputPage";
@@ -1052,7 +1051,7 @@ describe("Parent Component Integration", () => {
     const componentInstance = componentWrapper.instance();
   });
 });
-/*
+
 describe("user interaction mock, indirect test", () => {
   it("", () => {
     const wrapper = shallow(<QInput />);
@@ -1067,4 +1066,3 @@ describe("user interaction mock, indirect test", () => {
     incr.simulate("click");
   });
 } );
-*/
