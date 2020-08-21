@@ -292,7 +292,7 @@ class QInput extends React.Component {
 
 
   render() {
-    return (
+    const NumberInput = (
       <div>
         <label class="bx--label">QInput v1.0</label>
         <div class="bx--form-item bx--text-input-wrapper">
@@ -388,6 +388,7 @@ class QInput extends React.Component {
         </div>
       </div>
     );
+    return NumberInput;
   }
 }
 QInput.propTypes = {
