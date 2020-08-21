@@ -15,7 +15,7 @@ class QInputPage extends React.Component {
   }
 
   onChange(newValue) {
-    console.log(MemoryUnit);
+
     this.setState({value: newValue});
   };
 

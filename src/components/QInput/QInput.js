@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
-import MemoryUtils from "./memory-utils"
+import MemoryUtils from "./memory-utils";
+
 
 import { Memory } from "./units";
 
@@ -42,6 +43,7 @@ class QInput extends React.Component {
   componentDidMount() {
     this.populateToParent(this.state.value);
   }
+
   increment(number, unitInUsePTR, unitConfig, maxVal) {
     
   
@@ -293,7 +295,6 @@ class QInput extends React.Component {
     return (
       <div>
         <label class="bx--label">QInput v1.0</label>
-
         <div class="bx--form-item bx--text-input-wrapper">
           <div class="bx--number bx--number--helpertext">
             <div class="bx--text-input__field-outer-wrapper">
@@ -309,7 +310,6 @@ class QInput extends React.Component {
                   value={this.state.value}
                   onChange={this.onChange}
                 />
-
                 <div class="bx--number__controls">
                   <button
                     class="bx--number__control-btn up-icon"
@@ -342,7 +342,6 @@ class QInput extends React.Component {
                       <path d="M0 4l4-4 4 4z"></path>
                     </svg>
                   </button>
-
                   <button
                     class="bx--number__control-btn down-icon"
                     type="button"
@@ -379,10 +378,10 @@ class QInput extends React.Component {
             </div>
           </div>
         </div>
-
         <div class="bx--form__helper-text">
           Active Unit: {this.props.unitConfig[this.state.unitInUsePTR].unit}
         </div>
+
 
         <div class="bx--form__helper-text"> 
           {this.state.message} 
