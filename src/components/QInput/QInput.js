@@ -45,7 +45,7 @@ class QInput extends React.Component {
     if (number === '-') {
       return { number: 1, message: '' }
     }
-    
+
     return this.MemoryUtils.convertValueToBytes(newNumber + unit) >
       this.MemoryUtils.convertValueToBytes(maxVal) //is incrementedNumber bigger than maxVal? //funktioniert weil newNum> undefined
       ? { number: number, message: 'maxVal reached' } //true -> return current number
@@ -384,8 +384,8 @@ class QInput extends React.Component {
 
         <div class="bx--form__helper-text">{this.state.message}</div>
       </div>
-    );
-    return NumberInput;
+    )
+    return NumberInput
   }
 }
 QInput.propTypes = {
