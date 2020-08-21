@@ -1,35 +1,3 @@
-const MemoryOld = {
-  general: {
-    // base config
-    convertUnit: 1024,
-    minVal: 0,
-    // maxVal : ?,
-  },
-  unitConfig: [
-    {
-      unit: "MiB",
-      shortUnit: "MI",
-      standardStepSize: 1,
-      standardChunk: 128,
-      allowMultipleUnits: false,
-    },
-    {
-      unit: "GiB",
-      shortUnit: "Gi",
-      standardStepSize: 0.25,
-      standardChunk: 0.5,
-      allowMultipleUnits: false,
-    },
-    {
-      unit: "TiB",
-      shortUnit: "Ti",
-      standardStepSize: 0.1,
-      standardChunk: 0.5,
-      allowMultipleUnits: false,
-    },
-  ],
-};
-
 ///
 const vCPU = [
   {
@@ -74,7 +42,7 @@ const Memory = [
   {
     unit: "GiB",
     shortUnit: "Gi",
-    standardStepSize: 0.25,
+    standardStepSize: 0.2,
     standardChunk: 0.5,
     convertUpAt: 1024,
   },
@@ -97,4 +65,4 @@ const noUnit = [
   },
 ];
 
-export { MemoryOld, vCPU, Memory, noUnit };
+export { vCPU, Memory, noUnit };

@@ -43,7 +43,7 @@ class QInput extends React.Component {
     this.populateToParent(this.state.value);
   }
   increment(number, unitInUsePTR, unitConfig, maxVal) {
-    console.log('conv', this.MemoryUtils.convertValueToBytes('1 gib'))
+    
   
     if (number === "-") {
       return { number: 1, message: "" };
@@ -281,7 +281,7 @@ class QInput extends React.Component {
     if (this.props.onUpdate) {
       let newValue;
       newValue =
-        value === "" ? "-" : isNaN(value) ? value : this.getNumber(value);
+        value === "" ? "-" : isNaN(value) ? this.MemoryUtils.convertValueToBytes(value) : this.MemoryUtils.convertValueToBytes(value + 'mb') ;
       // TODO check whether the value should be populated as string or as number (aka bytes) : √
       // if the newValue === '-' -> tbd
       this.props.onUpdate(newValue);
@@ -384,8 +384,8 @@ class QInput extends React.Component {
           Active Unit: {this.props.unitConfig[this.state.unitInUsePTR].unit}
         </div>
 
-        <div class="bx--form__helper-text">
-          {this.state.message}
+        <div class="bx--form__helper-text"> 
+          {this.state.message} 
         </div>
       </div>
     );
