@@ -43,20 +43,22 @@ class MemoryUtils {
   normalizeUnit(unit) {
     let result = unit;
 
-    if (result && result.length > 0 && result.toLowerCase().endsWith('b')) {
+    if (result && result.length > 0 && result.toLowerCase().endsWith("b")) {
       result = result.substr(0, 2);
     }
 
     return result ? result.toUpperCase() : result;
-  };
+  }
 
   convertValueToNumber(val) {
     let result;
-    if (typeof val === 'string' && val.length > 0) {
-      const regExp = new RegExp(/([0-9]*\.?[0-9]*)\s*(([kmgtpe]i?b)|([kmgtpe]i?))?/);
+    if (typeof val === "string" && val.length > 0) {
+      const regExp = new RegExp(
+        /([0-9]*\.?[0-9]*)\s*(([kmgtpe]i?b)|([kmgtpe]i?))?/
+      );
       const results = regExp.exec(val.trim().toLowerCase());
 
-      let unit = '';
+      let unit = "";
       if (results.length > 0) {
         if (results.length > 2) {
           unit = this.normalizeUnit(results[2]);
@@ -69,7 +71,8 @@ class MemoryUtils {
     }
     return result;
   }
-  convertValueToBytes(val) { //takes in e.g. "1 mb" (string) and returns 1000000 (integer)
+  convertValueToBytes(val) {
+    //takes in e.g. "1 mb" (string) and returns 1000000 (integer)
 
     const result = this.convertValueToNumber(val);
 
@@ -78,7 +81,9 @@ class MemoryUtils {
     }
 
     // retrieve the multiplier for the given unit from a static map
-    const multiplier = result.unit ? unitsToMultiplier[result.unit.toLowerCase()] : 1;
+    const multiplier = result.unit
+      ? unitsToMultiplier[result.unit.toLowerCase()]
+      : 1;
 
     // multiply the calculated value with its multiplier in order to get the number of bytes
     const numberOfBytes = result.value * multiplier;
@@ -90,13 +95,12 @@ class MemoryUtils {
     let displayValue;
 
     if (!value || isNaN(value)) {
-      displayValue = '-';
+      displayValue = "-";
     } else {
-
       const divider = useSiUnits ? 1000 : 1024;
       const units = useSiUnits
-        ? ['K', 'M', 'G', 'T', 'P', 'E']
-        : ['Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei'];
+        ? ["K", "M", "G", "T", "P", "E"]
+        : ["Ki", "Mi", "Gi", "Ti", "Pi", "Ei"];
 
       let i = -1;
       do {
@@ -104,7 +108,7 @@ class MemoryUtils {
         ++i;
       } while (Math.abs(intValue) >= divider && i < units.length - 1);
 
-      const maxLen = (`${intValue}`).length;
+      const maxLen = `${intValue}`.length;
 
       if (Number.isInteger(intValue)) {
         displayValue = `${intValue.toFixed(0)}`;
@@ -112,7 +116,7 @@ class MemoryUtils {
         displayValue = `${intValue.toFixed(3)}`;
       }
 
-      displayValue = `${displayValue.substr(0, maxLen)} ${units[i]}`;  // remove unnecessary padding zeros
+      displayValue = `${displayValue.substr(0, maxLen)} ${units[i]}`; // remove unnecessary padding zeros
     }
 
     if (suffix) {
@@ -147,7 +151,7 @@ class MemoryUtils {
     if (!divider) {
       divider = mebibyte;
     }
-    console.log('bytes',bytes,'targetUnit',targetUnit,'divider',divider)
+    console.log("bytes", bytes, "targetUnit", targetUnit, "divider", divider);
 
     return Math.round(bytes / divider);
   }

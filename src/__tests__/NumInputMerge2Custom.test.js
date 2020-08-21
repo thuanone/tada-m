@@ -1,6 +1,5 @@
 import React from "react";
-import Enzyme, { shallow } from "enzyme";
-import { mount } from "enzyme";
+import Enzyme, { shallow, mount} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import QInput from "../components/QInput";
 import QInputPage from "../content/QInputPage";
@@ -104,6 +103,7 @@ describe("functions as is", () => {
       const returnValue = instance.getNumber("1 000");
       expect(returnValue).toBe(1000);
     });
+    /*
     it("should X: invoked on String, letters only", () => {
       //--> result in fail, getNumber should only called on valid string
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
@@ -118,6 +118,7 @@ describe("functions as is", () => {
       const returnValue = instance.getNumber("!.?Ä");
       expect(returnValue).toBeNull();
     });
+    */
     it(`should √: invoked on empty String`, () => {
       //-> parse number correctly without whitespace
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
@@ -146,6 +147,7 @@ describe("functions as is", () => {
       const returnValue = instance.getNumber("10.5 mb");
       expect(returnValue).toBe(10.5);
     });
+    /*
     it("test: invoked on undefined", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
@@ -158,6 +160,7 @@ describe("functions as is", () => {
       const returnValue = instance.getNumber(null);
       expect(returnValue).toBe("-");
     });
+    */
     it(`test: invoked on '-'`, () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
@@ -169,6 +172,12 @@ describe("functions as is", () => {
       const instance = wrapper.instance();
       const returnValue = instance.getNumber(100);
       expect(returnValue).toBe(100);
+    });
+    it("10 MiB 112  => 10112", () => {
+      const wrapper = shallow(<QInput />);
+      const instance = wrapper.instance();
+      const returnValue = instance.getNumber("10 MiB 112");
+      expect(returnValue).toBe(10112);
     });
   });
   describe("validate()", () => {
@@ -645,6 +654,7 @@ describe("functions as is", () => {
         unitPTR: 0,
       });
     });
+    /*
     it(`shouldnt occur: convert '-', MiB set -> (convert is called by onClick, '-' would be in/de-cremented in beforehand)`, () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
@@ -699,9 +709,9 @@ describe("functions as is", () => {
         unitPTR: 2,
       });
     });
+    */
   });
 });
-
 describe("onClick Functionality", () => {
   describe("Tag as is", () => {
     it("", () => {
@@ -1052,19 +1062,135 @@ describe("Parent Component Integration", () => {
     const componentInstance = componentWrapper.instance();
   });
 });
-/*
+
 describe("user interaction mock, indirect test", () => {
-  it("", () => {
-    const wrapper = shallow(<QInput />);
-    expect(wrapper.props()).toBeDefined();
+  describe("JSX Tag as is", () => {
+    let component, incr, decr, inputField;
+    beforeEach(() => {
+      component = mount(<QInput />);
+      expect(component.props()).toBeDefined();
+      incr = component.find("button#incrementButton");
+      decr = component.find("button#decrementButton");
+      inputField = component.find("input");
+    });
+    afterEach(() => {
+      component.unmount();
+    });
+    describe("base functionalities", () => {
+      it("increments", () => {
+        const curr = shallow(<QInput />).instance().getNumber(component.state().value);
+        let newVal;
+        incr.simulate("mousedown");
+        newVal = shallow(<QInput />).instance().getNumber(component.state().value);
+        expect(newVal).toBeGreaterThan(curr);
+      });
+      it("decrements", () => {
+        incr.simulate("mousedown");
+        const curr = shallow(<QInput />).instance().getNumber(component.state().value);
+        let newVal;
+        decr.simulate("mousedown");
+        newVal = shallow(<QInput />).instance().getNumber(component.state().value);
+        expect(newVal).toBeLessThan(curr);
+      });
+      it("changes input",() => {
+        const curr = component.state().value;
+        inputField.simulate("change", {target: {value: "somethingElse"}});
+        const newVal = component.state().value;
+        expect(curr).not.toEqual(newVal);
+      });
+    });
+    it("user doesnt reach negatives by decr", () => {
+      let i;
+      let number;
+      const instance = shallow(<QInput />).instance();
+      for (i= 0; i < 10; i++) {
+        incr.simulate("mousedown");
+      }
+      number = instance.getNumber(component.state().value);
+      expect(number).not.toBeLessThan(0);
+    });
+    it("typed negatives are invalid", () => {
+      inputField.simulate("change", {target: {value: "-100"}});
+      expect(component.state().value).toBe("-100");
+      expect(component.state().isValid).toBe(false);
+      expect(component.state().message).not.toBe("");
+    });
+    it("user types negative and decrements", () => {
+      inputField.simulate("change", {target: {value: "-100"}});
+      expect(component.state().isValid).toBe(false);
+      incr.simulate("mousedown");
+      expect(component.state().value).toBe("-100");//noChange
+    });
   });
-  it("mock 1, user clicks around", () => {
-    const wrapper =  shallow(<QInput />);
-    const component =  mount(<QInput />);
-    const incr = wrapper.find("button#incrementButton");
-    const decr = wrapper.find("#decrementButton");
-    console.log(incr);
-    incr.simulate("click");
+  describe(`JSX Tag with minVal = 7, can user reach below minVal?`, () => {
+    let component, incr, decr, inputField;
+    beforeEach(() => {
+      component = mount(<QInput minVal= "7" />);
+      expect(component.props()).toBeDefined();
+      incr = component.find("button#incrementButton");
+      decr = component.find("button#decrementButton");
+      inputField = component.find("input");
+    });
+    afterEach(() => {
+      component.unmount();
+    });
+    it("decrement after default returns minVal", () => {
+      decr.simulate("mousedown");
+      expect(component.state().value).toBe("7 MiB");
+    });
+    it("incrememt after default returns minVal + 1", () => {
+      incr.simulate("mousedown");
+      expect(component.state().value).toBe("8 MiB");
+    });
+    describe("user forces himself under minVal by typing", () => {
+      beforeEach(() => {
+        inputField.simulate("change", {target: {value: 4}});
+      });
+
+      it("is error message thrown?", () => {
+        expect(component.state().message).not.toBe("");
+      });
+      it("is value invalid??", () => {
+        expect(component.state().isValid).toBe(false);
+      });
+      describe("user incr/decr afterwards", () => {
+        it("decr -> gives error message", () => {
+          decr.simulate("mousedown");
+          expect(component.state().value).not.toBe("");
+        });
+        it("further decr isnt possible", () => {
+          const curr = shallow(<QInput />).instance().getNumber(component.state().value);
+          let newVal;
+          decr.simulate("mousedown");
+          newVal = shallow(<QInput />).instance().getNumber(component.state().value);
+          expect(newVal).not.toBeLessThan(curr);
+          expect(newVal).toBe(curr);
+        });
+        it("increments works under minVal", () => {
+          const curr = shallow(<QInput />).instance().getNumber(component.state().value);
+          let newVal;
+          incr.simulate("mousedown");
+          newVal = shallow(<QInput />).instance().getNumber(component.state().value);
+          expect(newVal).toBeGreaterThan(curr);
+        });
+        it("incr jumps to minVal", () =>{
+          incr.simulate("mousedown");
+          let val = shallow(<QInput />).instance().getNumber(component.state().value);
+          expect(val).toEqual(component.props().minVal);
+        });
+        it("inc under minVal turns value valid", () => {
+          incr.simulate("mousedown");
+          expect(component.state().isValid).toBe(true);
+          expect(component.state().message).not.toBe("");
+        });
+      });
+    });
+    
+    it("decrement afterwards, is error message thrown?", () => {
+      inputField.simulate("change", {target: {value: 4}});
+      decr.simulate("mousedown");
+      expect(component.state().value).toBe(4);
+      expect(component.state().message).not.toBe("");
+    });
   });
-} );
-*/
+});
