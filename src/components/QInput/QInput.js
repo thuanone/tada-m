@@ -1,126 +1,126 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import MemoryUtils from './memory-utils'
+import React from "react";
+import PropTypes from "prop-types";
+import MemoryUtils from "./memory-utils";
 
-import { Memory } from './units'
+import { Memory } from "./units";
 
 // TODO: add PropTypes
 
 class QInput extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       //actively used properties
-      value: props.value || '', // if no unit -> handle as bytes and calculate the best unit
+      value: props.value || "", // if no unit -> handle as bytes and calculate the best unit
       // if number -> handle as bytes and calculate the best unit
       // if string incl unit -> handle as-is
       // if undefined -> print '-'
       unitInUsePTR: props.unitInUsePTR ? props.unitInUsePTR : 0,
-      message: '',
+      message: "",
       isValid: true,
-    }
-    this.onChange = this.onChange.bind(this)
-    this.onClick = this.onClick.bind(this)
-    this.unitMatch = this.unitMatch.bind(this)
-    this.validate = this.validate.bind(this)
+    };
+    this.onChange = this.onChange.bind(this);
+    this.onClick = this.onClick.bind(this);
+    this.unitMatch = this.unitMatch.bind(this);
+    this.validate = this.validate.bind(this);
 
-    this.MemoryUtils = new MemoryUtils()
+    this.MemoryUtils = new MemoryUtils();
   }
 
   //currently not in use
   onComponentUpdate(prevProps) {
     if (prevProps && prevProps.value !== this.props.value) {
-      this.setState({ value: this.props.value })
+      this.setState({ value: this.props.value });
     }
   }
 
   componentDidMount() {
-    this.populateToParent(this.state.value)
+    this.populateToParent(this.state.value);
   }
 
   increment(number, unitInUsePTR, unitConfig, maxVal) {
-    let stepsize = unitConfig[unitInUsePTR].standardStepSize
-    let newNumber = number + stepsize
-    let unit = unitConfig[unitInUsePTR].unit
-    if (number === '-') {
-      return { number: 1, message: '' }
+    let stepsize = unitConfig[unitInUsePTR].standardStepSize;
+    let newNumber = number + stepsize;
+    let unit = unitConfig[unitInUsePTR].unit;
+    if (number === "-") {
+      return { number: 1, message: "" };
     }
 
     return this.MemoryUtils.convertValueToBytes(newNumber + unit) >
       this.MemoryUtils.convertValueToBytes(maxVal) //is incrementedNumber bigger than maxVal? //funktioniert weil newNum> undefined
-      ? { number: number, message: 'maxVal reached' } //true -> return current number
-      : { number: newNumber, message: '' } //false -> return new Number
+      ? { number: number, message: "maxVal reached" } //true -> return current number
+      : { number: newNumber, message: "" }; //false -> return new Number
   }
 
   decrement(number, unitInUsePTR, unitConfig, minVal) {
-    if (number === '-') {
-      return { number: 0, message: '' }
+    if (number === "-") {
+      return { number: 0, message: "" };
     }
-    let stepsize = unitConfig[unitInUsePTR].standardStepSize
-    let newNumber = number - stepsize
+    let stepsize = unitConfig[unitInUsePTR].standardStepSize;
+    let newNumber = number - stepsize;
 
     return newNumber < minVal //is decrementedNumber smaller than minVal
-      ? { number: number, message: 'minVal reached' } //true -> return current number
-      : { number: newNumber, message: '' } //false -> return new Number
+      ? { number: number, message: "minVal reached" } //true -> return current number
+      : { number: newNumber, message: "" }; //false -> return new Number
   }
 
   convert(number, unitInUsePTR, unit, unitConfig) {
-    let convertedNumber = { number, unit, unitPTR: unitInUsePTR }
+    let convertedNumber = { number, unit, unitPTR: unitInUsePTR };
 
     if (
       number >= unitConfig[unitInUsePTR].convertUpAt &&
       unitConfig[unitInUsePTR + 1] !== undefined
     ) {
       //up a unit
-      convertedNumber.number = Math.round(number / 1024)
-      convertedNumber.unit = unitConfig[unitInUsePTR + 1].unit //{unit:} is assigned to String
-      convertedNumber.unitPTR = unitInUsePTR + 1
+      convertedNumber.number = Math.round(number / 1024);
+      convertedNumber.unit = unitConfig[unitInUsePTR + 1].unit; //{unit:} is assigned to String
+      convertedNumber.unitPTR = unitInUsePTR + 1;
     }
     if (number < 1 && unitConfig[unitInUsePTR - 1] !== undefined) {
       //down a unit
       convertedNumber.number =
         unitConfig[unitInUsePTR - 1].convertUpAt -
-        unitConfig[unitInUsePTR - 1].standardStepSize
-      convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit //{unit:} is assigned to String
-      convertedNumber.unitPTR = unitInUsePTR - 1
+        unitConfig[unitInUsePTR - 1].standardStepSize;
+      convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit; //{unit:} is assigned to String
+      convertedNumber.unitPTR = unitInUsePTR - 1;
     }
-    convertedNumber.number = Math.round(convertedNumber.number * 10) / 10 // round 0.00 (2 digits)
+    convertedNumber.number = Math.round(convertedNumber.number * 10) / 10; // round 0.00 (2 digits)
 
-    return convertedNumber
+    return convertedNumber;
   }
 
   getNumber(input) {
-    const numbersOnly = /-?[0-9]|\.?/gm
-    let numbersMatch
-    let number
+    const numbersOnly = /-?[0-9]|\.?/gm;
+    let numbersMatch;
+    let number;
 
     try {
       //null / undefined
-      numbersMatch = `${input}`.match(numbersOnly)
+      numbersMatch = `${input}`.match(numbersOnly);
     } catch (error) {
-      input = '-'
+      input = "-";
       this.setState({
         message: `undefined/null has been passed into get Number -> input turned to '-'`,
-      })
+      });
     }
 
     number =
-      input === ''
+      input === ""
         ? 0 //does not occur because no input has been set to invalid
-        : input === '-'
-        ? '-'
+        : input === "-"
+        ? "-"
         : numbersMatch
-        ? parseFloat(numbersMatch.join(''))
-        : '-'
-    return number
+        ? parseFloat(numbersMatch.join(""))
+        : "-";
+    return number;
   }
 
   unitMatch(string, units) {
     if (!string) {
       //null / undefined '', falsy
-      return 'notValid'
+      return "notValid";
     }
-    var i
+    var i;
     for (
       i = 0;
       i < units.length;
@@ -130,114 +130,114 @@ class QInput extends React.Component {
         string.toUpperCase() === units[i].unit.toUpperCase() ||
         string.toUpperCase() === units[i].shortUnit.toUpperCase()
       ) {
-        return i // new unitInUsePTR
+        return i; // new unitInUsePTR
       }
-    return 'notValid'
+    return "notValid";
   }
 
   validate(userInput, units) {
-    const regexNum = /-?[0-9]+/gi
-    const regexString = /[a-z]+/gi
-    const regexNumberAfterUnit = /.[a-z]+.[0-9]+/gi
+    const regexNum = /-?[0-9]+/gi;
+    const regexString = /[a-z]+/gi;
+    const regexNumberAfterUnit = /.[a-z]+.[0-9]+/gi;
     //const regexSpecialCharacters = //
-    let report = { message: ' ', isValid: true, newPTR: 0 }
-    let returnUnitMatch
+    let report = { message: " ", isValid: true, newPTR: 0 };
+    let returnUnitMatch;
     //let matchedNumRX; //= userInput.match(regexNum);
     //let matchedStringRX; // = userInput.match(regexString);
-    let matchedNumRX, matchedStringRX, matchedNum, matchedString
+    let matchedNumRX, matchedStringRX, matchedNum, matchedString;
 
     try {
       // undefined / null userInput
-      matchedNumRX = userInput.match(regexNum)
-      matchedStringRX = userInput.match(regexString)
+      matchedNumRX = userInput.match(regexNum);
+      matchedStringRX = userInput.match(regexString);
     } catch {
-      report.isValid = false
-      report.message = 'passed null/undefined into validate'
-      return report
+      report.isValid = false;
+      report.message = "passed null/undefined into validate";
+      return report;
     }
 
-    if (userInput === '-' || userInput === '') {
+    if (userInput === "-" || userInput === "") {
       //accept '-' as a valid string -> atm '-' !== undefined
-      report.isValid = true
-      return report
+      report.isValid = true;
+      return report;
     }
 
     if (userInput.match(regexNumberAfterUnit)) {
       // 10 mb 10 invalid , or mb 10
-      report.isValid = false
-      report.message = 'please input in this format : [Number] [Unit]'
-      return report
+      report.isValid = false;
+      report.message = "please input in this format : [Number] [Unit]";
+      return report;
     }
-    /** ==>*/ matchedNum = matchedNumRX !== null ? matchedNumRX.join('') : ''
+    /** ==>*/ matchedNum = matchedNumRX !== null ? matchedNumRX.join("") : "";
     /** ==>*/ matchedString =
-      matchedStringRX !== null ? matchedStringRX.join('') : ''
+      matchedStringRX !== null ? matchedStringRX.join("") : "";
 
     if (isNaN(parseFloat(matchedNum))) {
       // Checks if a number comes first
-      report.message = `${matchedNum}  is not a valid number`
-      report.isValid = false
-      return report
+      report.message = `${matchedNum}  is not a valid number`;
+      report.isValid = false;
+      return report;
     }
 
-    returnUnitMatch = this.unitMatch(matchedString, units) // either new unitInUsePTR or 'notValid'
+    returnUnitMatch = this.unitMatch(matchedString, units); // either new unitInUsePTR or 'notValid'
 
-    if (returnUnitMatch !== 'notValid') {
+    if (returnUnitMatch !== "notValid") {
       if (returnUnitMatch === 0 && !Number.isInteger(parseFloat(matchedNum))) {
-        report.message = `please use Integers with ${matchedString}`
+        report.message = `please use Integers with ${matchedString}`;
         //report.newPTR = returnUnitMatch; -> report.newPTR is set to 0 by default
       }
-      report.message = `recognized unit: ${matchedString}`
-      report.newPTR = returnUnitMatch
+      report.message = `recognized unit: ${matchedString}`;
+      report.newPTR = returnUnitMatch;
     } else {
-      if (matchedString === '') {
+      if (matchedString === "") {
         //if no unit is input -> just takes number and applies unitInUse
         //report.message = "please enter a valid unit";
-        report.isValid = true
+        report.isValid = true;
       } else {
-        report.message = `${matchedString} is not a valid unit`
-        report.isValid = false
+        report.message = `${matchedString} is not a valid unit`;
+        report.isValid = false;
       }
     }
-    /** ==>*/ return report
+    /** ==>*/ return report;
   }
   onClick(buttonID, unitInUsePTR) {
     if (!this.state.isValid) {
-      return
+      return;
     } else {
-      let nullIfNoMatch = `${this.state.value}`.match(/[a-z]+/gi) //produces null if no match
+      let nullIfNoMatch = `${this.state.value}`.match(/[a-z]+/gi); //produces null if no match
       let unit = nullIfNoMatch
         ? nullIfNoMatch.join() //if theres a match take unit
-        : this.props.unitConfig[unitInUsePTR].unit //if no match get unitInUse
+        : this.props.unitConfig[unitInUsePTR].unit; //if no match get unitInUse
       //-> diese 4 Zeilen ermöglichen Increments auf nur Zahlen
-      let number = this.getNumber(this.state.value) //if no number returns 0
-      let newNumber = { number: number, message: '' }
+      let number = this.getNumber(this.state.value); //if no number returns 0
+      let newNumber = { number: number, message: "" };
       let returnConverted = {
         number: number,
         unit: unit,
         unitPTR: unitInUsePTR,
-      }
+      };
 
-      if (buttonID === 'Increment') {
+      if (buttonID === "Increment") {
         newNumber = this.increment(
           number,
           unitInUsePTR,
           this.props.unitConfig,
-          this.props.maxVal,
-        )
-      } else if (buttonID === 'Decrement') {
+          this.props.maxVal
+        );
+      } else if (buttonID === "Decrement") {
         newNumber = this.decrement(
           number,
           unitInUsePTR,
           this.props.unitConfig,
-          this.props.minVal,
-        )
+          this.props.minVal
+        );
       }
       /* ==> */ returnConverted = this.convert(
         newNumber.number,
         unitInUsePTR,
         unit,
-        this.props.unitConfig,
-      )
+        this.props.unitConfig
+      );
       this.setState(
         {
           value: returnConverted.unit
@@ -247,19 +247,19 @@ class QInput extends React.Component {
           message: newNumber.message,
         },
         () => {
-          this.populateToParent(this.state.value)
-        },
-      )
+          this.populateToParent(this.state.value);
+        }
+      );
     }
   }
 
   onChange(event) {
-    let userInput = event.target.value
+    let userInput = event.target.value;
     let report = this.validate(
       userInput,
       this.props.unitConfig,
-      this.state.unitInUsePTR,
-    )
+      this.state.unitInUsePTR
+    );
     //
     this.setState(
       {
@@ -271,23 +271,23 @@ class QInput extends React.Component {
           : this.state.unitInUsePTR,
       },
       () => {
-        this.populateToParent(userInput)
-      },
-    )
+        this.populateToParent(userInput);
+      }
+    );
   }
 
   populateToParent(value) {
     if (this.props.onUpdate) {
-      let newValue
+      let newValue;
       newValue =
-        value === ''
-          ? '-'
+        value === ""
+          ? "-"
           : isNaN(value)
           ? this.MemoryUtils.convertValueToBytes(value)
-          : this.MemoryUtils.convertValueToBytes(value + 'mb')
+          : this.MemoryUtils.convertValueToBytes(value + "mb");
       // TODO check whether the value should be populated as string or as number (aka bytes) : √
       // if the newValue === '-' -> tbd
-      this.props.onUpdate(newValue)
+      this.props.onUpdate(newValue);
     }
   }
 
@@ -322,16 +322,16 @@ class QInput extends React.Component {
                     isincrement={true}
                     onMouseDown={() =>
                       this.onClick(
-                        'Increment',
+                        "Increment",
                         this.state.unitInUsePTR,
-                        this.props.unitConfig,
+                        this.props.unitConfig
                       )
                     }
                   >
                     <svg
                       focusable="false"
                       preserveAspectRatio="xMidYMid meet"
-                      style={{ willChange: 'transform' }}
+                      style={{ willChange: "transform" }}
                       xmlns="http://www.w3.org/2000/svg"
                       width="8"
                       height="4"
@@ -353,16 +353,16 @@ class QInput extends React.Component {
                     isincrement={false}
                     onMouseDown={() =>
                       this.onClick(
-                        'Decrement',
+                        "Decrement",
                         this.state.unitInUsePTR,
-                        this.props,
+                        this.props
                       )
                     }
                   >
                     <svg
                       focusable="false"
                       preserveAspectRatio="xMidYMid meet"
-                      style={{ willChange: 'transform' }}
+                      style={{ willChange: "transform" }}
                       xmlns="http://www.w3.org/2000/svg"
                       width="8"
                       height="4"
@@ -384,8 +384,8 @@ class QInput extends React.Component {
 
         <div class="bx--form__helper-text">{this.state.message}</div>
       </div>
-    )
-    return NumberInput
+    );
+    return NumberInput;
   }
 }
 QInput.propTypes = {
@@ -417,12 +417,12 @@ QInput.propTypes = {
    *
    */
   feedByteAsNumbersOnly: PropTypes.bool,
-}
+};
 
 QInput.defaultProps = {
-  minVal: '0',
-  maxVal: '10 GiB',
+  minVal: "10",
+  maxVal: "10 GiB",
   unitConfig: Memory,
-}
+};
 
-export default QInput
+export default QInput;
