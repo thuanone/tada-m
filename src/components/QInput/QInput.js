@@ -39,7 +39,6 @@ class QInput extends React.Component {
     this.populateToParent(this.state.value);
   }
 
-<<<<<<< HEAD
   checkMinMax(input, minVal, maxVal, unit) {
     let minValByte = this.MemoryUtils.convertValueToBytes(minVal);
     let maxValByte = this.MemoryUtils.convertValueToBytes(maxVal);
@@ -58,8 +57,6 @@ class QInput extends React.Component {
     }
   }
 
-=======
->>>>>>> 60ba1b056fcd2fd091632de1baab7b834cb9fd42
   increment(number, unitInUsePTR, unitConfig, minVal, maxVal) {
     if (number === "-") {
       return { number: 1, };
@@ -249,14 +246,8 @@ class QInput extends React.Component {
           number,
           unitInUsePTR,
           this.props.unitConfig,
-<<<<<<< HEAD
           minVal,
           maxVal
-=======
-          this.props.minVal,
-          this.props.maxVal,
-          
->>>>>>> 60ba1b056fcd2fd091632de1baab7b834cb9fd42
         );
       } else if (buttonID === "Decrement") {
         newNumber = this.decrement(
