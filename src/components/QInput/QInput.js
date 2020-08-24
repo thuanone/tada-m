@@ -47,10 +47,13 @@ class QInput extends React.Component {
     let newNumber = number + stepsize
     let unit = unitConfig[unitInUsePTR].unit
 
-    if (this.MemoryUtils.convertValueToBytes(newNumber + unit) < this.MemoryUtils.convertValueToBytes(minVal) ){
-      return {number:this.getNumber(minVal) ,message: ''}
+    if (
+      this.MemoryUtils.convertValueToBytes(newNumber + unit) <
+      this.MemoryUtils.convertValueToBytes(minVal)
+    ) {
+      return { number: this.getNumber(minVal), message: '' }
     }
-   
+
     return this.MemoryUtils.convertValueToBytes(newNumber + unit) >
       this.MemoryUtils.convertValueToBytes(maxVal) //is incrementedNumber greater than maxVal? //funktioniert weil newNum> undefined
       ? { number: number, message: 'maxVal reached' } //true -> return current number
@@ -66,11 +69,15 @@ class QInput extends React.Component {
     let newNumber = number - stepsize
     let unit = unitConfig[unitInUsePTR].unit
 
-    if (minVal.match(number) && minVal.match(unit)){ // for 0 
-        return { number: number, message: 'minVal reached' }
+    if (minVal.match(number) && minVal.match(unit)) {
+      // for 0
+      return { number: number, message: 'minVal reached' }
     }
-    if (this.MemoryUtils.convertValueToBytes(newNumber + unit) > this.MemoryUtils.convertValueToBytes(maxVal) ){
-      return {number:this.getNumber(maxVal) ,message: ''}
+    if (
+      this.MemoryUtils.convertValueToBytes(newNumber + unit) >
+      this.MemoryUtils.convertValueToBytes(maxVal)
+    ) {
+      return { number: this.getNumber(maxVal), message: '' }
     }
 
     return this.MemoryUtils.convertValueToBytes(newNumber + unit) <
@@ -78,7 +85,6 @@ class QInput extends React.Component {
       ? { number: number, message: 'minVal reached' } //true -> return current number
       : { number: newNumber, message: '' } //false -> return new Number
   }
-    
 
   convert(number, unitInUsePTR, unit, unitConfig) {
     let convertedNumber = { number, unit, unitPTR: unitInUsePTR }
@@ -88,7 +94,9 @@ class QInput extends React.Component {
       unitConfig[unitInUsePTR + 1] !== undefined
     ) {
       //up a unit
-      convertedNumber.number = Math.round(number / unitConfig[unitInUsePTR].convertUpAt)
+      convertedNumber.number = Math.round(
+        number / unitConfig[unitInUsePTR].convertUpAt,
+      )
       convertedNumber.unit = unitConfig[unitInUsePTR + 1].unit //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR + 1
     }
