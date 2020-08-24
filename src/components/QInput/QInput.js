@@ -38,7 +38,7 @@ class QInput extends React.Component {
     this.populateToParent(this.state.value)
   }
 
-  increment(number, unitInUsePTR, unitConfig, maxVal) {
+  increment(number, unitInUsePTR, unitConfig, maxVal, minVal) {
     if (number === '-') {
       return { number: 1, message: '' }
     }
@@ -46,6 +46,10 @@ class QInput extends React.Component {
     let stepsize = unitConfig[unitInUsePTR].standardStepSize
     let newNumber = number + stepsize
     let unit = unitConfig[unitInUsePTR].unit
+
+    if (this.MemoryUtils.convertValueToBytes(newNumber + unit) < this.MemoryUtils.convertValueToBytes(minVal) ){
+      return {number:this.getNumber(minVal) ,message: ''}
+    }
    
     return this.MemoryUtils.convertValueToBytes(newNumber + unit) >
       this.MemoryUtils.convertValueToBytes(maxVal) //is incrementedNumber greater than maxVal? //funktioniert weil newNum> undefined
@@ -53,7 +57,7 @@ class QInput extends React.Component {
       : { number: newNumber, message: '' } //false -> return new Number
   }
 
-  decrement(number, unitInUsePTR, unitConfig, minVal) {
+  decrement(number, unitInUsePTR, unitConfig, minVal, maxVal) {
     if (number === '-') {
       return { number: 0, message: '' }
     }
@@ -64,6 +68,9 @@ class QInput extends React.Component {
 
     if (minVal.match(number) && minVal.match(unit)){ // for 0 
         return { number: number, message: 'minVal reached' }
+    }
+    if (this.MemoryUtils.convertValueToBytes(newNumber + unit) > this.MemoryUtils.convertValueToBytes(maxVal) ){
+      return {number:this.getNumber(maxVal) ,message: ''}
     }
 
     return this.MemoryUtils.convertValueToBytes(newNumber + unit) <
@@ -81,7 +88,7 @@ class QInput extends React.Component {
       unitConfig[unitInUsePTR + 1] !== undefined
     ) {
       //up a unit
-      convertedNumber.number = Math.round(number / 1024)
+      convertedNumber.number = Math.round(number / unitConfig[unitInUsePTR].convertUpAt)
       convertedNumber.unit = unitConfig[unitInUsePTR + 1].unit //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR + 1
     }
@@ -232,6 +239,7 @@ class QInput extends React.Component {
           unitInUsePTR,
           this.props.unitConfig,
           this.props.maxVal,
+          this.props.minVal,
         )
       } else if (buttonID === 'Decrement') {
         newNumber = this.decrement(
@@ -239,6 +247,7 @@ class QInput extends React.Component {
           unitInUsePTR,
           this.props.unitConfig,
           this.props.minVal,
+          this.props.maxVal,
         )
       }
       /* ==> */ returnConverted = this.convert(
@@ -293,7 +302,7 @@ class QInput extends React.Component {
           ? '-'
           : isNaN(value)
           ? this.MemoryUtils.convertValueToBytes(value)
-          : this.MemoryUtils.convertValueToBytes(value + 'mb')
+          : this.MemoryUtils.convertValueToBytes(value + 'mib')
       // TODO check whether the value should be populated as string or as number (aka bytes) : √
       // if the newValue === '-' -> tbd
       this.props.onUpdate(newValue)
