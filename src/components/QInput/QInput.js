@@ -23,6 +23,7 @@ class QInput extends React.Component {
     this.onClick = this.onClick.bind(this);
     this.unitMatch = this.unitMatch.bind(this);
     this.validate = this.validate.bind(this);
+    this.checkMinMax = this.checkMinMax.bind(this);
 
     this.MemoryUtils = new MemoryUtils();
   }
@@ -38,52 +39,44 @@ class QInput extends React.Component {
     this.populateToParent(this.state.value);
   }
 
-  increment(number, unitInUsePTR, unitConfig, maxVal, minVal) {
+  checkMinMax(input, minVal, maxVal, unit) {
+    let minValByte = this.MemoryUtils.convertValueToBytes(minVal);
+    let maxValByte = this.MemoryUtils.convertValueToBytes(maxVal);
+    let inputByte = this.MemoryUtils.convertValueToBytes(input + unit);
+
+    if (minValByte <= inputByte && inputByte <= maxValByte){
+      return { number: input, message: "" };
+    }
+    // jumping to minVal
+    if (inputByte < minValByte) {
+      return { number: this.getNumber(minVal), message: "minVal reacheddd" };
+    }
+    // jumping to maxVal
+    if (inputByte > maxValByte) {
+      return { number: this.getNumber(maxVal), message: "maxVal reacheddd" };
+    }
+  }
+
+  increment(number, unitInUsePTR, unitConfig, minVal, maxVal) {
     if (number === "-") {
-      return { number: 1, message: "" };
+      return { number: 1, };
     }
 
     let stepsize = unitConfig[unitInUsePTR].standardStepSize;
     let newNumber = number + stepsize;
-    let unit = unitConfig[unitInUsePTR].unit;
 
-    if (
-      this.MemoryUtils.convertValueToBytes(newNumber + unit) <
-      this.MemoryUtils.convertValueToBytes(minVal)
-    ) {
-      return { number: this.getNumber(minVal), message: "" };
-    }
-
-    return this.MemoryUtils.convertValueToBytes(newNumber + unit) >
-      this.MemoryUtils.convertValueToBytes(maxVal) //is incrementedNumber greater than maxVal? //funktioniert weil newNum> undefined
-      ? { number: number, message: "maxVal reached" } //true -> return current number
-      : { number: newNumber, message: "" }; //false -> return new Number
+    return { number: newNumber,}; 
   }
 
   decrement(number, unitInUsePTR, unitConfig, minVal, maxVal) {
     if (number === "-") {
-      return { number: 0, message: "" };
+      return { number: 0, };
     }
 
     let stepsize = unitConfig[unitInUsePTR].standardStepSize;
     let newNumber = number - stepsize;
-    let unit = unitConfig[unitInUsePTR].unit;
 
-    if (minVal.match(number) && minVal.match(unit)) {
-      // for 0
-      return { number: number, message: "minVal reached" };
-    }
-    if (
-      this.MemoryUtils.convertValueToBytes(newNumber + unit) >
-      this.MemoryUtils.convertValueToBytes(maxVal)
-    ) {
-      return { number: this.getNumber(maxVal), message: "" };
-    }
-
-    return this.MemoryUtils.convertValueToBytes(newNumber + unit) <
-      this.MemoryUtils.convertValueToBytes(minVal) //is incrementedNumber less than maxVal? //funktioniert weil newNum> undefined
-      ? { number: number, message: "minVal reached" } //true -> return current number
-      : { number: newNumber, message: "" }; //false -> return new Number
+    return { number: newNumber, }; 
   }
 
   convert(number, unitInUsePTR, unit, unitConfig) {
@@ -241,23 +234,28 @@ class QInput extends React.Component {
         unitPTR: unitInUsePTR,
       };
 
+      let minVal = this.props.minVal;
+      let maxVal = this.props.maxVal;
+
       if (buttonID === "Increment") {
         newNumber = this.increment(
           number,
           unitInUsePTR,
           this.props.unitConfig,
-          this.props.maxVal,
-          this.props.minVal
+          minVal,
+          maxVal
         );
       } else if (buttonID === "Decrement") {
         newNumber = this.decrement(
           number,
           unitInUsePTR,
           this.props.unitConfig,
-          this.props.minVal,
-          this.props.maxVal
+          minVal,
+          maxVal
         );
       }
+      newNumber = this.checkMinMax(newNumber.number,minVal,maxVal,unit);
+      
       /* ==> */ returnConverted = this.convert(
         newNumber.number,
         unitInUsePTR,
