@@ -38,7 +38,7 @@ class QInput extends React.Component {
     this.populateToParent(this.state.value);
   }
 
-  increment(number, unitInUsePTR, unitConfig, maxVal, minVal) {
+  increment(number, unitInUsePTR, unitConfig, minVal, maxVal) {
     if (number === "-") {
       return { number: 1, message: "" };
     }
@@ -159,7 +159,7 @@ class QInput extends React.Component {
     return "notValid";
   }
 
-  validate(userInput, units) {
+  validate(userInput, units, minVal, maxVal) {
     const regexNum = /-?[0-9]+/gi;
     const regexString = /[a-z]+/gi;
     const regexNumberAfterUnit = /.[a-z]+.[0-9]+/gi;
@@ -193,8 +193,7 @@ class QInput extends React.Component {
       return report;
     }
     /** ==>*/ matchedNum = matchedNumRX !== null ? matchedNumRX.join("") : "";
-    /** ==>*/ matchedString =
-      matchedStringRX !== null ? matchedStringRX.join("") : "";
+    /** ==>*/ matchedString = matchedStringRX !== null ? matchedStringRX.join("") : "";
 
     if (isNaN(parseFloat(matchedNum))) {
       // Checks if a number comes first
@@ -202,7 +201,12 @@ class QInput extends React.Component {
       report.isValid = false;
       return report;
     }
-
+    console.log("thresholf", parseFloat(matchedNum), minVal, maxVal);
+    if (parseFloat(matchedNum) < minVal || parseFloat(matchedNum) > maxVal ) {
+      report.message = `${matchedNum} is above / below allowed threshhold`;
+      report.isValid = false;
+      return report;
+    }
     returnUnitMatch = this.unitMatch(matchedString, units); // either new unitInUsePTR or 'notValid'
 
     if (returnUnitMatch !== "notValid") {
@@ -246,8 +250,9 @@ class QInput extends React.Component {
           number,
           unitInUsePTR,
           this.props.unitConfig,
+          this.props.minVal,
           this.props.maxVal,
-          this.props.minVal
+          
         );
       } else if (buttonID === "Decrement") {
         newNumber = this.decrement(
@@ -284,7 +289,9 @@ class QInput extends React.Component {
     let report = this.validate(
       userInput,
       this.props.unitConfig,
-      this.state.unitInUsePTR
+      this.state.unitInUsePTR,
+      this.props.minVal,
+      this.props.maxVal
     );
     //
     this.setState(
