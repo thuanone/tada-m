@@ -57,7 +57,6 @@ class MemoryUtils {
         /([0-9]*\.?[0-9]*)\s*(([kmgtpe]i?b)|([kmgtpe]i?))?/
       );
       const results = regExp.exec(val.trim().toLowerCase());
-
       let unit = "";
       if (results.length > 0) {
         if (results.length > 2) {
@@ -151,7 +150,6 @@ class MemoryUtils {
     if (!divider) {
       divider = mebibyte;
     }
-    console.log("bytes", bytes, "targetUnit", targetUnit, "divider", divider);
 
     return Math.round(bytes / divider);
   }
