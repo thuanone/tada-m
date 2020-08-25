@@ -40,43 +40,87 @@ class QInput extends React.Component {
   }
 
   checkMinMax(input, minVal, maxVal, unit) {
+    let checked = {
+      number : input,
+      message: "",
+      unit : unit,
+    };
     let minValByte = this.MemoryUtils.convertValueToBytes(minVal);
     let maxValByte = this.MemoryUtils.convertValueToBytes(maxVal);
     let inputByte = this.MemoryUtils.convertValueToBytes(input + unit);
 
     if (minValByte <= inputByte && inputByte <= maxValByte){
-      return { number: input, message: "" };
+      return checked;
     }
     // jumping to minVal
     if (inputByte < minValByte) {
-      return { number: this.getNumber(minVal), message: "minVal reacheddd" };
+      checked.number =  this.getNumber(minVal);
+      checked.message =  "minVal reacheddd";
+      return checked;
     }
     // jumping to maxVal
     if (inputByte > maxValByte) {
-      return { number: this.getNumber(maxVal), message: "maxVal reacheddd" };
+      checked.number=  this.getNumber(maxVal);
+      checked.message= "maxVal reacheddd";
+      return checked;
     }
   }
 
   increment(number, unitInUsePTR, unitConfig, minVal, maxVal) {
+    let newNumber ={
+      number: number,
+      message: "",
+      unit: unitConfig[unitInUsePTR].unit,
+      PTR: unitInUsePTR,
+    };
+
+
     if (number === "-") {
-      return { number: 1, };
+      let unit = unitConfig[this.unitMatch(minVal)].unit;
+      return { number: this.getNumber(minVal), unit: unit};
     }
 
     let stepsize = unitConfig[unitInUsePTR].standardStepSize;
-    let newNumber = number + stepsize;
+    newNumber.number = number + stepsize;
 
-    return { number: newNumber,}; 
+    let convertedNumber = this.convert(newNumber.number, unitInUsePTR,newNumber.unit,unitConfig); //converting 
+
+    newNumber.PTR = convertedNumber.unitPTR;
+
+    let checked = this.checkMinMax(convertedNumber.number,minVal,maxVal,convertedNumber.unit);
+    newNumber.unit = convertedNumber.unit;
+    newNumber.number = checked.number;
+    newNumber.message = checked.message;
+
+    return newNumber;
   }
 
   decrement(number, unitInUsePTR, unitConfig, minVal, maxVal) {
+    let newNumber ={
+      number: number,
+      message: "",
+      unit: unitConfig[unitInUsePTR].unit,
+      PTR: unitInUsePTR,
+    };
+    let unit = unitConfig[unitInUsePTR].unit;
+
     if (number === "-") {
       return { number: 0, };
     }
 
     let stepsize = unitConfig[unitInUsePTR].standardStepSize;
-    let newNumber = number - stepsize;
+    newNumber.number = number - stepsize;
+    
+    let convertedNumber = this.convert(newNumber.number, unitInUsePTR,newNumber.unit,unitConfig); //converting 
 
-    return { number: newNumber, }; 
+    newNumber.PTR = convertedNumber.unitPTR;
+
+    let checked = this.checkMinMax(convertedNumber.number,minVal,maxVal,convertedNumber.unit);
+    newNumber.unit = convertedNumber.unit;
+    newNumber.number = checked.number;
+    newNumber.message = checked.message;
+
+    return newNumber; 
   }
 
   convert(number, unitInUsePTR, unit, unitConfig) {
@@ -88,7 +132,7 @@ class QInput extends React.Component {
     ) {
       //up a unit
       convertedNumber.number = Math.round(
-        number / unitConfig[unitInUsePTR].convertUpAt
+        (number/ unitConfig[unitInUsePTR].convertUpAt)
       );
       convertedNumber.unit = unitConfig[unitInUsePTR + 1].unit; //{unit:} is assigned to String
       convertedNumber.unitPTR = unitInUsePTR + 1;
@@ -258,20 +302,13 @@ class QInput extends React.Component {
           maxVal
         );
       }
-      newNumber = this.checkMinMax(newNumber.number,minVal,maxVal,unit);
-      
-      /* ==> */ returnConverted = this.convert(
-        newNumber.number,
-        unitInUsePTR,
-        unit,
-        this.props.unitConfig
-      );
+
       this.setState(
         {
-          value: returnConverted.unit
-            ? `${returnConverted.number} ${returnConverted.unit}`
-            : returnConverted.number,
-          unitInUsePTR: returnConverted.unitPTR,
+          value: newNumber.unit
+            ? `${newNumber.number} ${newNumber.unit}`
+            : newNumber.number,
+          unitInUsePTR: newNumber.PTR,
           message: newNumber.message,
         },
         () => {
