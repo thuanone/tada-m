@@ -15,7 +15,7 @@ class QInput extends React.Component {
       // if number -> handle as bytes and calculate the best unit
       // if string incl unit -> handle as-is
       // if undefined -> print '-'
-      unitInUsePTR: props.unitInUsePTR ? props.unitInUsePTR : 0,
+      unitInUsePTR: props.unitInUsePTR ? props.unitInUsePTR : 0, // change this to this.unitMatch(minVal.match(/[a-z]+/gi).join(""), this.props) (doesnt work yet)
       message: "",
       isValid: true,
     };
@@ -49,9 +49,20 @@ class QInput extends React.Component {
     let maxValByte = this.MemoryUtils.convertValueToBytes(maxVal);
     let inputByte = this.MemoryUtils.convertValueToBytes(input + unit);
 
+    if (
+      this.getNumber(minVal) == 0 &&
+      minVal.match("MiB") &&
+      input <= this.getNumber(minVal)
+    ) {
+      checked.number = this.getNumber(minVal);
+      minVal = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
+      checked.unit = unitConfig[this.unitMatch(minVal, unitConfig)];
+      return checked;
+    }
     if (minValByte <= inputByte && inputByte <= maxValByte) {
       return checked;
     }
+
     // jumping to minVal
     if (inputByte < minValByte) {
       checked.number = this.getNumber(minVal);
@@ -274,7 +285,7 @@ class QInput extends React.Component {
       report.isValid = false;
       return report;
     }
-    console.log("thresholf", parseFloat(matchedNum), minVal, maxVal);
+    console.log("threshold", parseFloat(matchedNum), minVal, maxVal);
     if (parseFloat(matchedNum) < minVal || parseFloat(matchedNum) > maxVal) {
       report.message = `${matchedNum} is above / below allowed threshhold`;
       report.isValid = false;
@@ -518,8 +529,8 @@ QInput.propTypes = {
 };
 
 QInput.defaultProps = {
-  minVal: "0 MiB",
-  maxVal: "10 TiB",
+  minVal: "10 MiB",
+  maxVal: "10 GiB",
   unitConfig: Memory,
 };
 
