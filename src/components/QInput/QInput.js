@@ -62,8 +62,10 @@ class QInput extends React.Component {
     if (inputByte > maxValByte) {
       checked.number = this.getNumber(maxVal);
       checked.message = "maxVal reached";
+
       maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-      console.log("maxVal", maxVal);
+      minVal = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
+
       checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
       return checked;
     }
@@ -160,24 +162,12 @@ class QInput extends React.Component {
           unitConfig[convertedNumber.unitPTR].convertUpAt &&
         unitConfig[convertedNumber.unitPTR + 1] !== undefined
       ) {
-        console.log(
-          "number",
-          convertedNumber.number,
-          "PTR",
-          convertedNumber.unitPTR
-        );
         convertedNumber.number = Math.round(
           convertedNumber.number /
             unitConfig[convertedNumber.unitPTR].convertUpAt
         ); // round 0.00 (2 digits)
         convertedNumber.unitPTR = convertedNumber.unitPTR + 1;
       }
-      console.log(
-        "number",
-        convertedNumber.number,
-        "PTR",
-        convertedNumber.unitPTR
-      );
 
       convertedNumber.unit = unitConfig[convertedNumber.unitPTR].unit; //{unit:} is assigned to String
     }
@@ -528,7 +518,7 @@ QInput.propTypes = {
 };
 
 QInput.defaultProps = {
-  minVal: "10 MiB",
+  minVal: "0 MiB",
   maxVal: "10 TiB",
   unitConfig: Memory,
 };
