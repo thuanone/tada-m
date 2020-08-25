@@ -39,55 +39,68 @@ class QInput extends React.Component {
     this.populateToParent(this.state.value);
   }
 
-  checkMinMax(input, minVal, maxVal, unit) {
+  checkMinMax(input, minVal, maxVal, unit,unitConfig) {
     let checked = {
-      number : input,
+      number: input,
       message: "",
-      unit : unit,
+      unit: unit,
     };
     let minValByte = this.MemoryUtils.convertValueToBytes(minVal);
     let maxValByte = this.MemoryUtils.convertValueToBytes(maxVal);
     let inputByte = this.MemoryUtils.convertValueToBytes(input + unit);
 
-    if (minValByte <= inputByte && inputByte <= maxValByte){
+    if (minValByte <= inputByte && inputByte <= maxValByte) {
       return checked;
     }
     // jumping to minVal
     if (inputByte < minValByte) {
-      checked.number =  this.getNumber(minVal);
-      checked.message =  "minVal reacheddd";
+      checked.number = this.getNumber(minVal);
+      checked.message = "minVal reached";
       return checked;
     }
     // jumping to maxVal
     if (inputByte > maxValByte) {
-      checked.number=  this.getNumber(maxVal);
-      checked.message= "maxVal reacheddd";
+      checked.number = this.getNumber(maxVal);
+      checked.message = "maxVal reached";
+      maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
+      console.log("maxVal",maxVal)
+      checked.unit = unitConfig[this.unitMatch(maxVal,unitConfig)].unit;
       return checked;
     }
   }
 
   increment(number, unitInUsePTR, unitConfig, minVal, maxVal) {
-    let newNumber ={
+    let newNumber = {
       number: number,
       message: "",
       unit: unitConfig[unitInUsePTR].unit,
-      PTR: unitInUsePTR,
+      unitPTR: unitInUsePTR,
     };
 
-
     if (number === "-") {
-      let unit = unitConfig[this.unitMatch(minVal)].unit;
-      return { number: this.getNumber(minVal), unit: unit};
+      let unit = unitConfig[this.unitMatch(minVal,unitConfig)].unit;
+      return { number: this.getNumber(minVal), unit: unit };
     }
 
     let stepsize = unitConfig[unitInUsePTR].standardStepSize;
     newNumber.number = number + stepsize;
 
-    let convertedNumber = this.convert(newNumber.number, unitInUsePTR,newNumber.unit,unitConfig); //converting 
+    let convertedNumber = this.convert(
+      newNumber.number,
+      unitInUsePTR,
+      newNumber.unit,
+      unitConfig
+    ); //converting
 
-    newNumber.PTR = convertedNumber.unitPTR;
+    newNumber.unitPTR = convertedNumber.unitPTR;
 
-    let checked = this.checkMinMax(convertedNumber.number,minVal,maxVal,convertedNumber.unit);
+    let checked = this.checkMinMax(
+      convertedNumber.number,
+      minVal,
+      maxVal,
+      convertedNumber.unit,
+      unitConfig,
+    );
     newNumber.unit = convertedNumber.unit;
     newNumber.number = checked.number;
     newNumber.message = checked.message;
@@ -96,31 +109,42 @@ class QInput extends React.Component {
   }
 
   decrement(number, unitInUsePTR, unitConfig, minVal, maxVal) {
-    let newNumber ={
+    let newNumber = {
       number: number,
       message: "",
       unit: unitConfig[unitInUsePTR].unit,
-      PTR: unitInUsePTR,
+      unitPTR: unitInUsePTR,
     };
     let unit = unitConfig[unitInUsePTR].unit;
 
     if (number === "-") {
-      return { number: 0, };
+      return { number: 0 };
     }
 
     let stepsize = unitConfig[unitInUsePTR].standardStepSize;
     newNumber.number = number - stepsize;
-    
-    let convertedNumber = this.convert(newNumber.number, unitInUsePTR,newNumber.unit,unitConfig); //converting 
 
-    newNumber.PTR = convertedNumber.unitPTR;
+    let convertedNumber = this.convert(
+      newNumber.number,
+      unitInUsePTR,
+      newNumber.unit,
+      unitConfig
+    ); //converting
 
-    let checked = this.checkMinMax(convertedNumber.number,minVal,maxVal,convertedNumber.unit);
+    newNumber.unitPTR = convertedNumber.unitPTR;
+
+    let checked = this.checkMinMax(
+      convertedNumber.number,
+      minVal,
+      maxVal,
+      convertedNumber.unit,
+      unitConfig,
+    );
     newNumber.unit = convertedNumber.unit;
     newNumber.number = checked.number;
     newNumber.message = checked.message;
 
-    return newNumber; 
+    return newNumber;
   }
 
   convert(number, unitInUsePTR, unit, unitConfig) {
@@ -131,11 +155,21 @@ class QInput extends React.Component {
       unitConfig[unitInUsePTR + 1] !== undefined
     ) {
       //up a unit
-      convertedNumber.number = Math.round(
-        (number/ unitConfig[unitInUsePTR].convertUpAt)
-      );
-      convertedNumber.unit = unitConfig[unitInUsePTR + 1].unit; //{unit:} is assigned to String
-      convertedNumber.unitPTR = unitInUsePTR + 1;
+      while (
+        convertedNumber.number >=
+          unitConfig[convertedNumber.unitPTR].convertUpAt &&
+        unitConfig[convertedNumber.unitPTR + 1] !== undefined
+      ) {
+        console.log('number',convertedNumber.number,'PTR', convertedNumber.unitPTR );
+        convertedNumber.number =
+          Math.round(
+            (convertedNumber.number) / unitConfig[convertedNumber.unitPTR].convertUpAt
+          ); // round 0.00 (2 digits)
+        convertedNumber.unitPTR = convertedNumber.unitPTR + 1;
+      }
+      console.log('number',convertedNumber.number,'PTR', convertedNumber.unitPTR );
+
+      convertedNumber.unit = unitConfig[convertedNumber.unitPTR].unit; //{unit:} is assigned to String
     }
     if (number < 1 && unitConfig[unitInUsePTR - 1] !== undefined) {
       //down a unit
@@ -176,20 +210,22 @@ class QInput extends React.Component {
     return number;
   }
 
-  unitMatch(string, units) {
+  unitMatch(string, unitConfig) {
+    
     if (!string) {
       //null / undefined '', falsy
       return "notValid";
     }
+
     var i;
     for (
       i = 0;
-      i < units.length;
+      i < unitConfig.length;
       i++ // Array Size (last one is none)
     )
       if (
-        string.toUpperCase() === units[i].unit.toUpperCase() ||
-        string.toUpperCase() === units[i].shortUnit.toUpperCase()
+        string.toUpperCase() === unitConfig[i].unit.toUpperCase() ||
+        string.toUpperCase() === unitConfig[i].shortUnit.toUpperCase()
       ) {
         return i; // new unitInUsePTR
       }
@@ -230,7 +266,8 @@ class QInput extends React.Component {
       return report;
     }
     /** ==>*/ matchedNum = matchedNumRX !== null ? matchedNumRX.join("") : "";
-    /** ==>*/ matchedString = matchedStringRX !== null ? matchedStringRX.join("") : "";
+    /** ==>*/ matchedString =
+      matchedStringRX !== null ? matchedStringRX.join("") : "";
 
     if (isNaN(parseFloat(matchedNum))) {
       // Checks if a number comes first
@@ -239,7 +276,7 @@ class QInput extends React.Component {
       return report;
     }
     console.log("thresholf", parseFloat(matchedNum), minVal, maxVal);
-    if (parseFloat(matchedNum) < minVal || parseFloat(matchedNum) > maxVal ) {
+    if (parseFloat(matchedNum) < minVal || parseFloat(matchedNum) > maxVal) {
       report.message = `${matchedNum} is above / below allowed threshhold`;
       report.isValid = false;
       return report;
@@ -276,11 +313,6 @@ class QInput extends React.Component {
       //-> diese 4 Zeilen ermöglichen Increments auf nur Zahlen
       let number = this.getNumber(this.state.value); //if no number returns 0
       let newNumber = { number: number, message: "" };
-      let returnConverted = {
-        number: number,
-        unit: unit,
-        unitPTR: unitInUsePTR,
-      };
 
       let minVal = this.props.minVal;
       let maxVal = this.props.maxVal;
@@ -308,7 +340,7 @@ class QInput extends React.Component {
           value: newNumber.unit
             ? `${newNumber.number} ${newNumber.unit}`
             : newNumber.number,
-          unitInUsePTR: newNumber.PTR,
+          unitInUsePTR: newNumber.unitPTR,
           message: newNumber.message,
         },
         () => {
@@ -488,7 +520,7 @@ QInput.propTypes = {
 
 QInput.defaultProps = {
   minVal: "10 MiB",
-  maxVal: "10 GiB",
+  maxVal: "10 TiB",
   unitConfig: Memory,
 };
 
