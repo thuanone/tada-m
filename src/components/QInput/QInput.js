@@ -39,7 +39,7 @@ class QInput extends React.Component {
     this.populateToParent(this.state.value);
   }
 
-  checkMinMax(input, minVal, maxVal, unit,unitConfig) {
+  checkMinMax(input, minVal, maxVal, unit, unitConfig) {
     let checked = {
       number: input,
       message: "",
@@ -63,8 +63,8 @@ class QInput extends React.Component {
       checked.number = this.getNumber(maxVal);
       checked.message = "maxVal reached";
       maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-      console.log("maxVal",maxVal)
-      checked.unit = unitConfig[this.unitMatch(maxVal,unitConfig)].unit;
+      console.log("maxVal", maxVal);
+      checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
       return checked;
     }
   }
@@ -78,7 +78,7 @@ class QInput extends React.Component {
     };
 
     if (number === "-") {
-      let unit = unitConfig[this.unitMatch(minVal,unitConfig)].unit;
+      let unit = unitConfig[this.unitMatch(minVal, unitConfig)].unit;
       return { number: this.getNumber(minVal), unit: unit };
     }
 
@@ -99,7 +99,7 @@ class QInput extends React.Component {
       minVal,
       maxVal,
       convertedNumber.unit,
-      unitConfig,
+      unitConfig
     );
     newNumber.unit = convertedNumber.unit;
     newNumber.number = checked.number;
@@ -138,7 +138,7 @@ class QInput extends React.Component {
       minVal,
       maxVal,
       convertedNumber.unit,
-      unitConfig,
+      unitConfig
     );
     newNumber.unit = convertedNumber.unit;
     newNumber.number = checked.number;
@@ -160,14 +160,24 @@ class QInput extends React.Component {
           unitConfig[convertedNumber.unitPTR].convertUpAt &&
         unitConfig[convertedNumber.unitPTR + 1] !== undefined
       ) {
-        console.log('number',convertedNumber.number,'PTR', convertedNumber.unitPTR );
-        convertedNumber.number =
-          Math.round(
-            (convertedNumber.number) / unitConfig[convertedNumber.unitPTR].convertUpAt
-          ); // round 0.00 (2 digits)
+        console.log(
+          "number",
+          convertedNumber.number,
+          "PTR",
+          convertedNumber.unitPTR
+        );
+        convertedNumber.number = Math.round(
+          convertedNumber.number /
+            unitConfig[convertedNumber.unitPTR].convertUpAt
+        ); // round 0.00 (2 digits)
         convertedNumber.unitPTR = convertedNumber.unitPTR + 1;
       }
-      console.log('number',convertedNumber.number,'PTR', convertedNumber.unitPTR );
+      console.log(
+        "number",
+        convertedNumber.number,
+        "PTR",
+        convertedNumber.unitPTR
+      );
 
       convertedNumber.unit = unitConfig[convertedNumber.unitPTR].unit; //{unit:} is assigned to String
     }
@@ -211,7 +221,6 @@ class QInput extends React.Component {
   }
 
   unitMatch(string, unitConfig) {
-    
     if (!string) {
       //null / undefined '', falsy
       return "notValid";
