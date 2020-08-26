@@ -538,7 +538,7 @@ QInput.propTypes = {
 };
 
 QInput.defaultProps = {
-  minVal: "10 MiB",
+  minVal: "0 MiB",
   maxVal: "10 GiB",
   unitConfig: Memory,
 };
