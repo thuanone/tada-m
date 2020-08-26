@@ -95,8 +95,9 @@ class QInput extends React.Component {
     };
 
     if (number === "-") {
-      let unit = unitConfig[this.unitMatch(minVal, unitConfig)].unit;
-      return { number: this.getNumber(minVal), unit: unit };
+      let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from minVal
+      let unit = unitConfig[this.unitMatch(minValUnit, unitConfig)].unit;
+      return { number: this.getNumber(minVal), unit: unit , unitPTR:this.unitMatch(minValUnit, unitConfig)};
     }
 
     let stepsize = unitConfig[unitInUsePTR].standardStepSize;
@@ -135,8 +136,9 @@ class QInput extends React.Component {
     let unit = unitConfig[unitInUsePTR].unit;
 
     if (number === "-") {
-      let unit = unitConfig[this.unitMatch(minVal, unitConfig)].unit;
-      return { number: this.getNumber(minVal), unit: unit };
+      let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from minVal
+      let unit = unitConfig[this.unitMatch(minValUnit, unitConfig)].unit;
+      return { number: this.getNumber(minVal), unit: unit , unitPTR:this.unitMatch(minValUnit, unitConfig)};
     }
 
     let stepsize = unitConfig[unitInUsePTR].standardStepSize;
