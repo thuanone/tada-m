@@ -153,20 +153,18 @@ describe("functions as is", () => {
       const returnValue = instance.getNumber("10.5 mb");
       expect(returnValue).toBe(10.5);
     });
-    /*
     it("test: invoked on undefined", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
       const returnValue = instance.getNumber(undefined);
-      expect(returnValue).toBe("-");
+      expect(returnValue).toBe(NaN);
     });
     it("test: invoked on null", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
       const returnValue = instance.getNumber(null);
-      expect(returnValue).toBe("-");
+      expect(returnValue).toBe(NaN);
     });
-    */
     it(`test: invoked on '-'`, () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
@@ -209,6 +207,18 @@ describe("functions as is", () => {
       const returnValue = instance.getNumber("-1231.312 mib 13");
       expect(returnValue).toBe(-1231.31213);
     });
+    it(" . => NaN", () => {
+      const wrapper = shallow(<QInput />);
+      const instance = wrapper.instance();
+      const returnValue = instance.getNumber(".");
+      expect(returnValue).toBe(NaN);
+    });
+    it(" dasdklas => NaN", () => {
+      const wrapper = shallow(<QInput />);
+      const instance = wrapper.instance();
+      const returnValue = instance.getNumber("dasdklas");
+      expect(returnValue).toBe(NaN);
+    });
   });
   describe("validate()", () => {
     //(userInput, config) => report {message: '...', isValid: oolean() }
@@ -217,115 +227,115 @@ describe("functions as is", () => {
     it("isValid: any Numbers only", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("10", units);
+      const report = instance.validate("10", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(true);
     });
     it("isValid: Decimal Number", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("10.5", units);
+      const report = instance.validate("10.5", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(true);
     });
     it("is inValid: random Letters only", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("asdjsakldjas", units);
+      const report = instance.validate("asdjsakldjas", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(false);
     });
     it("is inValid: Special Characters included", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("ÄÜ?", units);
+      const report = instance.validate("ÄÜ?", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(false);
     });
     it("is inValid: Number in conjunction with random letters", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("10 adsj", units);
+      const report = instance.validate("10 adsj", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(false);
     });
     it("is inValid: Number Letters Numbers", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("10 daskj 10", units);
+      const report = instance.validate("10 daskj 10", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(false);
     });
     it("is inValid: only Unit correct", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("MiB", units);
+      const report = instance.validate("MiB", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(false);
     });
     it("is inValid: only Unit lowercase", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("mib", units);
+      const report = instance.validate("mib", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(false);
     });
     it("is inValid: only Unit uppercase", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("MIB", units);
+      const report = instance.validate("MIB", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(false);
     });
     it("isValid: Number with Unit", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("10 MiB", units);
+      const report = instance.validate("10 MiB", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(true);
     });
     it("isValid: Number with Unit shorthand", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("10 Mi", units);
+      const report = instance.validate("10 Mi", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(true);
     });
     it("isValid: Number with Unit shorthand lowercase", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("10 mi", units);
+      const report = instance.validate("10 mi", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(true);
     });
     it("isValid: Number with Unit shorthand uppercase", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("10 MI", units);
+      const report = instance.validate("10 MI", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(true);
     });
     it("isValid: Number Unit lowercase", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("10 mib", units);
+      const report = instance.validate("10 mib", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(true);
     });
     it("isValid: Number Unit uppercase", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("10 MIB", units);
+      const report = instance.validate("10 MIB", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(true);
     });
     it("is inValid: Number Unit Number", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("10 MiB 10", units);
+      const report = instance.validate("10 MiB 10", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(false);
     });
     it("is inValid: Number Two Units", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const report = instance.validate("10 MiB GiB", units);
+      const report = instance.validate("10 MiB GiB", units, "0 MiB", "10 GiB");
       expect(report.isValid).toBe(false);
     });
     it("test: invoked on undefined", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const returnValue = instance.validate(undefined, units);
+      const returnValue = instance.validate(undefined, units, "0 MiB", "10 GiB");
       expect(returnValue.isValid).toBe(false);
     });
     it("test: invoked on null", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      const returnValue = instance.validate(null, units);
+      const returnValue = instance.validate(null, units, "0 MiB", "10 GiB");
       expect(returnValue.isValid).toBe(false);
     });
   });
@@ -1102,7 +1112,6 @@ describe("Parent Component Integration", () => {
     const componentInstance = componentWrapper.instance();
   });
 });
-
 describe("user interaction mock, indirect test", () => {
   describe("JSX Tag as is", () => {
     let component, incr, decr, inputField;
@@ -1226,4 +1235,7 @@ describe("user interaction mock, indirect test", () => {
       });
     });
   });
+});
+describe("prop testing", () => {
+  it("");
 });
