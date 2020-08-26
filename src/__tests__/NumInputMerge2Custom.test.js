@@ -96,6 +96,12 @@ describe("functions as is", () => {
       const returnValue = instance.getNumber("10.5");
       expect(returnValue).toBe(10.5);
     });
+    it("should √: invoked on DecimalString", () => {
+      const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
+      const instance = wrapper.instance();
+      const returnValue = instance.getNumber("10234.512341");
+      expect(returnValue).toBe(10234.512341);
+    });
     it("should X: NotAFeature: invoked on Number separated by whiteSpace", () => {
       //-> parse number correctly without whitespace
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
@@ -178,6 +184,30 @@ describe("functions as is", () => {
       const instance = wrapper.instance();
       const returnValue = instance.getNumber("10 MiB 112");
       expect(returnValue).toBe(10112);
+    });
+    it("10.1312 MiB 112  => 10.1312112", () => {
+      const wrapper = shallow(<QInput />);
+      const instance = wrapper.instance();
+      const returnValue = instance.getNumber("10.1312 MiB 112");
+      expect(returnValue).toBe(10.1312112);
+    });
+    it("-1231 mib => -1231", () => {
+      const wrapper = shallow(<QInput />);
+      const instance = wrapper.instance();
+      const returnValue = instance.getNumber("-1231 mib");
+      expect(returnValue).toBe(-1231);
+    });
+    it("-1231.312 mib => -1231.312", () => {
+      const wrapper = shallow(<QInput />);
+      const instance = wrapper.instance();
+      const returnValue = instance.getNumber("-1231.312 mib");
+      expect(returnValue).toBe(-1231.312);
+    });
+    it("-1231.312 mib 13 => -1231.31213", () => {
+      const wrapper = shallow(<QInput />);
+      const instance = wrapper.instance();
+      const returnValue = instance.getNumber("-1231.312 mib 13");
+      expect(returnValue).toBe(-1231.31213);
     });
   });
   describe("validate()", () => {
@@ -415,7 +445,8 @@ describe("functions as is", () => {
         number,
         unitOne,
         units,
-        Config.general.maxVal
+        "0 MiB",
+        "10 GiB"
       );
       expect(returnValue.number).toBeGreaterThan(number);
     });
@@ -427,37 +458,40 @@ describe("functions as is", () => {
         number,
         unitOne,
         units,
-        Config.general.maxVal
+        "0 MiB",
+        "10 GiB"
       );
       const returnValue = instance.increment(
         newNumber.number,
         unitOne,
         units,
-        Config.general.maxVal
+        "0 MiB",
+        "10 GiB"
       );
       expect(newNumber.number).toBeGreaterThan(number);
       expect(returnValue.number).toBeGreaterThan(newNumber.number);
     });
-    it("increment stops at maxValue threshold", () => {
+    it("increment stops at maxValue threshold 1GiB,", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-      Config.general.maxVal = 1023;
-      let maxVal = Config.general.maxVal;
-      let minVal = Config.general.minVal;
-      let number = minVal;
+      let maxVal = "1 GiB";
+      let minVal = "0 MiB";
+      let number = instance.getNumber(minVal);
       let newNumber;
       let i;
-      for (i = 0; i < maxVal + 10; i++) {
+      for (i = 0; i < 2000 + 10; i++) {
         newNumber = instance.increment(
           number,
           unitOne,
           units,
-          Config.general.maxVal
+          minVal,
+          maxVal
         );
         number = newNumber.number;
+        unitOne = newNumber.unitPTR;
       }
       const returnValue = newNumber;
-      expect(returnValue.number).toBe(maxVal);
+      expect(returnValue.number).toBe(1);
     });
     it("decrements once normally", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
@@ -467,7 +501,8 @@ describe("functions as is", () => {
         number,
         unitOne,
         units,
-        Config.general.minVal
+        "0 MiB",
+        "10 GiB"
       );
       expect(returnValue.number).toBeLessThan(number);
     });
@@ -480,13 +515,15 @@ describe("functions as is", () => {
         number,
         unitOne,
         units,
-        Config.general.minVal
+        "0 MiB",
+        "10 GiB"
       );
       const returnValue = instance.decrement(
         newNumber.number,
         unitOne,
         units,
-        Config.general.minVal
+        "0 MiB",
+        "10 GiB"
       );
       expect(newNumber.number).toBeLessThan(number);
       expect(returnValue.number).toBeLessThan(newNumber.number);
@@ -506,9 +543,11 @@ describe("functions as is", () => {
           number,
           unitOne,
           units,
-          Config.general.minVal
+          "0 MiB",
+          "10 GiB"
         );
         number = newNumber.number;
+        unitOne = newNumber.unitPTR;
       }
       const returnValue = newNumber;
       expect(returnValue.number).toBe(minVal);
@@ -522,20 +561,21 @@ describe("functions as is", () => {
         number,
         unitOne,
         units,
-        Config.general.maxVal
+        "0 MiB",
+        "10 GiB"
       );
       expect(returnValue.number).toBe(1);
     });
-    it(`'-'decremented equals 0`, () => {
+    it(`'-'decremented equals minVal`, () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
-
       let number = "-";
       const returnValue = instance.decrement(
         number,
         unitOne,
         units,
-        Config.general.minVal
+        "0 MiB",
+        "10 GiB"
       );
       expect(returnValue.number).toBe(0);
     });
@@ -738,21 +778,21 @@ describe("onClick Functionality", () => {
     });
     */
     it("increments once from starting value", () => {
-      const wrapper = shallow(<QInput />);
+      const wrapper = shallow(<QInput minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
       instance.onClick("Increment", unitPTR);
       expect(wrapper.state().value).toBe("1 MiB");
     });
-    it("decrements once from starting value", () => {
-      const wrapper = shallow(<QInput />);
+    it("decrements once from starting value and reaches 0 minval", () => {
+      const wrapper = shallow(<QInput  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
       instance.onClick("Decrement", unitPTR);
       expect(wrapper.state().value).toBe("0 MiB");
     });
     it("increments number numbers", () => {
-      const wrapper = shallow(<QInput />);
+      const wrapper = shallow(<QInput  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
 
@@ -761,7 +801,7 @@ describe("onClick Functionality", () => {
       expect(wrapper.state().value).toBe("2 MiB");
     });
     it("increments string numbers", () => {
-      const wrapper = shallow(<QInput />);
+      const wrapper = shallow(<QInput  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
 
@@ -770,7 +810,7 @@ describe("onClick Functionality", () => {
       expect(wrapper.state().value).toBe("2 MiB");
     });
     it("increments, converts and sets state correctly 1->2", () => {
-      const wrapper = shallow(<QInput />);
+      const wrapper = shallow(<QInput  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
       wrapper.setState({ value: "1023" });
@@ -781,7 +821,7 @@ describe("onClick Functionality", () => {
       expect(wrapper.state().isValid).toBe(true);
     });
     it("decrements, converts and sets state correctly 2->1", () => {
-      const wrapper = shallow(<QInput />);
+      const wrapper = shallow(<QInput  minVal="0"/>);
       const instance = wrapper.instance();
       wrapper.setState({ value: "1", unitInUsePTR: 1 });
       let unitPTR = wrapper.state().unitInUsePTR;
@@ -795,7 +835,7 @@ describe("onClick Functionality", () => {
   describe("Tag with Memory Input", () => {
     const Memory = MemoryFromUnits;
     it("", () => {
-      const wrapper = shallow(<QInput unitConfig={Memory} />);
+      const wrapper = shallow(<QInput unitConfig={Memory}  minVal="0"/>);
       const instance = wrapper.instance();
     });
     /*
@@ -818,21 +858,21 @@ describe("onClick Functionality", () => {
     });
     */
     it("increments once from starting value", () => {
-      const wrapper = shallow(<QInput unitConfig={Memory} />);
+      const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
       instance.onClick("Increment", unitPTR);
       expect(wrapper.state().value).toBe("1 MiB");
     });
     it("decrements once from starting value", () => {
-      const wrapper = shallow(<QInput unitConfig={Memory} />);
+      const wrapper = shallow(<QInput unitConfig={Memory}  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
       instance.onClick("Decrement", unitPTR);
       expect(wrapper.state().value).toBe("0 MiB");
     });
     it("increments number numbers", () => {
-      const wrapper = shallow(<QInput unitConfig={Memory} />);
+      const wrapper = shallow(<QInput unitConfig={Memory}  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
 
@@ -841,7 +881,7 @@ describe("onClick Functionality", () => {
       expect(wrapper.state().value).toBe("2 MiB");
     });
     it("increments string numbers", () => {
-      const wrapper = shallow(<QInput unitConfig={Memory} />);
+      const wrapper = shallow(<QInput unitConfig={Memory}  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
 
@@ -850,7 +890,7 @@ describe("onClick Functionality", () => {
       expect(wrapper.state().value).toBe("2 MiB");
     });
     it("increments, converts and sets state correctly 1->2", () => {
-      const wrapper = shallow(<QInput unitConfig={Memory} />);
+      const wrapper = shallow(<QInput unitConfig={Memory}  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
       wrapper.setState({ value: "1023" });
@@ -861,7 +901,7 @@ describe("onClick Functionality", () => {
       expect(wrapper.state().isValid).toBe(true);
     });
     it("decrements, converts and sets state correctly 2->1", () => {
-      const wrapper = shallow(<QInput unitConfig={Memory} />);
+      const wrapper = shallow(<QInput unitConfig={Memory}  minVal="0"/>);
       const instance = wrapper.instance();
       wrapper.setState({ value: "1", unitInUsePTR: 1 });
       let unitPTR = wrapper.state().unitInUsePTR;
@@ -875,7 +915,7 @@ describe("onClick Functionality", () => {
   describe("tag with vCPU", () => {
     const vCPU = vCPUFromUnits;
     it("", () => {
-      const wrapper = shallow(<QInput unitConfig={vCPU} />);
+      const wrapper = shallow(<QInput unitConfig={vCPU}  minVal="0"/>);
       const instance = wrapper.instance();
     });
     /*
@@ -898,21 +938,21 @@ describe("onClick Functionality", () => {
     });
     */
     it("increments once from starting value", () => {
-      const wrapper = shallow(<QInput unitConfig={vCPU} />);
+      const wrapper = shallow(<QInput unitConfig={vCPU}  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
       instance.onClick("Increment", unitPTR);
       expect(wrapper.state().value).toBe("100 m");
     });
     it("decrements once from starting value", () => {
-      const wrapper = shallow(<QInput unitConfig={vCPU} />);
+      const wrapper = shallow(<QInput unitConfig={vCPU}  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
       instance.onClick("Decrement", unitPTR);
       expect(wrapper.state().value).toBe("0 m");
     });
     it("increments number numbers", () => {
-      const wrapper = shallow(<QInput unitConfig={vCPU} />);
+      const wrapper = shallow(<QInput unitConfig={vCPU}  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
 
@@ -921,7 +961,7 @@ describe("onClick Functionality", () => {
       expect(wrapper.state().value).toBe("200 m");
     });
     it("increments string numbers", () => {
-      const wrapper = shallow(<QInput unitConfig={vCPU} />);
+      const wrapper = shallow(<QInput unitConfig={vCPU}  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
 
@@ -930,7 +970,7 @@ describe("onClick Functionality", () => {
       expect(wrapper.state().value).toBe("200 m");
     });
     it("increments, converts and sets state correctly 1->2", () => {
-      const wrapper = shallow(<QInput unitConfig={vCPU} />);
+      const wrapper = shallow(<QInput unitConfig={vCPU}  minVal="0"/>);
       const instance = wrapper.instance();
       let unitPTR = wrapper.state().unitInUsePTR;
       wrapper.setState({ value: "900" });
@@ -941,7 +981,7 @@ describe("onClick Functionality", () => {
       expect(wrapper.state().isValid).toBe(true);
     });
     it("decrements, converts and sets state correctly 2->1", () => {
-      const wrapper = shallow(<QInput unitConfig={vCPU} />);
+      const wrapper = shallow(<QInput unitConfig={vCPU}  minVal="0"/>);
       const instance = wrapper.instance();
       wrapper.setState({ value: "1", unitInUsePTR: 1 });
       let unitPTR = wrapper.state().unitInUsePTR;
@@ -955,11 +995,11 @@ describe("onClick Functionality", () => {
   describe("tag with empty unit", () => {
     const noUnit = noUnitFromUnits;
     it("", () => {
-      const wrapper = shallow(<QInput unitConfig={noUnit} />);
+      const wrapper = shallow(<QInput unitConfig={noUnit}  minVal="0"/>);
       const instance = wrapper.instance();
     });
     it("increments to Number(1)", () => {
-      const wrapper = shallow(<QInput unitConfig={noUnit} />);
+      const wrapper = shallow(<QInput unitConfig={noUnit}  minVal="0"/>);
       const instance = wrapper.instance();
       instance.onClick("Increment", 0);
       expect(wrapper.state().value).toBe(1);;
@@ -1076,29 +1116,6 @@ describe("user interaction mock, indirect test", () => {
     afterEach(() => {
       component.unmount();
     });
-    describe("base functionalities", () => {
-      it("increments", () => {
-        const curr = shallow(<QInput />).instance().getNumber(component.state().value);
-        let newVal;
-        incr.simulate("mousedown");
-        newVal = shallow(<QInput />).instance().getNumber(component.state().value);
-        expect(newVal).toBeGreaterThan(curr);
-      });
-      it("decrements", () => {
-        incr.simulate("mousedown");
-        const curr = shallow(<QInput />).instance().getNumber(component.state().value);
-        let newVal;
-        decr.simulate("mousedown");
-        newVal = shallow(<QInput />).instance().getNumber(component.state().value);
-        expect(newVal).toBeLessThan(curr);
-      });
-      it("changes input",() => {
-        const curr = component.state().value;
-        inputField.simulate("change", {target: {value: "somethingElse"}});
-        const newVal = component.state().value;
-        expect(curr).not.toEqual(newVal);
-      });
-    });
     it("user doesnt reach negatives by decr", () => {
       let i;
       let number;
@@ -1113,19 +1130,47 @@ describe("user interaction mock, indirect test", () => {
       inputField.simulate("change", {target: {value: "-100"}});
       expect(component.state().value).toBe("-100");
       expect(component.state().isValid).toBe(false);
+    });
+    it("typed negatives throw error message", () => {
+      inputField.simulate("change", {target: {value: "-100"}});
+      expect(component.state().value).toBe("-100");
       expect(component.state().message).not.toBe("");
     });
-    it("user types negative and decrements", () => {
+    it("typed negatives and further decrementing is stopped", () => {
       inputField.simulate("change", {target: {value: "-100"}});
-      expect(component.state().isValid).toBe(false);
       incr.simulate("mousedown");
       expect(component.state().value).toBe("-100");//noChange
+    });
+    describe("base functionalities", () => {
+      it("increments", () => {
+        const curr = shallow(<QInput />).instance().getNumber(component.state().value);
+        let newVal;
+        incr.simulate("mousedown");
+        newVal = shallow(<QInput />).instance().getNumber(component.state().value);
+        expect(newVal).toBeGreaterThan(curr);
+      });
+      it("decrements", () => {
+        incr.simulate("mousedown");
+        incr.simulate("mousedown");
+        const curr = shallow(<QInput />).instance().getNumber(component.state().value);
+        let newVal;
+        decr.simulate("mousedown");
+        
+        newVal = shallow(<QInput />).instance().getNumber(component.state().value);
+        expect(newVal).toBeLessThan(curr);
+      });
+      it("changes input",() => {
+        const curr = component.state().value;
+        inputField.simulate("change", {target: {value: "somethingElse"}});
+        const newVal = component.state().value;
+        expect(curr).not.toEqual(newVal);
+      });
     });
   });
   describe(`JSX Tag with minVal = 7, can user reach below minVal?`, () => {
     let component, incr, decr, inputField;
     beforeEach(() => {
-      component = mount(<QInput minVal= "7" />);
+      component = mount(<QInput minVal= "7 MiB" />);
       expect(component.props()).toBeDefined();
       incr = component.find("button#incrementButton");
       decr = component.find("button#decrementButton");
@@ -1138,15 +1183,14 @@ describe("user interaction mock, indirect test", () => {
       decr.simulate("mousedown");
       expect(component.state().value).toBe("7 MiB");
     });
-    it("incrememt after default returns minVal + 1", () => {
+    it("incrememt after (default = below minval) returns minVal", () => {
       incr.simulate("mousedown");
-      expect(component.state().value).toBe("8 MiB");
+      expect(component.state().value).toBe("7 MiB");
     });
     describe("user forces himself under minVal by typing", () => {
       beforeEach(() => {
         inputField.simulate("change", {target: {value: 4}});
       });
-
       it("is error message thrown?", () => {
         expect(component.state().message).not.toBe("");
       });
@@ -1154,10 +1198,6 @@ describe("user interaction mock, indirect test", () => {
         expect(component.state().isValid).toBe(false);
       });
       describe("user incr/decr afterwards", () => {
-        it("decr -> gives error message", () => {
-          decr.simulate("mousedown");
-          expect(component.state().value).not.toBe("");
-        });
         it("further decr isnt possible", () => {
           const curr = shallow(<QInput />).instance().getNumber(component.state().value);
           let newVal;
@@ -1178,19 +1218,12 @@ describe("user interaction mock, indirect test", () => {
           let val = shallow(<QInput />).instance().getNumber(component.state().value);
           expect(val).toEqual(component.props().minVal);
         });
-        it("inc under minVal turns value valid", () => {
+        it("incr under minVal turns value valid", () => {
           incr.simulate("mousedown");
           expect(component.state().isValid).toBe(true);
           expect(component.state().message).not.toBe("");
         });
       });
-    });
-    
-    it("decrement afterwards, is error message thrown?", () => {
-      inputField.simulate("change", {target: {value: 4}});
-      decr.simulate("mousedown");
-      expect(component.state().value).toBe(4);
-      expect(component.state().message).not.toBe("");
     });
   });
 });
