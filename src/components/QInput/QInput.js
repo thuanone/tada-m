@@ -50,13 +50,14 @@ class QInput extends React.Component {
     let inputByte = this.MemoryUtils.convertValueToBytes(input + unit);
 
     if (
-      this.getNumber(minVal) == 0 &&
+      this.getNumber(minVal) === 0 &&
       minVal.match("MiB") &&
       input <= this.getNumber(minVal)
     ) {
       checked.number = this.getNumber(minVal);
       minVal = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
       checked.unit = unitConfig[this.unitMatch(minVal, unitConfig)];
+      checked.message = "minVal reached";
       return checked;
     }
     if (minValByte <= inputByte && inputByte <= maxValByte) {
@@ -244,74 +245,74 @@ class QInput extends React.Component {
   }
 
   validate(userInput, units, minVal, maxVal) {
-    const regexNum = /-?[0-9]+/gi;
-    const regexString = /[a-z]+/gi;
-    const regexNumberAfterUnit = /.[a-z]+.[0-9]+/gi;
-    //const regexSpecialCharacters = //
+    console.log("userInput",userInput, "units", units, "min",minVal, "max",maxVal);
+    const anythingButNumsLetters = /[^a-zA-Z0-9\s.]/gi;
+    const justLetters = /[a-z]+/gi;
+    const numbersAfterUnit = /.[a-z]+.[0-9]+/gi;
+
     let report = { message: " ", isValid: true, newPTR: 0 };
-    let returnUnitMatch;
-    //let matchedNumRX; //= userInput.match(regexNum);
-    //let matchedStringRX; // = userInput.match(regexString);
-    let matchedNumRX, matchedStringRX, matchedNum, matchedString;
+    let otherChars,
+      matchNumberAfterUnit,
+      letters,
+      word,
+      number,
+      indexOfMatchedUnit,
+      checked;
 
     try {
-      // undefined / null userInput
-      matchedNumRX = userInput.match(regexNum);
-      matchedStringRX = userInput.match(regexString);
+      otherChars = `${userInput}`.match(anythingButNumsLetters);
+      matchNumberAfterUnit = `${userInput}`.match(numbersAfterUnit);
+      letters = `${userInput}`.match(justLetters);
+
+      number = this.getNumber(userInput);
+      word = letters !== null ? letters.join("") : "";
     } catch {
+      report.message = "undefined / null passed into validate()";
       report.isValid = false;
-      report.message = "passed null/undefined into validate";
       return report;
     }
-
     if (userInput === "-" || userInput === "") {
-      //accept '-' as a valid string -> atm '-' !== undefined
       report.isValid = true;
       return report;
     }
-
-    if (userInput.match(regexNumberAfterUnit)) {
-      // 10 mb 10 invalid , or mb 10
+    if (otherChars) {
+      report.message = `invalid Character used: "${otherChars}"`;
       report.isValid = false;
+      return report;
+    }
+    if (matchNumberAfterUnit) {
+      console.log(numbersAfterUnit);
       report.message = "please input in this format : [Number] [Unit]";
-      return report;
-    }
-    /** ==>*/ matchedNum = matchedNumRX !== null ? matchedNumRX.join("") : "";
-    /** ==>*/ matchedString =
-      matchedStringRX !== null ? matchedStringRX.join("") : "";
-
-    if (isNaN(parseFloat(matchedNum))) {
-      // Checks if a number comes first
-      report.message = `${matchedNum}  is not a valid number`;
       report.isValid = false;
       return report;
     }
-    console.log("threshold", parseFloat(matchedNum), minVal, maxVal);
-    if (parseFloat(matchedNum) < minVal || parseFloat(matchedNum) > maxVal) {
-      report.message = `${matchedNum} is above / below allowed threshhold`;
+    if (isNaN(number)) {
+      report.message = `${userInput} does not contain a valid number`;
       report.isValid = false;
       return report;
     }
-    returnUnitMatch = this.unitMatch(matchedString, units); // either new unitInUsePTR or 'notValid'
-
-    if (returnUnitMatch !== "notValid") {
-      if (returnUnitMatch === 0 && !Number.isInteger(parseFloat(matchedNum))) {
-        report.message = `please use Integers with ${matchedString}`;
-        //report.newPTR = returnUnitMatch; -> report.newPTR is set to 0 by default
-      }
-      report.message = `recognized unit: ${matchedString}`;
-      report.newPTR = returnUnitMatch;
+    indexOfMatchedUnit = this.unitMatch(word, units);
+    if (indexOfMatchedUnit === "notValid" && word !== "") {
+      report.message = `${word} is not a valid unit`;
+      report.isValid = false;
+      return report;
+    } else if (word === "") {
+      report.isValid = true;
     } else {
-      if (matchedString === "") {
-        //if no unit is input -> just takes number and applies unitInUse
-        //report.message = "please enter a valid unit";
-        report.isValid = true;
-      } else {
-        report.message = `${matchedString} is not a valid unit`;
-        report.isValid = false;
-      }
+      report.message = `recognized unit: ${word}`;
+      report.unitPTR = indexOfMatchedUnit;
     }
-    /** ==>*/ return report;
+    checked = this.checkMinMax(number, minVal, maxVal, word, units);
+    if (checked.message === "") {
+      return report;
+    } else {
+      report.message =
+        checked.message === "minVal reached"
+          ? `${userInput} is below minVal`
+          : `${userInput} is above maxVal`;
+      report.isValid = false;
+      return report;
+    }
   }
   onClick(buttonID, unitInUsePTR) {
     if (!this.state.isValid) {
@@ -363,10 +364,10 @@ class QInput extends React.Component {
 
   onChange(event) {
     let userInput = event.target.value;
+    console.log("onchange", "min", this.props.minVal, "max", this.props.maxVal);
     let report = this.validate(
       userInput,
       this.props.unitConfig,
-      this.state.unitInUsePTR,
       this.props.minVal,
       this.props.maxVal
     );
