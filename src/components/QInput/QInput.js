@@ -68,11 +68,10 @@ class QInput extends React.Component {
     if (inputByte < minValByte) {
       checked.number = this.getNumber(minVal);
       checked.message = "minVal reached";
-      //kopiert von maxVal
-      maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
+
       minVal = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
 
-      checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
+      checked.unit = unitConfig[this.unitMatch(minVal, unitConfig)].unit;
       return checked;
     }
     // jumping to maxVal
@@ -81,7 +80,6 @@ class QInput extends React.Component {
       checked.message = "maxVal reached";
 
       maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-      minVal = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
 
       checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
       return checked;
