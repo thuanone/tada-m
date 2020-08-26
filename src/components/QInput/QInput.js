@@ -131,7 +131,8 @@ class QInput extends React.Component {
     let unit = unitConfig[unitInUsePTR].unit;
 
     if (number === "-") {
-      return { number: 0 };
+      let unit = unitConfig[this.unitMatch(minVal, unitConfig)].unit;
+      return { number: this.getNumber(minVal), unit: unit };
     }
 
     let stepsize = unitConfig[unitInUsePTR].standardStepSize;
