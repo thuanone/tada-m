@@ -68,6 +68,11 @@ class QInput extends React.Component {
     if (inputByte < minValByte) {
       checked.number = this.getNumber(minVal);
       checked.message = "minVal reached";
+      //kopiert von maxVal
+      maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
+      minVal = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
+
+      checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
       return checked;
     }
     // jumping to maxVal
@@ -245,7 +250,6 @@ class QInput extends React.Component {
   }
 
   validate(userInput, units, minVal, maxVal) {
-    console.log("userInput",userInput, "units", units, "min",minVal, "max",maxVal);
     const anythingButNumsLetters = /[^a-zA-Z0-9\s.]/gi;
     const justLetters = /[a-z]+/gi;
     const numbersAfterUnit = /.[a-z]+.[0-9]+/gi;
@@ -281,7 +285,6 @@ class QInput extends React.Component {
       return report;
     }
     if (matchNumberAfterUnit) {
-      console.log(numbersAfterUnit);
       report.message = "please input in this format : [Number] [Unit]";
       report.isValid = false;
       return report;
@@ -298,6 +301,7 @@ class QInput extends React.Component {
       return report;
     } else if (word === "") {
       report.isValid = true;
+      word = units[0].unit;// neccessary for checkMinMax
     } else {
       report.message = `recognized unit: ${word}`;
       report.unitPTR = indexOfMatchedUnit;
@@ -315,9 +319,9 @@ class QInput extends React.Component {
     }
   }
   onClick(buttonID, unitInUsePTR) {
-    if (!this.state.isValid) {
-      return;
-    } else {
+     if (this.state.isValid 
+      || 
+      (!this.state.isValid && (this.state.message.match("minVal") || this.state.message.match("maxVal")))) {
       let nullIfNoMatch = `${this.state.value}`.match(/[a-z]+/gi); //produces null if no match
       let unit = nullIfNoMatch
         ? nullIfNoMatch.join() //if theres a match take unit
@@ -346,7 +350,6 @@ class QInput extends React.Component {
           maxVal
         );
       }
-
       this.setState(
         {
           value: newNumber.unit
@@ -354,17 +357,21 @@ class QInput extends React.Component {
             : newNumber.number,
           unitInUsePTR: newNumber.unitPTR,
           message: newNumber.message,
+          isValid: true
         },
         () => {
           this.populateToParent(this.state.value);
         }
       );
-    }
+    } 
+    else {
+      return;
+    };
+
   }
 
   onChange(event) {
     let userInput = event.target.value;
-    console.log("onchange", "min", this.props.minVal, "max", this.props.maxVal);
     let report = this.validate(
       userInput,
       this.props.unitConfig,
