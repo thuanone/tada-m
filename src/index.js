@@ -8,6 +8,7 @@ import { Document24 as Document} from "@carbon/icons-react";
 
 import Home from './home';
 import QInputPage from './content/QInputPage/QInputPage';
+import InputPage from './content/InputPage/InputPage';
 
 const routing = (
 <Router>
@@ -27,6 +28,12 @@ const routing = (
                 <Button><Document /> QInput</Button>
               </Link>
           </div>
+
+          <div className="bx--col">
+              <Link to="/InputPage"> 
+                <Button><Document /> InputPage</Button>
+              </Link>
+          </div>
           
 
         </div>
@@ -35,6 +42,7 @@ const routing = (
 
     <Route exact path="/home" component={Home} />
     <Route path="/QInput" component={QInputPage} />
+    <Route path="/InputPage" component={InputPage} />
 
   </div>
 </Router>
