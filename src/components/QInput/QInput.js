@@ -61,7 +61,7 @@ class QInput extends React.Component {
     if (
       this.getNumber(minVal) === 0 &&
       minVal.match("MiB") &&
-      input <= this.getNumber(minVal)
+      input < this.getNumber(minVal)
     ) {
       let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
       checked.number = this.getNumber(minVal);
