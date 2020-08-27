@@ -37,9 +37,21 @@ class QInput extends React.Component {
 
   componentDidMount() {
     this.populateToParent(this.state.value);
+    this.validate(this.state.value);
   }
-
-  checkMinMax(input, minVal, maxVal, unit, unitConfig) {
+  /**
+   * this function checks whether a quantity is under/above a set min/max Value and returns an Object containing
+   * a number, which is either the number passed or min/max-Val's number
+   * a message,
+   * and a corresponding unit for number
+   * 
+   * @param {Number} input - number to be checked
+   * @param {String} unit - corresponding unit to number
+   * @param {String} minVal - string in form "NUMBER UNIT"
+   * @param {String} maxVal - string in form "NUMBER UNIT"
+   * @param {Array} unitConfig - Array of nested Objects which contain information about a unit
+   */
+  checkMinMax(input, unit, minVal, maxVal, unitConfig) {
     let checked = {
       number: input,
       message: "",
@@ -49,43 +61,48 @@ class QInput extends React.Component {
     let maxValByte = this.MemoryUtils.convertValueToBytes(maxVal);
     let inputByte = this.MemoryUtils.convertValueToBytes(input + unit);
 
+    //special case for minVal = "0 UNIT" because convertValueToBytes doesnt handle negative values
     if (
       this.getNumber(minVal) === 0 &&
       minVal.match("MiB") &&
       input <= this.getNumber(minVal)
     ) {
+      let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
       checked.number = this.getNumber(minVal);
-      minVal = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-      checked.unit = unitConfig[this.unitMatch(minVal, unitConfig)];
+      checked.unit = unitConfig[this.unitMatch(minValUnit, unitConfig)];
       checked.message = "minVal reached";
       return checked;
     }
+    //if input is within borders of min/max
     if (minValByte <= inputByte && inputByte <= maxValByte) {
       return checked;
     }
-
     // jumping to minVal
     if (inputByte < minValByte) {
+      let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
       checked.number = this.getNumber(minVal);
       checked.message = "minVal reached";
-
-      minVal = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-
-      checked.unit = unitConfig[this.unitMatch(minVal, unitConfig)].unit;
+      checked.unit = unitConfig[this.unitMatch(minValUnit, unitConfig)].unit;
       return checked;
     }
     // jumping to maxVal
     if (inputByte > maxValByte) {
+      let maxValUnit = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
       checked.number = this.getNumber(maxVal);
       checked.message = "maxVal reached";
-
-      maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-
-      checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
+      checked.unit = unitConfig[this.unitMatch(maxValUnit, unitConfig)].unit;
       return checked;
     }
   }
 
+  /**
+   * 
+   * @param {Number} number - number to be incremented
+   * @param {Number} unitInUsePTR - Pointer needed to access certain information in unitConfig
+   * @param {Array} unitConfig - Array of Objects containing informtation on units
+   * @param {String} minVal - string in form "NUMBER UNIT"
+   * @param {String} maxVal - string in form "NUMBER UNIT"
+   */
   increment(number, unitInUsePTR, unitConfig, minVal, maxVal) {
     let newNumber = {
       number: number,
@@ -114,9 +131,9 @@ class QInput extends React.Component {
 
     let checked = this.checkMinMax(
       convertedNumber.number,
+      convertedNumber.unit,
       minVal,
       maxVal,
-      convertedNumber.unit,
       unitConfig
     );
     newNumber.unit = convertedNumber.unit;
@@ -126,6 +143,14 @@ class QInput extends React.Component {
     return newNumber;
   }
 
+  /**
+   * 
+   * @param {Number} number - 
+   * @param {Number} unitInUsePTR -
+   * @param {Array} unitConfig -
+   * @param {String} minVal -
+   * @param {String} maxVal -
+   */
   decrement(number, unitInUsePTR, unitConfig, minVal, maxVal) {
     let newNumber = {
       number: number,
@@ -133,8 +158,6 @@ class QInput extends React.Component {
       unit: unitConfig[unitInUsePTR].unit,
       unitPTR: unitInUsePTR,
     };
-    let unit = unitConfig[unitInUsePTR].unit;
-
     if (number === "-") {
       let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from minVal
       let unit = unitConfig[this.unitMatch(minValUnit, unitConfig)].unit;
@@ -155,9 +178,9 @@ class QInput extends React.Component {
 
     let checked = this.checkMinMax(
       convertedNumber.number,
+      convertedNumber.unit,
       minVal,
       maxVal,
-      convertedNumber.unit,
       unitConfig
     );
     newNumber.unit = convertedNumber.unit;
@@ -306,7 +329,7 @@ class QInput extends React.Component {
       report.message = `recognized unit: ${word}`;
       report.unitPTR = indexOfMatchedUnit;
     }
-    checked = this.checkMinMax(number, minVal, maxVal, word, units);
+    checked = this.checkMinMax(number, word, minVal, maxVal, units);
     if (checked.message === "") {
       return report;
     } else {
