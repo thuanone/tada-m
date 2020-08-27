@@ -28,18 +28,26 @@ class QInput extends React.Component {
     this.MemoryUtils = new MemoryUtils();
   }
 
-  //currently not in use
-  onComponentUpdate(prevProps) {
-    if (prevProps && prevProps.value !== this.props.value) {
-      this.setState({ value: this.props.value });
-    }
-  }
-
+  /**
+   * this function makes sure that default values are fed to the parent component
+   */
   componentDidMount() {
+    this.validate(this.state.value);
     this.populateToParent(this.state.value);
   }
-
-  checkMinMax(input, minVal, maxVal, unit, unitConfig) {
+  /**
+   * this function checks whether a quantity is under/above a set min/max Value and returns an Object containing
+   * a number, which is either the number passed or min/max-Val's number
+   * a message,
+   * and a corresponding unit for number
+   * 
+   * @param {Number} input - number to be checked
+   * @param {String} unit - corresponding unit to number
+   * @param {String} minVal - string in form "NUMBER UNIT"
+   * @param {String} maxVal - string in form "NUMBER UNIT"
+   * @param {Array} unitConfig - Array of nested Objects which contain information about a unit
+   */
+  checkMinMax(input, unit, minVal, maxVal, unitConfig) {
     let checked = {
       number: input,
       message: "",
@@ -49,43 +57,53 @@ class QInput extends React.Component {
     let maxValByte = this.MemoryUtils.convertValueToBytes(maxVal);
     let inputByte = this.MemoryUtils.convertValueToBytes(input + unit);
 
+    //special case for minVal = "0 UNIT" because convertValueToBytes doesnt handle negative values
     if (
       this.getNumber(minVal) === 0 &&
       minVal.match("MiB") &&
       input <= this.getNumber(minVal)
     ) {
+      let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
       checked.number = this.getNumber(minVal);
-      minVal = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-      checked.unit = unitConfig[this.unitMatch(minVal, unitConfig)];
+      checked.unit = unitConfig[this.unitMatch(minValUnit, unitConfig)];
       checked.message = "minVal reached";
       return checked;
     }
+    //if input is within borders of min/max
     if (minValByte <= inputByte && inputByte <= maxValByte) {
       return checked;
     }
-
     // jumping to minVal
     if (inputByte < minValByte) {
+      let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
       checked.number = this.getNumber(minVal);
       checked.message = "minVal reached";
-
-      minVal = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-
-      checked.unit = unitConfig[this.unitMatch(minVal, unitConfig)].unit;
+      checked.unit = unitConfig[this.unitMatch(minValUnit, unitConfig)].unit;
       return checked;
     }
     // jumping to maxVal
     if (inputByte > maxValByte) {
+      let maxValUnit = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
       checked.number = this.getNumber(maxVal);
       checked.message = "maxVal reached";
-
-      maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-
-      checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
+      checked.unit = unitConfig[this.unitMatch(maxValUnit, unitConfig)].unit;
       return checked;
     }
   }
 
+  /**
+   * this functions receives a number and oth parameters and returns an object containing
+   * - a new number
+   * - a corresponding unit and its pointer
+   * - and a message
+   * 
+   * the passed number is either incremented, converted to a different unit or set to minVal if the number is below minval
+   * @param {Number} number - number to be incremented
+   * @param {Number} unitInUsePTR - Pointer needed to access certain information in unitConfig
+   * @param {Array} unitConfig - Array of Objects containing informtation on units
+   * @param {String} minVal - string in form "NUMBER UNIT"
+   * @param {String} maxVal - string in form "NUMBER UNIT"
+   */
   increment(number, unitInUsePTR, unitConfig, minVal, maxVal) {
     let newNumber = {
       number: number,
@@ -114,9 +132,9 @@ class QInput extends React.Component {
 
     let checked = this.checkMinMax(
       convertedNumber.number,
+      convertedNumber.unit,
       minVal,
       maxVal,
-      convertedNumber.unit,
       unitConfig
     );
     newNumber.unit = convertedNumber.unit;
@@ -126,6 +144,19 @@ class QInput extends React.Component {
     return newNumber;
   }
 
+  /**
+   * this functions receives a number and oth parameters and returns an object containing
+   * - a new number
+   * - a corresponding unit and its pointer
+   * - and a message
+   * 
+   * the passed number is either decremented, converted to a different unit or set to minVal if the number is below minval
+   * @param {Number} number - number to be incremented
+   * @param {Number} unitInUsePTR - Pointer needed to access certain information in unitConfig
+   * @param {Array} unitConfig - Array of Objects containing informtation on units
+   * @param {String} minVal - string in form "NUMBER UNIT"
+   * @param {String} maxVal - string in form "NUMBER UNIT"
+   */
   decrement(number, unitInUsePTR, unitConfig, minVal, maxVal) {
     let newNumber = {
       number: number,
@@ -133,8 +164,6 @@ class QInput extends React.Component {
       unit: unitConfig[unitInUsePTR].unit,
       unitPTR: unitInUsePTR,
     };
-    let unit = unitConfig[unitInUsePTR].unit;
-
     if (number === "-") {
       let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from minVal
       let unit = unitConfig[this.unitMatch(minValUnit, unitConfig)].unit;
@@ -155,9 +184,9 @@ class QInput extends React.Component {
 
     let checked = this.checkMinMax(
       convertedNumber.number,
+      convertedNumber.unit,
       minVal,
       maxVal,
-      convertedNumber.unit,
       unitConfig
     );
     newNumber.unit = convertedNumber.unit;
@@ -167,6 +196,15 @@ class QInput extends React.Component {
     return newNumber;
   }
 
+  /**
+   * this function receives a number, a corresponding unit with its pointer and an array of unit objects and returns
+   * - a number
+   * - a corresponding unit with its corresponding pointer
+   * @param {Number} number 
+   * @param {Number} unitInUsePTR 
+   * @param {String} unit 
+   * @param {Array} unitConfig 
+   */
   convert(number, unitInUsePTR, unit, unitConfig) {
     let convertedNumber = { number, unit, unitPTR: unitInUsePTR };
 
@@ -201,7 +239,13 @@ class QInput extends React.Component {
 
     return convertedNumber;
   }
-
+  /**
+   * this function receives a String, scans for numbers and returns 
+   * - either an integer/decimal
+   * - NaN if input contained no digits
+   * - or "-" if input contained only "-"
+   * @param {String} input 
+   */
   getNumber(input) {
     const numbersOnly = /-?[0-9]|\.?/gm;
     let numbersMatch;
@@ -216,10 +260,9 @@ class QInput extends React.Component {
         message: `undefined/null has been passed into get Number -> input turned to '-'`,
       });
     }
-
     number =
       input === ""
-        ? 0 //does not occur because no input has been set to invalid
+        ? 0 //????????
         : input === "-"
         ? "-"
         : numbersMatch
@@ -228,6 +271,13 @@ class QInput extends React.Component {
     return number;
   }
 
+  /**
+   * takes a String and an Array of unit Objects and compares the String with the unit names
+   * if it matches returns index of matched unit
+   * if it does not match returns (String) "notValid"
+   * @param {String} string 
+   * @param {Array} unitConfig 
+   */
   unitMatch(string, unitConfig) {
     if (!string) {
       //null / undefined '', falsy
@@ -249,6 +299,16 @@ class QInput extends React.Component {
     return "notValid";
   }
 
+  /**
+   * this functions checks if the form of a String is correct and returns an object containing
+   * - a message
+   * - a bool on whether or not the String is valid
+   * - a pointer if a unit has been recognized
+   * @param {String} userInput 
+   * @param {Array} units 
+   * @param {String} minVal 
+   * @param {String} maxVal 
+   */
   validate(userInput, units, minVal, maxVal) {
     const anythingButNumsLetters = /[^a-zA-Z0-9\s.]/gi;
     const justLetters = /[a-z]+/gi;
@@ -306,7 +366,7 @@ class QInput extends React.Component {
       report.message = `recognized unit: ${word}`;
       report.unitPTR = indexOfMatchedUnit;
     }
-    checked = this.checkMinMax(number, minVal, maxVal, word, units);
+    checked = this.checkMinMax(number, word, minVal, maxVal, units);
     if (checked.message === "") {
       return report;
     } else {
@@ -318,6 +378,16 @@ class QInput extends React.Component {
       return report;
     }
   }
+
+  /**
+   * this function handles button clicks and sets
+   * - new Values
+   * - new unit pointers
+   * - new messages
+   * - valid flags
+   * @param {String} buttonID 
+   * @param {Number} unitInUsePTR 
+   */
   onClick(buttonID, unitInUsePTR) {
      if (this.state.isValid 
       || 
@@ -370,6 +440,14 @@ class QInput extends React.Component {
 
   }
 
+  /**
+   * this function handles input changes and sets
+   * - new Values
+   * - new unit pointers
+   * - new messages
+   * - valid flags
+   * @param {} event 
+   */
   onChange(event) {
     let userInput = event.target.value;
     let report = this.validate(
@@ -394,6 +472,10 @@ class QInput extends React.Component {
     );
   }
 
+  /**
+   * this function feeds new values to the parent component
+   * @param {String} value - this.state.value is passed to this function
+   */
   populateToParent(value) {
     if (this.props.onUpdate) {
       let newValue;
