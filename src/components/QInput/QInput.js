@@ -134,7 +134,7 @@ class QInput extends React.Component {
         return checked;
       }
 
-      if (inputCPU < maxValCPU) {
+      if (inputCPU > maxValCPU) {
         checked.number = this.getNumber(maxVal);
         checked.message = "maxVal reached";
 
