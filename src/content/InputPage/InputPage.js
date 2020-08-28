@@ -66,13 +66,13 @@ class InputPage extends React.Component {
             RAM
             <Tile style={{ marginBottom: "26px" }}>
               {" "}
-              {this.state.RAM1} Byte
+              {this.state.RAM1} 
             </Tile>
           </label>
 
           <label>
             Memory
-            <Tile> {this.state.MEMORY1} Byte</Tile>
+            <Tile> {this.state.MEMORY1} </Tile>
           </label>
         </div>
       </div>

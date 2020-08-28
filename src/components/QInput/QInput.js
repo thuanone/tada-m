@@ -69,11 +69,11 @@ class QInput extends React.Component {
       number: input,
       message: "",
       unit: unit,
-    };
+      unitPTR:this.unitMatch(unit, unitConfig),
 
+    };
     if (unitConfigInUse === "Memory") {
       // if Memory is used e.g. MiB, GiB, MB, GB
-      console.log("Memory");
       let minValByte = this.MemoryUtils.convertValueToBytes(minVal);
       let maxValByte = this.MemoryUtils.convertValueToBytes(maxVal);
       let inputByte = this.MemoryUtils.convertValueToBytes(input + unit);
@@ -86,7 +86,8 @@ class QInput extends React.Component {
       ) {
         let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
         checked.number = this.getNumber(minVal);
-        checked.unit = unitConfig[this.unitMatch(minValUnit, unitConfig)];
+        checked.unitPTR = this.unitMatch(minValUnit, unitConfig)
+        checked.unit = unitConfig[checked.unitPTR];
         checked.message = "minVal reached";
         return checked;
       }
@@ -99,7 +100,8 @@ class QInput extends React.Component {
         let maxValUnit = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
         checked.number = this.getNumber(maxVal);
         checked.message = "maxVal reached";
-        checked.unit = unitConfig[this.unitMatch(maxValUnit, unitConfig)].unit;
+        checked.unitPTR = this.unitMatch(maxValUnit, unitConfig)
+        checked.unit = unitConfig[checked.unitPTR].unit;
         return checked;
       }
       // jumping to minVal
@@ -107,7 +109,8 @@ class QInput extends React.Component {
         let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
         checked.number = this.getNumber(minVal);
         checked.message = "minVal reached";
-        checked.unit = unitConfig[this.unitMatch(minValUnit, unitConfig)].unit;
+        checked.unitPTR = this.unitMatch(minValUnit, unitConfig)
+        checked.unit = unitConfig[checked.unitPTR].unit;
         return checked;
       }
       return checked;
@@ -119,7 +122,6 @@ class QInput extends React.Component {
       let inputCPU = this.convertValuetoCPU(input + unit);
 
       if (minValCPU <= inputCPU && maxValCPU >= inputCPU) {
-        console.log("checked", checked);
         return checked;
       }
 
@@ -128,10 +130,8 @@ class QInput extends React.Component {
         checked.message = "minVal reached";
 
         minVal = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-        console.log("minVal:", minVal);
 
         checked.unit = unitConfig[this.unitMatch(minVal, unitConfig)].unit;
-        console.log("checked", checked);
         return checked;
       }
 
@@ -140,11 +140,8 @@ class QInput extends React.Component {
         checked.message = "maxVal reached";
 
         maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-        console.log("maxVal:", maxVal);
-        console.log("unitMatch: ", this.unitMatch(maxVal, unitConfig));
 
         checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
-        console.log("checked", checked);
         return checked;
       }
     }
@@ -201,7 +198,8 @@ class QInput extends React.Component {
       unitConfig,
       unitConfigInUse
     );
-    newNumber.unit = convertedNumber.unit;
+    newNumber.unitPTR = checked.unitPTR;
+    newNumber.unit = checked.unit;
     newNumber.number = checked.number;
     newNumber.message = checked.message;
 
@@ -258,7 +256,8 @@ class QInput extends React.Component {
       unitConfig,
       unitConfigInUse
     );
-    newNumber.unit = convertedNumber.unit;
+    newNumber.unitPTR = checked.unitPTR;
+    newNumber.unit = checked.unit;
     newNumber.number = checked.number;
     newNumber.message = checked.message;
 
@@ -443,7 +442,6 @@ class QInput extends React.Component {
       unitConfig,
       this.props.unitConfigInUse
     );
-    console.log("haid", checked);
     if (checked.message === "") {
       return report;
     } else {
@@ -715,7 +713,7 @@ QInput.propTypes = {
 
 QInput.defaultProps = {
   minVal: "10 MiB",
-  maxVal: "100 GiB",
+  maxVal: "10 tiB",
   unitConfig: Memory,
   unitConfigInUse: "Memory",
   passValueAsNumbersOnly: true,
