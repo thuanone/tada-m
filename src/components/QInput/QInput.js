@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import MemoryUtils from "./memory-utils";
+import _ from "lodash";
 
 import { Memory, vCPU } from "./units";
 
@@ -134,12 +135,17 @@ class QInput extends React.Component {
         return checked;
       }
 
-      if (inputCPU < maxValCPU) {
+      if (inputCPU > maxValCPU) {
         checked.number = this.getNumber(maxVal);
         checked.message = "maxVal reached";
 
         maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-        console.log("maxVal", maxVal, "unitMatch",this.unitMatch(maxVal, unitConfig) );
+        console.log(
+          "maxVal",
+          maxVal,
+          "unitMatch",
+          this.unitMatch(maxVal, unitConfig)
+        );
         checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
         return checked;
       }
@@ -351,7 +357,7 @@ class QInput extends React.Component {
       //null / undefined '', falsy
       return "notValid";
     }
-    console.log("string: ", string, "unitConfig",unitConfig);
+    console.log("string: ", string, "unitConfig", unitConfig);
 
     var i;
     for (
@@ -454,6 +460,12 @@ class QInput extends React.Component {
       return report;
     }
   }
+  addUnit(userInput, unit, isValid) {
+    if (isNaN(userInput) && userInput !== "-" && isValid) {
+      userInput = `${userInput} ${unit}`;
+    }
+    return userInput;
+  }
 
   /**
    * this function handles button clicks and sets
@@ -520,7 +532,6 @@ class QInput extends React.Component {
       return;
     }
   }
-
   /**
    * this function handles input changes and sets
    * - new Values
@@ -537,7 +548,7 @@ class QInput extends React.Component {
       this.props.minVal,
       this.props.maxVal
     );
-    //
+    
     this.setState(
       {
         value: userInput,
@@ -560,31 +571,35 @@ class QInput extends React.Component {
   populateToParent(value, unitConfigInUse) {
     if (this.props.onUpdate) {
       let newValue;
-      if (unitConfigInUse == "vCPU"){ // for CPU
+      if (unitConfigInUse === "vCPU") {
+        // for CPU
         newValue =
-        value === "" || value === "-"
-          ? "-" //if nothing defined or "-"
-          : isNaN(value) //is value a string with a unit?
-          ? this.convertValuetoCPU(value) //yes -> convert
-          : this.convertValuetoCPU(value + "m"); //no? add m and convert
+          value === "" || value === "-"
+            ? "-" //if nothing defined or "-"
+            : isNaN(value) //is value a string with a unit?
+            ? this.convertValuetoCPU(value) //yes -> convert
+            : this.convertValuetoCPU(value + "m"); //no? add m and convert
       }
-      if (unitConfigInUse == "Memory"){ // for Memory
-      newValue =
-        value === "" || value === "-"
-          ? "-" //if nothing defined or "-"
-          : isNaN(value) //is value a string with a unit?
-          ? this.MemoryUtils.convertValueToBytes(value) //yes -> convert
-          : this.MemoryUtils.convertValueToBytes(value + "mib"); //no? add mib and convert
+      if (unitConfigInUse === "Memory") {
+        // for Memory
+        newValue =
+          value === "" || value === "-"
+            ? "-" //if nothing defined or "-"
+            : isNaN(value) //is value a string with a unit?
+            ? this.MemoryUtils.convertValueToBytes(value) //yes -> convert
+            : this.MemoryUtils.convertValueToBytes(value + "mib"); //no? add mib and convert
       }
       // TODO check whether the value should be populated as string or as number (aka bytes) : √
       // if the newValue === '-' -> tbd
 
       if (this.props.passValueAsNumbersOnly) {
         let unit = "-";
-        if (unitConfigInUse == "Memory"){ 
-          unit = "byte"}
-        if (unitConfigInUse == "vCPU"){ 
-          unit = "m"}
+        if (unitConfigInUse === "Memory") {
+          unit = "byte";
+        }
+        if (unitConfigInUse === "vCPU") {
+          unit = "m";
+        }
         newValue = `${newValue} ${unit}`;
       }
       this.props.onUpdate(newValue);
@@ -724,7 +739,7 @@ QInput.propTypes = {
 };
 
 QInput.defaultProps = {
-  minVal: "10 m",
+  minVal: "100 m",
   maxVal: "10 vCPU",
   unitConfig: vCPU,
   unitConfigInUse: "vCPU",
