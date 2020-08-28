@@ -22,7 +22,7 @@ class QInputPage extends React.Component {
   render() {
     return (   
       <div style={{
-        position: 'absolute', left: '50%', top: '30%',
+        position: 'absolute', left: '46%', top: '33%',
         transform: 'translate(-50%, -50%)'}}>
         <h1 style={{fontSize:'70px', marginBottom: '20px'}}>QInput</h1>
 

@@ -29,8 +29,8 @@ class InputPage extends React.Component {
         <div
           style={{
             position: "absolute",
-            left: "10%",
-            top: "15%",
+            left: "23%",
+            top: "20%",
           }}
         >
           <h1 style={{ fontSize: "70px", marginBottom: "20px" }}>Input</h1>
@@ -57,8 +57,8 @@ class InputPage extends React.Component {
         <div
           style={{
             position: "absolute",
-            left: "50%",
-            top: "15%",
+            right: "23%",
+            top: "20%",
           }}
         >
           <h1 style={{ fontSize: "70px", marginBottom: "20px" }}>Output</h1>

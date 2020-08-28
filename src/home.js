@@ -9,7 +9,7 @@ class Home extends React.Component {
         style={{
           position: "absolute",
           left: "50%",
-          top: "30%",
+          top: "45%",
           transform: "translate(-50%, -50%)",
         }}
       >
@@ -33,8 +33,19 @@ class Home extends React.Component {
             id="checked-3"
             labelText="implement increment/ decrement function "
           />
-          <Checkbox defaultChecked id="checked-4" labelText="-" />
+          <Checkbox
+            defaultChecked
+            id="checked-4"
+            labelText="implement min/max value"
+          />
+          <Checkbox
+            defaultChecked
+            id="checked-5"
+            labelText="create new page for testing"
+          />
+
           <Checkbox defaultChecked id="checked-5" labelText="-" />
+          <Checkbox defaultChecked id="checked-6" labelText="-" />
         </fieldset>
       </div>
     );
