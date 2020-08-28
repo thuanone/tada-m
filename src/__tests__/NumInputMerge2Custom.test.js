@@ -482,7 +482,6 @@ describe("functions as is", () => {
       );
       expect(newNumber.number).toBeGreaterThan(number);
       expect(returnValue.number).toBeGreaterThan(newNumber.number);
-      console.log("threshhold",unitOne,unitTwo);
     });
     it("increment stops at maxValue threshold 1GiB,", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
@@ -505,7 +504,6 @@ describe("functions as is", () => {
       }
       const returnValue = newNumber;
       expect(returnValue.number).toBe(1);
-      console.log("threshhold",unitOne,unitTwo);
     });
     it("decrements once normally", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
@@ -519,7 +517,6 @@ describe("functions as is", () => {
         "10 GiB"
       );
       expect(returnValue.number).toBeLessThan(number);
-      console.log("threshhold",unitOne,unitTwo);
     });
     it("decrements twice normally", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0" />);
@@ -542,12 +539,10 @@ describe("functions as is", () => {
       );
       expect(newNumber.number).toBeLessThan(number);
       expect(returnValue.number).toBeLessThan(newNumber.number);
-      console.log(unitOne,unitTwo);
     });
     it("decrement stops at minValue threshold", () => {
       const wrapper = shallow(<QInput unitConfig={Memory} minVal="0 MiB" />);
       const instance = wrapper.instance();
-      console.log("threshhold",unitOne,unitTwo);
       Config.general.maxVal = 1023;
       let maxVal = Config.general.maxVal;
       let minVal = Config.general.minVal;

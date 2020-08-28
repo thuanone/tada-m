@@ -32,7 +32,7 @@ class QInputPage extends React.Component {
         </label>
 
         <div class="bx--form__helper-text">
-          Output: {this.state.value} byte
+          Output: {this.state.value}
         </div>
 
       </div>
