@@ -69,8 +69,7 @@ class QInput extends React.Component {
       number: input,
       message: "",
       unit: unit,
-      unitPTR:this.unitMatch(unit, unitConfig),
-
+      unitPTR: this.unitMatch(unit, unitConfig),
     };
     if (unitConfigInUse === "Memory") {
       // if Memory is used e.g. MiB, GiB, MB, GB
@@ -86,7 +85,7 @@ class QInput extends React.Component {
       ) {
         let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
         checked.number = this.getNumber(minVal);
-        checked.unitPTR = this.unitMatch(minValUnit, unitConfig)
+        checked.unitPTR = this.unitMatch(minValUnit, unitConfig);
         checked.unit = unitConfig[checked.unitPTR];
         checked.message = "minVal reached";
         return checked;
@@ -100,7 +99,7 @@ class QInput extends React.Component {
         let maxValUnit = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
         checked.number = this.getNumber(maxVal);
         checked.message = "maxVal reached";
-        checked.unitPTR = this.unitMatch(maxValUnit, unitConfig)
+        checked.unitPTR = this.unitMatch(maxValUnit, unitConfig);
         checked.unit = unitConfig[checked.unitPTR].unit;
         return checked;
       }
@@ -109,7 +108,7 @@ class QInput extends React.Component {
         let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
         checked.number = this.getNumber(minVal);
         checked.message = "minVal reached";
-        checked.unitPTR = this.unitMatch(minValUnit, unitConfig)
+        checked.unitPTR = this.unitMatch(minValUnit, unitConfig);
         checked.unit = unitConfig[checked.unitPTR].unit;
         return checked;
       }
