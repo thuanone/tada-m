@@ -35,7 +35,7 @@ class QInput extends React.Component {
    */
   componentDidMount() {
     this.validate(this.state.value);
-    this.populateToParent(this.state.value);
+    this.populateToParent(this.state.value, this.props.unitConfigInUse);
   }
 
   convertValuetoCPU(val) {
@@ -124,7 +124,7 @@ class QInput extends React.Component {
         return checked;
       }
 
-      if (minValCPU < inputCPU) {
+      if (inputCPU < minValCPU) {
         checked.number = this.getNumber(minVal);
         checked.message = "minVal reached";
 
@@ -134,12 +134,12 @@ class QInput extends React.Component {
         return checked;
       }
 
-      if (maxValCPU > inputCPU) {
+      if (inputCPU < maxValCPU) {
         checked.number = this.getNumber(maxVal);
         checked.message = "maxVal reached";
 
         maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-
+        console.log("maxVal", maxVal, "unitMatch",this.unitMatch(maxVal, unitConfig) );
         checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
         return checked;
       }
@@ -197,6 +197,7 @@ class QInput extends React.Component {
       unitConfig,
       unitConfigInUse
     );
+
     newNumber.unitPTR = checked.unitPTR;
     newNumber.unit = checked.unit;
     newNumber.number = checked.number;
@@ -350,6 +351,7 @@ class QInput extends React.Component {
       //null / undefined '', falsy
       return "notValid";
     }
+    console.log("string: ", string, "unitConfig",unitConfig);
 
     var i;
     for (
@@ -511,7 +513,7 @@ class QInput extends React.Component {
           isValid: true,
         },
         () => {
-          this.populateToParent(this.state.value);
+          this.populateToParent(this.state.value, this.props.unitConfigInUse);
         }
       );
     } else {
@@ -546,7 +548,7 @@ class QInput extends React.Component {
           : this.state.unitInUsePTR,
       },
       () => {
-        this.populateToParent(userInput);
+        this.populateToParent(userInput, this.props.unitConfigInUse);
       }
     );
   }
@@ -555,24 +557,35 @@ class QInput extends React.Component {
    * this function feeds new values to the parent component
    * @param {String} value - this.state.value is passed to this function
    */
-  populateToParent(value) {
+  populateToParent(value, unitConfigInUse) {
     if (this.props.onUpdate) {
-      console.log(
-        isNaN(value),
-        this.MemoryUtils.convertValueToBytes(value),
-        this.MemoryUtils.convertValueToBytes(value + "mib")
-      );
       let newValue;
+      if (unitConfigInUse == "vCPU"){ // for CPU
+        newValue =
+        value === "" || value === "-"
+          ? "-" //if nothing defined or "-"
+          : isNaN(value) //is value a string with a unit?
+          ? this.convertValuetoCPU(value) //yes -> convert
+          : this.convertValuetoCPU(value + "m"); //no? add m and convert
+      }
+      if (unitConfigInUse == "Memory"){ // for Memory
       newValue =
         value === "" || value === "-"
           ? "-" //if nothing defined or "-"
           : isNaN(value) //is value a string with a unit?
           ? this.MemoryUtils.convertValueToBytes(value) //yes -> convert
           : this.MemoryUtils.convertValueToBytes(value + "mib"); //no? add mib and convert
+      }
       // TODO check whether the value should be populated as string or as number (aka bytes) : √
       // if the newValue === '-' -> tbd
+
       if (this.props.passValueAsNumbersOnly) {
-        newValue = `${newValue} byte`;
+        let unit = "-";
+        if (unitConfigInUse == "Memory"){ 
+          unit = "byte"}
+        if (unitConfigInUse == "vCPU"){ 
+          unit = "m"}
+        newValue = `${newValue} ${unit}`;
       }
       this.props.onUpdate(newValue);
     }
@@ -711,10 +724,10 @@ QInput.propTypes = {
 };
 
 QInput.defaultProps = {
-  minVal: "10 MiB",
-  maxVal: "10 tiB",
-  unitConfig: Memory,
-  unitConfigInUse: "Memory",
+  minVal: "10 m",
+  maxVal: "10 vCPU",
+  unitConfig: vCPU,
+  unitConfigInUse: "vCPU",
   passValueAsNumbersOnly: true,
 };
 

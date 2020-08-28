@@ -1,8 +1,7 @@
 import React from "react";
 import QInput from "../../components/QInput/QInput";
 
-import  {Memory as MemoryUnit} from "../../components/QInput/units";
-import {vCPU} from "../../components/QInput/units";
+import  {Memory, vCPU} from "../../components/QInput/units";
 
 class QInputPage extends React.Component {
   constructor(props) {
@@ -28,7 +27,7 @@ class QInputPage extends React.Component {
 
         <label>
             
-            <QInput unitConfig={MemoryUnit} onUpdate={this.onChange} value={this.state.value}/>
+            <QInput unitConfig={vCPU} onUpdate={this.onChange} value={this.state.value}/>
         </label>
 
         <div class="bx--form__helper-text">

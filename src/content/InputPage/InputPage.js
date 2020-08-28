@@ -2,7 +2,7 @@ import React from "react";
 import { Tile } from "carbon-components-react";
 
 import QInput from "../../components/QInput/QInput";
-import { Memory as MemoryUnit } from "../../components/QInput/units";
+import { Memory, vCPU } from "../../components/QInput/units";
 
 class InputPage extends React.Component {
   constructor(props) {
@@ -10,16 +10,20 @@ class InputPage extends React.Component {
     this.state = {
       RAM1: "",
       MEMORY1: "",
+      CPU1: "",
     };
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange(arg1, arg2) {
-    if (arg1 === "RAM") {
-      this.setState({ RAM1: arg2 });
+  onChange(ID, VALUE) {
+    if (ID === "RAM") {
+      this.setState({ RAM1: VALUE });
     }
-    if (arg1 === "MEMORY") {
-      this.setState({ MEMORY1: arg2 });
+    if (ID === "MEMORY") {
+      this.setState({ MEMORY1: VALUE });
+    }
+    if (ID === "CPU") {
+      this.setState({ CPU1: VALUE });
     }
   }
 
@@ -38,17 +42,23 @@ class InputPage extends React.Component {
           <label>
             RAM
             <QInput
-              unitConfig={MemoryUnit}
+              unitConfig={Memory}
+              minVal = {"10 MiB"}
+              maxVal = {"100 TiB"}
+              unitConfigInUse= {"Memory"}
               onUpdate={this.onChange.bind(this, "RAM")}
               value={this.state.RAM1}
             />
           </label>
 
           <label>
-            Memory
+            CPU
             <QInput
-              unitConfig={MemoryUnit}
-              onUpdate={this.onChange.bind(this, "MEMORY")}
+              unitConfig={vCPU}
+              minVal = {"100 m"}
+              maxVal = {"100 vCPU"}
+              unitConfigInUse= {"vCPU"}
+              onUpdate={this.onChange.bind(this, "CPU")}
               value={this.state.MEMORY1}
             />
           </label>
@@ -71,8 +81,8 @@ class InputPage extends React.Component {
           </label>
 
           <label>
-            Memory
-            <Tile> {this.state.MEMORY1} </Tile>
+            CPU
+            <Tile> {this.state.CPU1} </Tile>
           </label>
         </div>
       </div>
