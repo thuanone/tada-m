@@ -46,7 +46,7 @@ class QInput extends React.Component {
     let number = val.match(numberRX).join(""); // extract number
     let unit = val.match(unitRX).join(""); // extract unit
 
-    if (unit == "vCPU" || unit == "CPU") {
+    if (this.unitMatch(unit, this.props) === 1) {
       number = number * 1000;
     }
 
@@ -357,7 +357,6 @@ class QInput extends React.Component {
       //null / undefined '', falsy
       return "notValid";
     }
-    console.log("string: ", string, "unitConfig", unitConfig);
 
     var i;
     for (
@@ -548,7 +547,7 @@ class QInput extends React.Component {
       this.props.minVal,
       this.props.maxVal
     );
-    
+
     this.setState(
       {
         value: userInput,
