@@ -140,12 +140,6 @@ class QInput extends React.Component {
         checked.message = "maxVal reached";
 
         maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-        console.log(
-          "maxVal",
-          maxVal,
-          "unitMatch",
-          this.unitMatch(maxVal, unitConfig)
-        );
         checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
         return checked;
       }
@@ -738,10 +732,10 @@ QInput.propTypes = {
 };
 
 QInput.defaultProps = {
-  minVal: "100 m",
-  maxVal: "10 vCPU",
-  unitConfig: vCPU,
-  unitConfigInUse: "vCPU",
+  minVal: "0 MiB",
+  maxVal: "10 TiB",
+  unitConfig: Memory,
+  unitConfigInUse: "Memory",
   passValueAsNumbersOnly: true,
 };
 
