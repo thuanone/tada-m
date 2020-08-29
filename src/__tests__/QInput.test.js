@@ -711,3 +711,127 @@ describe("functions as is", () => {
   describe("populateToParent(value, unitConfigInUse)", () => {});
 });
 describe("mock user interaction", () => {});
+describe("user interaction mock, indirect test", () => {
+    describe("JSX Tag as is", () => {
+      let component, incr, decr, inputField;
+      beforeEach(() => {
+        component = mount(<QInput />);
+        expect(component.props()).toBeDefined();
+        incr = component.find("button#incrementButton");
+        decr = component.find("button#decrementButton");
+        inputField = component.find("input");
+      });
+      afterEach(() => {
+        component.unmount();
+      });
+      it("user doesnt reach negatives by decr", () => {
+        let i;
+        let number;
+        const instance = shallow(<QInput />).instance();
+        for (i= 0; i < 10; i++) {
+          incr.simulate("mousedown");
+        }
+        number = instance.getNumber(component.state().value);
+        expect(number).not.toBeLessThan(0);
+      });
+      it("typed negatives are invalid", () => {
+        inputField.simulate("change", {target: {value: "-100"}});
+        expect(component.state().value).toBe("-100");
+        expect(component.state().isValid).toBe(false);
+      });
+      it("typed negatives throw error message", () => {
+        inputField.simulate("change", {target: {value: "-100"}});
+        expect(component.state().value).toBe("-100");
+        expect(component.state().message).not.toBe("");
+      });
+      it("typed negatives and further decrementing is stopped", () => {
+        inputField.simulate("change", {target: {value: "-100"}});
+        incr.simulate("mousedown");
+        expect(component.state().value).toBe("-100");//noChange
+      });
+      describe("base functionalities", () => {
+        it("increments", () => {
+          const curr = shallow(<QInput />).instance().getNumber(component.state().value);
+          let newVal;
+          incr.simulate("mousedown");
+          newVal = shallow(<QInput />).instance().getNumber(component.state().value);
+          expect(newVal).toBeGreaterThan(curr);
+        });
+        it("decrements", () => {
+          incr.simulate("mousedown");
+          incr.simulate("mousedown");
+          const curr = shallow(<QInput />).instance().getNumber(component.state().value);
+          let newVal;
+          decr.simulate("mousedown");
+          
+          newVal = shallow(<QInput />).instance().getNumber(component.state().value);
+          expect(newVal).toBeLessThan(curr);
+        });
+        it("changes input",() => {
+          const curr = component.state().value;
+          inputField.simulate("change", {target: {value: "somethingElse"}});
+          const newVal = component.state().value;
+          expect(curr).not.toEqual(newVal);
+        });
+      });
+    });
+    describe(`JSX Tag with minVal = 7, can user reach below minVal?`, () => {
+      let component, incr, decr, inputField;
+      beforeEach(() => {
+        component = mount(<QInput minVal= "7 MiB" />);
+        expect(component.props()).toBeDefined();
+        incr = component.find("button#incrementButton");
+        decr = component.find("button#decrementButton");
+        inputField = component.find("input");
+      });
+      afterEach(() => {
+        component.unmount();
+      });
+      it("decrement after default returns minVal", () => {
+        decr.simulate("mousedown");
+        expect(component.state().value).toBe("7 MiB");
+      });
+      it("incrememt after (default = below minval) returns minVal", () => {
+        incr.simulate("mousedown");
+        expect(component.state().value).toBe("7 MiB");
+      });
+      describe("user forces himself under minVal by typing", () => {
+        beforeEach(() => {
+          inputField.simulate("change", {target: {value: 4}});
+        });
+        it("is error message thrown?", () => {
+          expect(component.state().message).not.toBe("");
+        });
+        it("is value invalid??", () => {
+          expect(component.state().isValid).toBe(false);
+        });
+        describe("user incr/decr afterwards", () => {
+          it("further decr isnt possible", () => {
+            let newVal;
+            decr.simulate("mousedown");
+            newVal = shallow(<QInput />).instance().getNumber(component.state().value);
+            expect(newVal).not.toBeLessThan(7);
+            expect(newVal).toBe(7);
+          });
+          it("increments works under minVal", () => {
+            const curr = shallow(<QInput />).instance().getNumber(component.state().value);
+            let newVal;
+            incr.simulate("mousedown");
+            newVal = shallow(<QInput />).instance().getNumber(component.state().value);
+            expect(newVal).toBeGreaterThan(curr);
+          });
+          it("incr jumps to minVal", () =>{
+            incr.simulate("mousedown");
+            let val = shallow(<QInput />).instance().getNumber(component.state().value);
+            let min = shallow(<QInput />).instance().getNumber(component.props().minVal);
+            expect(val).toEqual(min);
+          });
+          it("incr under minVal turns value valid", () => {
+            incr.simulate("mousedown");
+            expect(component.state().isValid).toBe(true);
+            expect(component.state().message).not.toBe("");
+          });
+        });
+      });
+    });
+  });
