@@ -91,7 +91,7 @@ describe("functions as is", () => {
   describe("incr/decr", () => {
     let wrapper, instance, component;
     let unitInUsePTR, unitConfig, minVal, maxVal, unitConfigInUse;
-    let minValValue, maxValValue;
+    let minValValue, maxValValue, stepSize;
     beforeEach(() => {
       wrapper = shallow(
         <QInput unitConfig={MemoryFromUnits} minVal="0 MiB" maxVal="10 GiB" />
@@ -110,33 +110,265 @@ describe("functions as is", () => {
       ];
       minValValue = instance.getNumber(component.props().minVal);
       maxValValue = instance.getNumber(component.props().maxVal);
+      stepSize = unitConfig[unitInUsePTR].standardStepSize;
     });
     afterEach(() => {
       component.unmount();
     });
     describe("increment(number, unitInUsePTR, unitConfig, minVal, maxVal, unitConfigInUse)", () => {
-      it(`"" => minVal`, () => {});
-      it(`"-" => minVal`, () => {});
-      it(`"0"+ => 1 MiB`, () => {});
-      it(`"0"++ => 2 MiB`, () => {});
-      it(`stops at maxVal`, () => {});
+      it(`"" => minVal + 1 step`, () => {
+        let number = "";
+        expect(
+          instance.increment(
+            number,
+            unitInUsePTR,
+            unitConfig,
+            minVal,
+            maxVal,
+            unitConfigInUse
+          ).number
+        ).toBe(minValValue + stepSize);
+      });
+      it(`"-" => minVal`, () => {
+        let number = "-";
+        expect(
+          instance.increment(
+            number,
+            unitInUsePTR,
+            unitConfig,
+            minVal,
+            maxVal,
+            unitConfigInUse
+          ).number
+        ).toBe(minValValue);
+      });
+      it(`"0"+ => 1 MiB`, () => {
+        let number = "0";
+        expect(
+          instance.increment(
+            number,
+            unitInUsePTR,
+            unitConfig,
+            minVal,
+            maxVal,
+            unitConfigInUse
+          ).number
+        ).toBe(0 + stepSize);
+      });
+      it(`"0"++ => 2 MiB`, () => {
+        let number = "0";
+        let onceIncremented = instance.increment(
+          number,
+          unitInUsePTR,
+          unitConfig,
+          minVal,
+          maxVal,
+          unitConfigInUse
+        ).number;
+        expect(
+          instance.increment(
+            onceIncremented,
+            unitInUsePTR,
+            unitConfig,
+            minVal,
+            maxVal,
+            unitConfigInUse
+          ).number
+        ).toBe(stepSize + stepSize);
+      });
+      it(`stops at maxVal`, () => {
+        let number = minValValue;
+        let i, newNumber;
+        maxVal = "1 GiB";
+        for (i = 0; i < unitConfig[0].convertUpAt + 20; i++) {
+          newNumber = instance.increment(
+            number,
+            unitInUsePTR,
+            unitConfig,
+            minVal,
+            maxVal,
+            unitConfigInUse
+          );
+          number = newNumber.number;
+          unitInUsePTR = newNumber.unitPTR;
+        }
+        expect(number).toBe(instance.getNumber(maxVal));
+      });
       describe("misc", () => {
-        it(`null => minVal`, () => {});
-        it(`undefined => minVal`, () => {});
-        it(`NaN => minVal`, () => {});
+        it(`null => minVal`, () => {
+          let number = "";
+          expect(
+            instance.increment(
+              number,
+              unitInUsePTR,
+              unitConfig,
+              minVal,
+              maxVal,
+              unitConfigInUse
+            ).number
+          ).toBe(minValValue);
+        });
+        it(`undefined => minVal`, () => {
+          let number = undefined;
+          expect(
+            instance.increment(
+              number,
+              unitInUsePTR,
+              unitConfig,
+              minVal,
+              maxVal,
+              unitConfigInUse
+            ).number
+          ).toBe(minValValue);
+        });
+        it(`NaN => minVal`, () => {
+          let number = "";
+          expect(
+            instance.increment(
+              number,
+              unitInUsePTR,
+              unitConfig,
+              minVal,
+              maxVal,
+              unitConfigInUse
+            ).number
+          ).toBe(minValValue);
+        });
       });
     });
     describe("decrement(number, unitInUsePTR, unitConfig, minVal, maxVal, unitConfigInUse)", () => {
-      it(`"" => minVal`, () => {});
-      it(`"-" => minVal`, () => {});
-      it(`"0"- => minVal`, () => {});
-      it(`"1"- => 0 MiB`, () => {});
-      it(`"2" => 0 MiB`, () => {});
-      it(`stops at minVal`, () => {});
+      it(`"" => minVal`, () => {
+        let number = "";
+        expect(
+          instance.decrement(
+            number,
+            unitInUsePTR,
+            unitConfig,
+            minVal,
+            maxVal,
+            unitConfigInUse
+          ).number
+        ).toBe(minValValue);
+      });
+      it(`"-" => minVal`, () => {
+        let number = "-";
+        expect(
+          instance.decrement(
+            number,
+            unitInUsePTR,
+            unitConfig,
+            minVal,
+            maxVal,
+            unitConfigInUse
+          ).number
+        ).toBe(minValValue);
+      });
+      it(`"0"- => minVal`, () => {
+        let number = "0";
+        expect(
+          instance.decrement(
+            number,
+            unitInUsePTR,
+            unitConfig,
+            minVal,
+            maxVal,
+            unitConfigInUse
+          ).number
+        ).toBe(minValValue);
+      });
+      it(`"1"- => 0 MiB`, () => {
+        let number = "1";
+        expect(
+          instance.decrement(
+            number,
+            unitInUsePTR,
+            unitConfig,
+            minVal,
+            maxVal,
+            unitConfigInUse
+          ).number
+        ).toBe(1 - stepSize);
+      });
+      it(`"2"-- => 0 MiB`, () => {
+        let number = "2";
+        let onceDecremented = instance.decrement(
+          number,
+          unitInUsePTR,
+          unitConfig,
+          minVal,
+          maxVal,
+          unitConfigInUse
+        ).number;
+        expect(
+          instance.decrement(
+            onceDecremented,
+            unitInUsePTR,
+            unitConfig,
+            minVal,
+            maxVal,
+            unitConfigInUse
+          ).number
+        ).toBe(2 - stepSize - stepSize);
+      });
+      it(`stops at minVal`, () => {
+        minVal = "1 MiB";
+        minValValue = instance.getNumber(minVal);
+        let number = minValValue + 120;
+        let i, newNumber;
+        for (i = 0; i < unitConfig[0].convertUpAt + 20; i++) {
+          newNumber = instance.decrement(
+            number,
+            unitInUsePTR,
+            unitConfig,
+            minVal,
+            maxVal,
+            unitConfigInUse
+          );
+          number = newNumber.number;
+          unitInUsePTR = newNumber.unitPTR;
+        }
+        expect(number).toBe(instance.getNumber(minVal));
+      });
       describe("misc", () => {
-        it(`null => minVal`, () => {});
-        it(`undefined => minVal`, () => {});
-        it(`NaN => minVal`, () => {});
+        it(`null => minVal`, () => {
+          let number = null;
+          expect(
+            instance.decrement(
+              number,
+              unitInUsePTR,
+              unitConfig,
+              minVal,
+              maxVal,
+              unitConfigInUse
+            ).number
+          ).toBe(minVal);
+        });
+        it(`undefined => minVal`, () => {
+          let number = undefined;
+          expect(
+            instance.decrement(
+              number,
+              unitInUsePTR,
+              unitConfig,
+              minVal,
+              maxVal,
+              unitConfigInUse
+            ).number
+          ).toBe(minVal);
+        });
+        it(`NaN => minVal`, () => {
+          let number = NaN;
+          expect(
+            instance.decrement(
+              number,
+              unitInUsePTR,
+              unitConfig,
+              minVal,
+              maxVal,
+              unitConfigInUse
+            ).number
+          ).toBe(minVal);
+        });
       });
     });
   });
@@ -271,11 +503,11 @@ describe("functions as is", () => {
     let unitConfig, minVal, maxVal;
     beforeEach(() => {
       wrapper = shallow(
-        <QInput unitConfig={MemoryFromUnits} minVal="0 MiB" maxVal="10 GiB" />
+        <QInput unitConfig={MemoryFromUnits} minVal="0 MiB" maxVal="10 TiB" />
       );
       instance = wrapper.instance();
       component = mount(
-        <QInput unitConfig={MemoryFromUnits} minVal="1 MiB" maxVal="10 GiB" />
+        <QInput unitConfig={MemoryFromUnits} minVal="1 MiB" maxVal="10 TiB" />
       );
       unitConfig = component.props().unitConfig;
       minVal = component.props().minVal;
@@ -285,12 +517,12 @@ describe("functions as is", () => {
       component.unmount();
     });
     describe("should be valid", () => {
-        it("non string integers only", () => {
-            let input = 22;
-            expect(
-              instance.validate(input, unitConfig, minVal, maxVal).isValid
-            ).toBe(true);
-          });
+      it("non string integers only", () => {
+        let input = 22;
+        expect(
+          instance.validate(input, unitConfig, minVal, maxVal).isValid
+        ).toBe(true);
+      });
       it("integers only", () => {
         let input = `22`;
         expect(
@@ -341,8 +573,11 @@ describe("functions as is", () => {
         ).toBe(true);
       });
       it("Value between min max", () => {
-          let minValValue = instance.getNumber(component.props().minVal);
-          let minValUnit = component.props().minVal.match(/[a-z]+/gi).join("");
+        let minValValue = instance.getNumber(component.props().minVal);
+        let minValUnit = component
+          .props()
+          .minVal.match(/[a-z]+/gi)
+          .join("");
         let input = `${minValValue} ${minValUnit}`;
         expect(
           instance.validate(input, unitConfig, minVal, maxVal).isValid
@@ -382,7 +617,10 @@ describe("functions as is", () => {
       });
       it("Value below minVal", () => {
         let minValValue = instance.getNumber(component.props().minVal);
-        let minValUnit = component.props().minVal.match(/[a-z]+/gi).join("");
+        let minValUnit = component
+          .props()
+          .minVal.match(/[a-z]+/gi)
+          .join("");
         let input = `${minValValue - 1} ${minValUnit}`;
         expect(
           instance.validate(input, unitConfig, minVal, maxVal).isValid
@@ -390,7 +628,10 @@ describe("functions as is", () => {
       });
       it("Value above maxVal", () => {
         let maxValValue = instance.getNumber(component.props().maxVal);
-        let maxValUnit = component.props().maxVal.match(/[a-z]+/gi).join("");
+        let maxValUnit = component
+          .props()
+          .maxVal.match(/[a-z]+/gi)
+          .join("");
         let input = `${maxValValue + 1} ${maxValUnit}`;
         expect(
           instance.validate(input, unitConfig, minVal, maxVal).isValid
@@ -462,8 +703,9 @@ describe("functions as is", () => {
     it("jumps to maxVal", () => {});
     it("returns as is at no violation", () => {});
   });
-  describe("convertValueToCPU(val)", () => {});
+
   describe("addUnit(userInput, unit, isValid)", () => {});
+  describe("convertValueToCPU(val)", () => {});
   describe("onClick(buttonID, unitInUsePTR)", () => {});
   describe("onChange(event)", () => {});
   describe("populateToParent(value, unitConfigInUse)", () => {});

@@ -87,8 +87,9 @@ class QInput extends React.Component {
         let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
         checked.number = this.getNumber(minVal);
         checked.unitPTR = this.unitMatch(minValUnit, unitConfig);
-        checked.unit = unitConfig[checked.unitPTR];
+        checked.unit = unitConfig[checked.unitPTR].unit;
         checked.message = "minVal reached";
+        console.log(`${input} ${unit}`, checked.unit);
         return checked;
       }
       //if input is within borders of min/max
