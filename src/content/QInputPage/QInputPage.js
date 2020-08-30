@@ -7,7 +7,7 @@ class QInputPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '', 
+      value: '0', 
     };
 
     this.onChange = this.onChange.bind(this);

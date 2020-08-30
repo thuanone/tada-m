@@ -377,72 +377,79 @@ describe("functions as is", () => {
     let unitInUsePTR, unitConfig, unit, number;
     beforeEach(() => {
       wrapper = shallow(
-        <QInput unitConfig={MemoryFromUnits} minVal="0 MiB" maxVal="10 GiB" />
+        <QInput unitConfig={MemoryFromUnits} minVal="1 MiB" maxVal="10 GiB" />
       );
       instance = wrapper.instance();
       component = mount(
-        <QInput unitConfig={MemoryFromUnits} minVal="0 MiB" maxVal="10 GiB" />
+        <QInput unitConfig={MemoryFromUnits} minVal="1 MiB" maxVal="10 GiB" />
       );
     });
     afterEach(() => {
       component.unmount();
     });
     it("converts from 1 -> 2", () => {
-      [unitInUsePTR, unitConfig, unit] = [0, MemoryFromUnits, "MiB"];
-      number = MemoryFromUnits[unitInUsePTR].convertUpAt;
+      [unitInUsePTR, unitConfig,] = [0, MemoryFromUnits,];
+      unit = unitConfig[unitInUsePTR].unit;
+      number = unitConfig[unitInUsePTR].convertUpAt;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
         number: 1,
-        unit: "GiB",
-        unitPTR: 1,
+        unit: unitConfig[unitInUsePTR+1].unit,
+        unitPTR: unitInUsePTR+1,
       });
     });
     it("converts from 2 -> 3", () => {
-      [unitInUsePTR, unitConfig, unit] = [1, MemoryFromUnits, "GiB"];
-      number = MemoryFromUnits[unitInUsePTR].convertUpAt;
+      [unitInUsePTR, unitConfig,] = [1, MemoryFromUnits,];
+      unit = unitConfig[unitInUsePTR].unit;
+      number = unitConfig[unitInUsePTR].convertUpAt;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
         number: 1,
-        unit: "TiB",
-        unitPTR: 2,
+        unit: unitConfig[unitInUsePTR+1].unit,
+        unitPTR: unitInUsePTR+1,
       });
     });
     it("converts from 3 -> 2", () => {
-      [unitInUsePTR, unitConfig, unit] = [2, MemoryFromUnits, "TiB"];
-      number = 1 - MemoryFromUnits[unitInUsePTR].standardStepSize;
+      [unitInUsePTR, unitConfig,] = [2, MemoryFromUnits,];
+      unit = unitConfig[unitInUsePTR].unit;
+      number = 1 - unitConfig[unitInUsePTR].standardStepSize;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
         number:
-          MemoryFromUnits[unitInUsePTR - 1].convertUpAt -
-          MemoryFromUnits[unitInUsePTR - 1].standardStepSize,
-        unit: "GiB",
-        unitPTR: 1,
+        unitConfig[unitInUsePTR - 1].convertUpAt -
+        unitConfig[unitInUsePTR - 1].standardStepSize,
+        unit: unitConfig[unitInUsePTR-1].unit,
+        unitPTR: unitInUsePTR-1,
       });
     });
     it("converts from 2 -> 1", () => {
-      [unitInUsePTR, unitConfig, unit] = [1, MemoryFromUnits, "GiB"];
-      number = 1 - MemoryFromUnits[unitInUsePTR].standardStepSize;
+      [unitInUsePTR, unitConfig,] = [1, MemoryFromUnits,];
+      unit = unitConfig[unitInUsePTR].unit;
+      number = 1 - unitConfig[unitInUsePTR].standardStepSize;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
         number:
-          MemoryFromUnits[unitInUsePTR - 1].convertUpAt -
-          MemoryFromUnits[unitInUsePTR - 1].standardStepSize,
-        unit: "MiB",
-        unitPTR: 0,
+        unitConfig[unitInUsePTR - 1].convertUpAt -
+        unitConfig[unitInUsePTR - 1].standardStepSize,
+        unit: unitConfig[unitInUsePTR-1].unit,
+        unitPTR: unitInUsePTR-1,
       });
     });
     it("doesnt convert above biggest unit", () => {
-      [unitInUsePTR, unitConfig, unit] = [2, MemoryFromUnits, "TiB"];
-      number = MemoryFromUnits[unitInUsePTR].convertUpAt;
+      [unitInUsePTR, unitConfig,] = [4, MemoryFromUnits,];
+      console.log();
+      unit = unitConfig[unitInUsePTR].unit;
+      number = unitConfig[unitInUsePTR].convertUpAt;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
         number: number,
-        unit: "TiB",
-        unitPTR: 2,
+        unit: unit,
+        unitPTR: unitInUsePTR,
       });
     });
     it("doesnt convert below smallest unit", () => {
-      [unitInUsePTR, unitConfig, unit] = [0, MemoryFromUnits, "MiB"];
-      number = 1 - MemoryFromUnits[unitInUsePTR].standardStepSize;
+      [unitInUsePTR, unitConfig,] = [0, MemoryFromUnits,];
+      unit = unitConfig[unitInUsePTR].unit;
+      number = 1 - unitConfig[unitInUsePTR].standardStepSize;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
         number: number,
-        unit: "MiB",
-        unitPTR: 0,
+        unit: unit,
+        unitPTR: unitInUsePTR,
       });
     });
   });
@@ -503,7 +510,7 @@ describe("functions as is", () => {
     let unitConfig, minVal, maxVal;
     beforeEach(() => {
       wrapper = shallow(
-        <QInput unitConfig={MemoryFromUnits} minVal="0 MiB" maxVal="10 TiB" />
+        <QInput unitConfig={MemoryFromUnits} minVal="1 MiB" maxVal="10 TiB" />
       );
       instance = wrapper.instance();
       component = mount(
@@ -537,18 +544,21 @@ describe("functions as is", () => {
       });
       it("Number with 1st Unit", () => {
         let input = `23${unitConfig[0].unit}`;
+        minVal = `0 ${unitConfig[0].unit}`;
         expect(
           instance.validate(input, unitConfig, minVal, maxVal).isValid
         ).toBe(true);
       });
       it("Number with 2nd Unit", () => {
         let input = `23 ${unitConfig[1].unit}`;
+        minVal = `0 ${unitConfig[0].unit}`;
         expect(
           instance.validate(input, unitConfig, minVal, maxVal).isValid
         ).toBe(true);
       });
       it("Number with shorthand", () => {
         let input = `12 ${unitConfig[1].shortUnit}`;
+        minVal = `0 ${unitConfig[0].unit}`;
         expect(
           instance.validate(input, unitConfig, minVal, maxVal).isValid
         ).toBe(true);
@@ -669,7 +679,7 @@ describe("functions as is", () => {
         let input = `12`;
         expect(
           instance.validate(input, unitConfig, minVal, maxVal).unitPTR
-        ).toBe(0);
+        ).toBe(component.props().defaultUnit);
       });
     });
   });

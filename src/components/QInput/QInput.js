@@ -16,7 +16,7 @@ class QInput extends React.Component {
       // if number -> handle as bytes and calculate the best unit
       // if string incl unit -> handle as-is
       // if undefined -> print '-'
-      unitInUsePTR: props.unitInUsePTR ? props.unitInUsePTR : 0, // change this to this.unitMatch(minVal.match(/[a-z]+/gi).join(""), this.props) (doesnt work yet)
+      unitInUsePTR: props.defaultUnit || 0, // change this to this.unitMatch(minVal.match(/[a-z]+/gi).join(""), this.props) (doesnt work yet)
       message: "",
       isValid: true,
     };
@@ -25,6 +25,8 @@ class QInput extends React.Component {
     this.unitMatch = this.unitMatch.bind(this);
     this.validate = this.validate.bind(this);
     this.checkMinMax = this.checkMinMax.bind(this);
+    this.addUnit = this.addUnit.bind(this);
+    this.addAfter = this.addAfter.bind(this);
 
     this.convertValuetoCPU = this.convertValuetoCPU.bind(this);
 
@@ -35,7 +37,7 @@ class QInput extends React.Component {
    * this function makes sure that default values are fed to the parent component
    */
   componentDidMount() {
-    this.validate(this.state.value);
+    this.validate(this.state.value, this.props.unitConfig, this.props.minVal, this.props.maxVal);
     this.populateToParent(this.state.value, this.props.unitConfigInUse);
   }
 
@@ -77,7 +79,7 @@ class QInput extends React.Component {
       let minValByte = this.MemoryUtils.convertValueToBytes(minVal);
       let maxValByte = this.MemoryUtils.convertValueToBytes(maxVal);
       let inputByte = this.MemoryUtils.convertValueToBytes(input + unit);
-
+      
       //special case for minVal = "0 UNIT" because convertValueToBytes doesnt handle negative values
       if (
         this.getNumber(minVal) === 0 &&
@@ -382,7 +384,7 @@ class QInput extends React.Component {
     const justLetters = /[a-z]+/gi;
     const numbersAfterUnit = /.[a-z]+.[0-9]+/gi;
 
-    let report = { message: " ", isValid: true, unitPTR: 0 };
+    let report = { message: " ", isValid: true, unitPTR: this.props.defaultUnit };
     let otherChars,
       matchNumberAfterUnit,
       letters,
@@ -429,7 +431,7 @@ class QInput extends React.Component {
       return report;
     } else if (word === "") {
       report.isValid = true;
-      word = unitConfig[0].unit; // neccessary for checkMinMax
+      word = unitConfig[this.props.defaultUnit].unit; // neccessary for checkMinMax
     } else {
       report.message = `recognized unit: ${word}`;
       report.unitPTR = indexOfMatchedUnit;
@@ -453,10 +455,12 @@ class QInput extends React.Component {
       return report;
     }
   }
-  addUnit(userInput, unit, isValid) {
-    if (isNaN(userInput) && userInput !== "-" && isValid) {
+
+  addUnit(userInput, unit, isValid, onChange) {
+    if (!isNaN(userInput) && userInput !== "-" && isValid) {
       userInput = `${userInput} ${unit}`;
     }
+    onChange({target:{value:userInput}});
     return userInput;
   }
 
@@ -598,7 +602,22 @@ class QInput extends React.Component {
       this.props.onUpdate(newValue);
     }
   }
+  addOnlyUnit() {
 
+  }
+  addAfter(event) {
+    let userInput = event.target.value;
+    this.onChange(event);
+    let deb = _.debounce(() => {
+      this.addUnit(
+        this.state.value,
+        this.props.unitConfig[this.state.unitInUsePTR].unit,
+        this.state.isValid,
+        this.onChange
+      );
+    }, 1000);
+    deb();
+  }
   render() {
     const NumberInput = (
       <div>
@@ -729,14 +748,19 @@ QInput.propTypes = {
    *
    */
   passValueAsNumbersOnly: PropTypes.bool,
+  /**
+   *
+   */
+  defaultUnit: PropTypes.number,
 };
 
 QInput.defaultProps = {
-  minVal: "0 MiB",
+  minVal: "1023 KiB",
   maxVal: "10 TiB",
   unitConfig: Memory,
   unitConfigInUse: "Memory",
   passValueAsNumbersOnly: true,
+  defaultUnit: 2, 
 };
 
 export default QInput;

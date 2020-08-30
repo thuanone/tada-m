@@ -16,7 +16,7 @@ const vCPU = [
   },
 ];
 const Memory = [
-  /*
+  
   {
     unit: "Byte",
     shortUnit: "byte",
@@ -31,7 +31,7 @@ const Memory = [
     standardChunk: 128,
     convertUpAt: 1024,
   },
-  */
+  
   {
     unit: "MiB",
     shortUnit: "Mi",
