@@ -34,7 +34,7 @@ class QInputPage extends React.Component {
           <QInput 
             unitConfig={vCPU}
             minVal={"100 m"}
-            maxVal={"100 vCPU"}
+            maxVal={"1 vCPU"}
             onUpdate={this.onChange}
             value={this.state.value}
             defaultUnit={0}

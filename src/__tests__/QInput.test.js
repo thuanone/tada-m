@@ -179,8 +179,9 @@ describe("functions as is", () => {
       it(`stops at maxVal`, () => {
         let number = minValValue;
         let i, newNumber;
-        maxVal = "1 GiB";
-        for (i = 0; i < unitConfig[0].convertUpAt + 20; i++) {
+        let unitToTest = 0;
+        maxVal = `1 ${unitConfig[unitToTest].unit}`;
+        for (i = 0; i < unitConfig[unitToTest].convertUpAt + 20; i++) {
           newNumber = instance.increment(
             number,
             unitInUsePTR,
@@ -388,51 +389,51 @@ describe("functions as is", () => {
       component.unmount();
     });
     it("converts from 1 -> 2", () => {
-      [unitInUsePTR, unitConfig,] = [0, MemoryFromUnits,];
+      [unitInUsePTR, unitConfig] = [0, MemoryFromUnits];
       unit = unitConfig[unitInUsePTR].unit;
       number = unitConfig[unitInUsePTR].convertUpAt;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
         number: 1,
-        unit: unitConfig[unitInUsePTR+1].unit,
-        unitPTR: unitInUsePTR+1,
+        unit: unitConfig[unitInUsePTR + 1].unit,
+        unitPTR: unitInUsePTR + 1,
       });
     });
     it("converts from 2 -> 3", () => {
-      [unitInUsePTR, unitConfig,] = [1, MemoryFromUnits,];
+      [unitInUsePTR, unitConfig] = [1, MemoryFromUnits];
       unit = unitConfig[unitInUsePTR].unit;
       number = unitConfig[unitInUsePTR].convertUpAt;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
         number: 1,
-        unit: unitConfig[unitInUsePTR+1].unit,
-        unitPTR: unitInUsePTR+1,
+        unit: unitConfig[unitInUsePTR + 1].unit,
+        unitPTR: unitInUsePTR + 1,
       });
     });
     it("converts from 3 -> 2", () => {
-      [unitInUsePTR, unitConfig,] = [2, MemoryFromUnits,];
+      [unitInUsePTR, unitConfig] = [2, MemoryFromUnits];
       unit = unitConfig[unitInUsePTR].unit;
       number = 1 - unitConfig[unitInUsePTR].standardStepSize;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
         number:
-        unitConfig[unitInUsePTR - 1].convertUpAt -
-        unitConfig[unitInUsePTR - 1].standardStepSize,
-        unit: unitConfig[unitInUsePTR-1].unit,
-        unitPTR: unitInUsePTR-1,
+          unitConfig[unitInUsePTR - 1].convertUpAt -
+          unitConfig[unitInUsePTR - 1].standardStepSize,
+        unit: unitConfig[unitInUsePTR - 1].unit,
+        unitPTR: unitInUsePTR - 1,
       });
     });
     it("converts from 2 -> 1", () => {
-      [unitInUsePTR, unitConfig,] = [1, MemoryFromUnits,];
+      [unitInUsePTR, unitConfig] = [1, MemoryFromUnits];
       unit = unitConfig[unitInUsePTR].unit;
       number = 1 - unitConfig[unitInUsePTR].standardStepSize;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
         number:
-        unitConfig[unitInUsePTR - 1].convertUpAt -
-        unitConfig[unitInUsePTR - 1].standardStepSize,
-        unit: unitConfig[unitInUsePTR-1].unit,
-        unitPTR: unitInUsePTR-1,
+          unitConfig[unitInUsePTR - 1].convertUpAt -
+          unitConfig[unitInUsePTR - 1].standardStepSize,
+        unit: unitConfig[unitInUsePTR - 1].unit,
+        unitPTR: unitInUsePTR - 1,
       });
     });
     it("doesnt convert above biggest unit", () => {
-      [unitInUsePTR, unitConfig,] = [4, MemoryFromUnits,];
+      [unitInUsePTR, unitConfig] = [4, MemoryFromUnits];
       unit = unitConfig[unitInUsePTR].unit;
       number = unitConfig[unitInUsePTR].convertUpAt;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
@@ -442,7 +443,7 @@ describe("functions as is", () => {
       });
     });
     it("doesnt convert below smallest unit", () => {
-      [unitInUsePTR, unitConfig,] = [0, MemoryFromUnits,];
+      [unitInUsePTR, unitConfig] = [0, MemoryFromUnits];
       unit = unitConfig[unitInUsePTR].unit;
       number = 1 - unitConfig[unitInUsePTR].standardStepSize;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
@@ -685,14 +686,19 @@ describe("functions as is", () => {
   describe("checkMinMax(number, minVal, maxVal, unitPTR, unitConfig)", () => {
     let wrapper, instance, component;
     let minVal, maxVal, unitPTR, unitConfig;
-    let minValValue, maxValValue;
+    let minValValue,
+      maxValValue,
+      minValUnitPTR,
+      maxValUnitPTR,
+      minValUnit,
+      maxValUnit;
     beforeEach(() => {
       wrapper = shallow(
-        <QInput unitConfig={MemoryFromUnits} minVal="0 MiB" maxVal="10 GiB" />
+        <QInput unitConfig={MemoryFromUnits} minVal="1 MiB" maxVal="10 GiB" />
       );
       instance = wrapper.instance();
       component = mount(
-        <QInput unitConfig={MemoryFromUnits} minVal="0 MiB" maxVal="10 GiB" />
+        <QInput unitConfig={MemoryFromUnits} minVal="1 MiB" maxVal="10 GiB" />
       );
 
       [unitPTR, unitConfig, minVal, maxVal] = [
@@ -704,174 +710,249 @@ describe("functions as is", () => {
       ];
       minValValue = instance.getNumber(component.props().minVal);
       maxValValue = instance.getNumber(component.props().maxVal);
+
+      minValUnit = minVal.match(/[a-z]+/gi).join("");
+      maxValUnit = maxVal.match(/[a-z]+/gi).join("");
+
+      minValUnitPTR = instance.unitMatch(minValUnit, unitConfig);
+      maxValUnitPTR = instance.unitMatch(maxValUnit, unitConfig);
     });
     afterEach(() => {
       component.unmount();
     });
-    it("jumps to minVal", () => {});
-    it("jumps to maxVal", () => {});
-    it("returns as is at no violation", () => {});
+    it("jumps to minVal", () => {
+      let number = minValValue - unitConfig[minValUnitPTR].standardStepSize;
+      let unitInUsePTR = minValUnitPTR-1;
+      expect(
+        instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
+          .number
+      ).toBe(minValValue);
+      expect(
+        instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
+          .unit
+      ).toBe(minValUnit);
+      expect(
+        instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
+          .unitPTR
+      ).toBe(minValUnitPTR);
+    });
+    it("jumps to maxVal", () => {
+      let number = maxValValue + unitConfig[maxValUnitPTR].standardStepSize;
+      let unitInUsePTR = maxValUnitPTR;
+      expect(
+        instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
+          .number
+      ).toBe(maxValValue);
+      expect(
+        instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
+          .unit
+      ).toBe(maxValUnit);
+      expect(
+        instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
+          .unitPTR
+      ).toBe(maxValUnitPTR);
+    });
+    it("returns as is at no violation", () => {
+      let number = minValValue + unitConfig[minValUnitPTR].standardStepSize;
+      let unitInUsePTR = minValUnitPTR;
+      expect(
+        instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
+          .number
+      ).toBe(number);
+      expect(
+        instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
+          .unit
+      ).toBe(minValUnit);
+      expect(
+        instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
+          .unitPTR
+      ).toBe(minValUnitPTR);
+    });
   });
   describe("convertValueToBaseUnit", () => {
     let wrapper, instance, component;
     beforeEach(() => {
       wrapper = shallow(<QInput />);
       instance = wrapper.instance();
-      component = mount(<QInput/>);
+      component = mount(<QInput />);
     });
     afterEach(() => {
-        component.unmount();
+      component.unmount();
     });
     describe("MemoryUnit", () => {
-        let unitConfig, number, unitPTR;
-        beforeEach(() => {
-            unitConfig = MemoryFromUnits;
-        });
-        it("1 MiB => 1048576 byte", () => {
-            expect(instance.convertValueToBaseUnit(1, 2, unitConfig)).toBe(1048576);
-        });
-        it("1.5 MiB => 1572864 byte", () => {
-            expect(instance.convertValueToBaseUnit(1.5, 2, unitConfig)).toBe(1572864);
-        });
-        it("-1.5 MiB => - 1572864 byte", () => {
-            expect(instance.convertValueToBaseUnit(-1.5, 2, unitConfig)).toBe(-1572864);
-        });
-        it("23 GiB => 24696061952 byte", () => {
-            expect(instance.convertValueToBaseUnit(23, 3, unitConfig)).toBe(24696061952);
-        });
-        it("23 TiB => 24696061952 byte", () => {
-            expect(instance.convertValueToBaseUnit(23, 4, unitConfig)).toBe(25288767438848);
-        });
+      let unitConfig, number, unitPTR;
+      beforeEach(() => {
+        unitConfig = MemoryFromUnits;
+      });
+      it("1 MiB => 1048576 byte", () => {
+        expect(instance.convertValueToBaseUnit(1, 2, unitConfig)).toBe(1048576);
+      });
+      it("1.5 MiB => 1572864 byte", () => {
+        expect(instance.convertValueToBaseUnit(1.5, 2, unitConfig)).toBe(
+          1572864
+        );
+      });
+      it("-1.5 MiB => - 1572864 byte", () => {
+        expect(instance.convertValueToBaseUnit(-1.5, 2, unitConfig)).toBe(
+          -1572864
+        );
+      });
+      it("23 GiB => 24696061952 byte", () => {
+        expect(instance.convertValueToBaseUnit(23, 3, unitConfig)).toBe(
+          24696061952
+        );
+      });
+      it("23 TiB => 24696061952 byte", () => {
+        expect(instance.convertValueToBaseUnit(23, 4, unitConfig)).toBe(
+          25288767438848
+        );
+      });
     });
   });
-  describe("addUnit(userInput, unit, isValid)", () => {});
-  describe("convertValueToCPU(val)", () => {});
   describe("onClick(buttonID, unitInUsePTR)", () => {});
   describe("onChange(event)", () => {});
-  describe("populateToParent(value, unitConfigInUse)", () => {});
+  describe("populateToParent(value)", () => {});
 });
 describe("mock user interaction", () => {});
 describe("user interaction mock, indirect test", () => {
-    describe("JSX Tag as is", () => {
-      let component, incr, decr, inputField;
-      beforeEach(() => {
-        component = mount(<QInput />);
-        expect(component.props()).toBeDefined();
-        incr = component.find("button#incrementButton");
-        decr = component.find("button#decrementButton");
-        inputField = component.find("input");
-      });
-      afterEach(() => {
-        component.unmount();
-      });
-      it("user doesnt reach negatives by decr", () => {
-        let i;
-        let number;
-        const instance = shallow(<QInput />).instance();
-        for (i= 0; i < 10; i++) {
-          incr.simulate("mousedown");
-        }
-        number = instance.getNumber(component.state().value);
-        expect(number).not.toBeLessThan(0);
-      });
-      it("typed negatives are invalid", () => {
-        inputField.simulate("change", {target: {value: "-100"}});
-        expect(component.state().value).toBe("-100");
-        expect(component.state().isValid).toBe(false);
-      });
-      it("typed negatives throw error message", () => {
-        inputField.simulate("change", {target: {value: "-100"}});
-        expect(component.state().value).toBe("-100");
-        expect(component.state().message).not.toBe("");
-      });
-      it("typed negatives and further decrementing is stopped", () => {
-        inputField.simulate("change", {target: {value: "-100"}});
+  describe("JSX Tag as is", () => {
+    let component, incr, decr, inputField;
+    beforeEach(() => {
+      component = mount(<QInput />);
+      expect(component.props()).toBeDefined();
+      incr = component.find("button#incrementButton");
+      decr = component.find("button#decrementButton");
+      inputField = component.find("input");
+    });
+    afterEach(() => {
+      component.unmount();
+    });
+    it("user doesnt reach negatives by decr", () => {
+      let i;
+      let number;
+      const instance = shallow(<QInput />).instance();
+      for (i = 0; i < 10; i++) {
         incr.simulate("mousedown");
-        expect(component.state().value).toBe("-100");//noChange
+      }
+      number = instance.getNumber(component.state().value);
+      expect(number).not.toBeLessThan(0);
+    });
+    it("typed negatives are invalid", () => {
+      inputField.simulate("change", { target: { value: "-100" } });
+      expect(component.state().value).toBe("-100");
+      expect(component.state().isValid).toBe(false);
+    });
+    it("typed negatives throw error message", () => {
+      inputField.simulate("change", { target: { value: "-100" } });
+      expect(component.state().value).toBe("-100");
+      expect(component.state().message).not.toBe("");
+    });
+    it("typed negatives and further decrementing is stopped", () => {
+      inputField.simulate("change", { target: { value: "-100" } });
+      incr.simulate("mousedown");
+      expect(component.state().value).toBe("-100"); //noChange
+    });
+    describe("base functionalities", () => {
+      it("increments", () => {
+        const curr = shallow(<QInput />)
+          .instance()
+          .getNumber(component.state().value);
+        let newVal;
+        incr.simulate("mousedown");
+        newVal = shallow(<QInput />)
+          .instance()
+          .getNumber(component.state().value);
+        expect(newVal).toBeGreaterThan(curr);
       });
-      describe("base functionalities", () => {
-        it("increments", () => {
-          const curr = shallow(<QInput />).instance().getNumber(component.state().value);
-          let newVal;
-          incr.simulate("mousedown");
-          newVal = shallow(<QInput />).instance().getNumber(component.state().value);
-          expect(newVal).toBeGreaterThan(curr);
-        });
-        it("decrements", () => {
-          incr.simulate("mousedown");
-          incr.simulate("mousedown");
-          const curr = shallow(<QInput />).instance().getNumber(component.state().value);
-          let newVal;
-          decr.simulate("mousedown");
-          
-          newVal = shallow(<QInput />).instance().getNumber(component.state().value);
-          expect(newVal).toBeLessThan(curr);
-        });
-        it("changes input",() => {
-          const curr = component.state().value;
-          inputField.simulate("change", {target: {value: "somethingElse"}});
-          const newVal = component.state().value;
-          expect(curr).not.toEqual(newVal);
-        });
+      it("decrements", () => {
+        incr.simulate("mousedown");
+        incr.simulate("mousedown");
+        const curr = shallow(<QInput />)
+          .instance()
+          .getNumber(component.state().value);
+        let newVal;
+        decr.simulate("mousedown");
+
+        newVal = shallow(<QInput />)
+          .instance()
+          .getNumber(component.state().value);
+        expect(newVal).toBeLessThan(curr);
+      });
+      it("changes input", () => {
+        const curr = component.state().value;
+        inputField.simulate("change", { target: { value: "somethingElse" } });
+        const newVal = component.state().value;
+        expect(curr).not.toEqual(newVal);
       });
     });
-    describe(`JSX Tag with minVal = 7, can user reach below minVal?`, () => {
-      let component, incr, decr, inputField;
+  });
+  describe(`JSX Tag with minVal = 7, can user reach below minVal?`, () => {
+    let component, incr, decr, inputField;
+    beforeEach(() => {
+      component = mount(<QInput minVal="7 MiB" />);
+      expect(component.props()).toBeDefined();
+      incr = component.find("button#incrementButton");
+      decr = component.find("button#decrementButton");
+      inputField = component.find("input");
+    });
+    afterEach(() => {
+      component.unmount();
+    });
+    it("decrement after default returns minVal", () => {
+      decr.simulate("mousedown");
+      expect(component.state().value).toBe("7 MiB");
+    });
+    it("incrememt after (default = below minval) returns minVal", () => {
+      incr.simulate("mousedown");
+      expect(component.state().value).toBe("7 MiB");
+    });
+    describe("user forces himself under minVal by typing", () => {
       beforeEach(() => {
-        component = mount(<QInput minVal= "7 MiB" />);
-        expect(component.props()).toBeDefined();
-        incr = component.find("button#incrementButton");
-        decr = component.find("button#decrementButton");
-        inputField = component.find("input");
+        inputField.simulate("change", { target: { value: 4 } });
       });
-      afterEach(() => {
-        component.unmount();
+      it("is error message thrown?", () => {
+        expect(component.state().message).not.toBe("");
       });
-      it("decrement after default returns minVal", () => {
-        decr.simulate("mousedown");
-        expect(component.state().value).toBe("7 MiB");
+      it("is value invalid??", () => {
+        expect(component.state().isValid).toBe(false);
       });
-      it("incrememt after (default = below minval) returns minVal", () => {
-        incr.simulate("mousedown");
-        expect(component.state().value).toBe("7 MiB");
-      });
-      describe("user forces himself under minVal by typing", () => {
-        beforeEach(() => {
-          inputField.simulate("change", {target: {value: 4}});
+      describe("user incr/decr afterwards", () => {
+        it("further decr isnt possible", () => {
+          let newVal;
+          decr.simulate("mousedown");
+          newVal = shallow(<QInput />)
+            .instance()
+            .getNumber(component.state().value);
+          expect(newVal).not.toBeLessThan(7);
+          expect(newVal).toBe(7);
         });
-        it("is error message thrown?", () => {
+        it("increments works under minVal", () => {
+          const curr = shallow(<QInput />)
+            .instance()
+            .getNumber(component.state().value);
+          let newVal;
+          incr.simulate("mousedown");
+          newVal = shallow(<QInput />)
+            .instance()
+            .getNumber(component.state().value);
+          expect(newVal).toBeGreaterThan(curr);
+        });
+        it("incr jumps to minVal", () => {
+          incr.simulate("mousedown");
+          let val = shallow(<QInput />)
+            .instance()
+            .getNumber(component.state().value);
+          let min = shallow(<QInput />)
+            .instance()
+            .getNumber(component.props().minVal);
+          expect(val).toEqual(min);
+        });
+        it("incr under minVal turns value valid", () => {
+          incr.simulate("mousedown");
+          expect(component.state().isValid).toBe(true);
           expect(component.state().message).not.toBe("");
-        });
-        it("is value invalid??", () => {
-          expect(component.state().isValid).toBe(false);
-        });
-        describe("user incr/decr afterwards", () => {
-          it("further decr isnt possible", () => {
-            let newVal;
-            decr.simulate("mousedown");
-            newVal = shallow(<QInput />).instance().getNumber(component.state().value);
-            expect(newVal).not.toBeLessThan(7);
-            expect(newVal).toBe(7);
-          });
-          it("increments works under minVal", () => {
-            const curr = shallow(<QInput />).instance().getNumber(component.state().value);
-            let newVal;
-            incr.simulate("mousedown");
-            newVal = shallow(<QInput />).instance().getNumber(component.state().value);
-            expect(newVal).toBeGreaterThan(curr);
-          });
-          it("incr jumps to minVal", () =>{
-            incr.simulate("mousedown");
-            let val = shallow(<QInput />).instance().getNumber(component.state().value);
-            let min = shallow(<QInput />).instance().getNumber(component.props().minVal);
-            expect(val).toEqual(min);
-          });
-          it("incr under minVal turns value valid", () => {
-            incr.simulate("mousedown");
-            expect(component.state().isValid).toBe(true);
-            expect(component.state().message).not.toBe("");
-          });
         });
       });
     });
   });
+});
