@@ -25,6 +25,8 @@ class QInput extends React.Component {
     this.unitMatch = this.unitMatch.bind(this);
     this.validate = this.validate.bind(this);
     this.checkMinMax = this.checkMinMax.bind(this);
+    
+    this.addUnit = this.addUnit.bind(this);
 
     this.MemoryUtils = new MemoryUtils();
   }
@@ -520,6 +522,11 @@ class QInput extends React.Component {
       this.props.onUpdate(newValue);
     }
   }
+  addUnit() {
+    if (this.state.isValid && this.state.value !== "" && !isNaN(this.state.value)) {
+      this.setState({value: `${this.state.value} ${this.props.unitConfig[this.state.unitInUsePTR].unit}`});
+    }
+  }
   render() {
     const NumberInput = (
       <div>
@@ -538,6 +545,11 @@ class QInput extends React.Component {
                   placeholder="e.g. 1 MiB"
                   value={this.state.value}
                   onChange={this.onChange}
+                  onKeyPress = {() => {
+                    console.log("reached");
+                    let d =_.debounce(this.addUnit, 1700);
+                    d();
+                  }}
                 />
                 <svg
                   opacity={this.state.isValid ? 0 : 1}
