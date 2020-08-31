@@ -73,7 +73,7 @@ class QInput extends React.Component {
     let inputBase = this.convertValueToBaseUnit(number, unitPTR, unitConfig);
 
     if (minValBase <= inputBase <= maxValBase) {
-      console.log(minVal, inputBase, maxValBase, "between");
+      console.log(minValBase, inputBase, maxValBase, "between");
       return checked;
     }
 
