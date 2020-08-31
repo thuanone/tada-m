@@ -7,11 +7,7 @@ class QInputPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-<<<<<<< HEAD
-      value: "", 
-=======
       value: "",
->>>>>>> master
     };
 
     this.onChange = this.onChange.bind(this);
@@ -34,12 +30,7 @@ class QInputPage extends React.Component {
         <h1 style={{ fontSize: "70px", marginBottom: "20px" }}>QInput</h1>
 
         <label>
-<<<<<<< HEAD
-            
-        <QInput
-=======
           <QInput
->>>>>>> master
             unitConfig={vCPU}
             minVal={"100 m"}
             maxVal={"100 vCPU"}
