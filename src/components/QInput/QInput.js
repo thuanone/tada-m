@@ -501,43 +501,6 @@ class QInput extends React.Component {
    * this function feeds new values to the parent component
    * @param {String} value - this.state.value is passed to this function
    */
-  populateToParent1(value, unitConfigInUse) {
-    if (this.props.onUpdate) {
-      let newValue;
-      if (unitConfigInUse === "vCPU") {
-        // for CPU
-        newValue =
-          value === "" || value === "-"
-            ? "-" //if nothing defined or "-"
-            : isNaN(value) //is value a string with a unit?
-            ? this.convertValuetoCPU(value) //yes -> convert
-            : this.convertValuetoCPU(value + "m"); //no? add m and convert
-      }
-      if (unitConfigInUse === "Memory") {
-        // for Memory
-        newValue =
-          value === "" || value === "-"
-            ? "-" //if nothing defined or "-"
-            : isNaN(value) //is value a string with a unit?
-            ? this.MemoryUtils.convertValueToBytes(value) //yes -> convert
-            : this.MemoryUtils.convertValueToBytes(value + "mib"); //no? add mib and convert
-      }
-      // TODO check whether the value should be populated as string or as number (aka bytes) : √
-      // if the newValue === '-' -> tbd
-
-      if (this.props.passValueAsNumbersOnly) {
-        let unit = "-";
-        if (unitConfigInUse === "Memory") {
-          unit = "byte";
-        }
-        if (unitConfigInUse === "vCPU") {
-          unit = "m";
-        }
-        newValue = `${newValue} ${unit}`;
-      }
-      this.props.onUpdate(newValue);
-    }
-  }
   populateToParent(value) {
     if (this.props.onUpdate) {
       let newValue;
@@ -550,7 +513,7 @@ class QInput extends React.Component {
               this.state.unitInUsePTR,
               this.props.unitConfig
             );
-      if (this.props.passValueAsNumbersOnly) {
+      if (this.props.passValueAsNumbersOnly && newValue  !== "-") {
         let unit = this.props.unitConfig[this.state.unitInUsePTR].unit;
         newValue = `${newValue} ${unit}`;
       }
