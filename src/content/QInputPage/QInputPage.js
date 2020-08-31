@@ -7,7 +7,7 @@ class QInputPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '0', 
+      value: "", 
     };
 
     this.onChange = this.onChange.bind(this);
@@ -27,7 +27,14 @@ class QInputPage extends React.Component {
 
         <label>
             
-            <QInput onUpdate={this.onChange} value={this.state.value}/>
+        <QInput
+            unitConfig={vCPU}
+            minVal={"100 m"}
+            maxVal={"100 vCPU"}
+            unitConfigInUse={"vCPU"}
+            onUpdate={this.onChange}
+            value={this.state.value}
+          />
         </label>
 
         <div class="bx--form__helper-text">
