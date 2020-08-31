@@ -26,7 +26,6 @@ class QInput extends React.Component {
     this.validate = this.validate.bind(this);
     this.checkMinMax = this.checkMinMax.bind(this);
 
-
     this.MemoryUtils = new MemoryUtils();
   }
 
@@ -106,7 +105,7 @@ class QInput extends React.Component {
    * @param {String} minVal - string in form "NUMBER UNIT"
    * @param {String} maxVal - string in form "NUMBER UNIT"
    */
-  increment(number, unitInUsePTR, unitConfig, minVal, maxVal, unitConfigInUse) {
+  increment(number, unitInUsePTR, unitConfig, minVal, maxVal) {
     let newNumber = {
       number: number,
       message: "",
@@ -164,7 +163,7 @@ class QInput extends React.Component {
    * @param {String} minVal - string in form "NUMBER UNIT"
    * @param {String} maxVal - string in form "NUMBER UNIT"
    */
-  decrement(number, unitInUsePTR, unitConfig, minVal, maxVal, unitConfigInUse) {
+  decrement(number, unitInUsePTR, unitConfig, minVal, maxVal) {
     let newNumber = {
       number: number,
       message: "",
@@ -401,7 +400,6 @@ class QInput extends React.Component {
     }
   }
 
-
   /**
    * this function handles button clicks and sets
    * - new Values
@@ -460,7 +458,7 @@ class QInput extends React.Component {
           isValid: true,
         },
         () => {
-          this.populateToParent(this.state.value, this.props.unitConfigInUse);
+          this.populateToParent(this.state.value);
         }
       );
     } else {
@@ -494,7 +492,7 @@ class QInput extends React.Component {
           : this.state.unitInUsePTR,
       },
       () => {
-        this.populateToParent(userInput, this.props.unitConfigInUse);
+        this.populateToParent(userInput);
       }
     );
   }
@@ -503,7 +501,7 @@ class QInput extends React.Component {
    * this function feeds new values to the parent component
    * @param {String} value - this.state.value is passed to this function
    */
-  populateToParent(value, unitConfigInUse) {
+  populateToParent1(value, unitConfigInUse) {
     if (this.props.onUpdate) {
       let newValue;
       if (unitConfigInUse === "vCPU") {
@@ -540,6 +538,25 @@ class QInput extends React.Component {
       this.props.onUpdate(newValue);
     }
   }
+  populateToParent(value) {
+    if (this.props.onUpdate) {
+      let newValue;
+      let numberValue = this.getNumber(`${value}`);
+      newValue =
+        value === "" ||  value === "-" ||  value === undefined
+          ? "-"
+          : this.convertValueToBaseUnit(
+              numberValue,
+              this.state.unitInUsePTR,
+              this.props.unitConfig
+            );
+      if (this.props.passValueAsNumbersOnly) {
+        let unit = this.props.unitConfig[this.state.unitInUsePTR].unit;
+        newValue = `${newValue} ${unit}`;
+      }
+      this.props.onUpdate(newValue);
+    }
+  }
   render() {
     const NumberInput = (
       <div>
@@ -560,7 +577,7 @@ class QInput extends React.Component {
                   onChange={this.onChange}
                 />
                 <svg
-                  opacity = {this.state.isValid ? 0 : 1}
+                  opacity={this.state.isValid ? 0 : 1}
                   focusable="false"
                   preserveAspectRatio="xMidYMid meet"
                   xmlns="http://www.w3.org/2000/svg"

@@ -682,9 +682,9 @@ describe("functions as is", () => {
       });
     });
   });
-  describe("checkMinMax(input, minVal, maxVal, unit, unitConfig, unitConfigInUse)", () => {
+  describe("checkMinMax(number, minVal, maxVal, unitPTR, unitConfig)", () => {
     let wrapper, instance, component;
-    let unitInUsePTR, unitConfig, minVal, maxVal, unitConfigInUse;
+    let minVal, maxVal, unitPTR, unitConfig;
     let minValValue, maxValValue;
     beforeEach(() => {
       wrapper = shallow(
@@ -695,8 +695,8 @@ describe("functions as is", () => {
         <QInput unitConfig={MemoryFromUnits} minVal="0 MiB" maxVal="10 GiB" />
       );
 
-      [unitInUsePTR, unitConfig, minVal, maxVal, unitConfigInUse] = [
-        0,
+      [unitPTR, unitConfig, minVal, maxVal] = [
+        2,
         MemoryFromUnits,
         component.props().minVal,
         component.props().maxVal,

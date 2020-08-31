@@ -14,6 +14,7 @@ class QInputPage extends React.Component {
   }
 
   onChange(newValue) {
+    console.log("newValue Paren", newValue);
     this.setState({ value: newValue });
   }
 
