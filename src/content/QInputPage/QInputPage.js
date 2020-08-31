@@ -30,7 +30,7 @@ class QInputPage extends React.Component {
         <h1 style={{ fontSize: "70px", marginBottom: "20px" }}>QInput</h1>
 
         <label>
-          <QInput
+          <QInput 
             unitConfig={vCPU}
             minVal={"100 m"}
             maxVal={"100 vCPU"}
