@@ -543,7 +543,7 @@ class QInput extends React.Component {
       let newValue;
       let numberValue = this.getNumber(`${value}`);
       newValue =
-        value === "" ||  value === "-" ||  value === undefined
+        value === "" || value === "-" || value === undefined
           ? "-"
           : this.convertValueToBaseUnit(
               numberValue,
@@ -667,7 +667,9 @@ class QInput extends React.Component {
           Active Unit: {this.props.unitConfig[this.state.unitInUsePTR].unit}
         </div>
 
-        <div class="bx--form__helper-text">{this.state.message}</div>
+        <div class="bx--form__helper-text" style={{ color: "#da1e28" }}>
+          {this.state.message}
+        </div>
       </div>
     );
     return NumberInput;
