@@ -48,6 +48,7 @@ class InputPage extends React.Component {
               unitConfigInUse= {"Memory"}
               onUpdate={this.onChange.bind(this, "RAM")}
               value={this.state.RAM1}
+              defaultUnit = {2}
             />
           </label>
 
@@ -60,6 +61,7 @@ class InputPage extends React.Component {
               unitConfigInUse= {"vCPU"}
               onUpdate={this.onChange.bind(this, "CPU")}
               value={this.state.MEMORY1}
+              defaultUnit = {0}
             />
           </label>
         </div>
