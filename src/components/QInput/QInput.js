@@ -69,7 +69,7 @@ class QInput extends React.Component {
     let number = val.match(numberRX).join(""); // extract number
     let unit = val.match(unitRX).join(""); // extract unit
 
-    if (this.unitMatch(unit, this.props) === 1) {
+    if (this.unitMatch(unit, this.props.unitConfig) === 1) {
       number = number * 1000;
     }
 
