@@ -25,11 +25,10 @@ class QInput extends React.Component {
     this.unitMatch = this.unitMatch.bind(this);
     this.validate = this.validate.bind(this);
     this.checkMinMax = this.checkMinMax.bind(this);
+
     this.addUnit = this.addUnit.bind(this);
     this.addAfter = this.addAfter.bind(this);
     this.addUnit2 = this.addUnit2.bind(this);
-
-    this.convertValuetoCPU = this.convertValuetoCPU.bind(this);
 
     this.MemoryUtils = new MemoryUtils();
   }
@@ -38,136 +37,69 @@ class QInput extends React.Component {
    * this function makes sure that default values are fed to the parent component
    */
   componentDidMount() {
-    this.validate(this.state.value, this.props.unitConfig, this.props.minVal, this.props.maxVal);
+    this.validate(
+      this.state.value,
+      this.props.unitConfig,
+      this.props.minVal,
+      this.props.maxVal
+    );
     this.populateToParent(this.state.value, this.props.unitConfigInUse);
   }
 
   convertValueToBaseUnit(number, unitPTR, unitConfig) {
-    while(unitPTR > 0) {
+    while (unitPTR > 0) {
       console.log(number, unitPTR);
       number = number * unitConfig[unitPTR - 1].convertUpAt;
       unitPTR -= 1;
       console.log(number, unitPTR);
-  }
-  return number;
-  }
-  chekkMinMax(number, unitPTR, minVal, maxVal, unitConfig) {
-    let report = {number, unitPTR, message:""};
-
-    let minValBase = this.convertValueToBaseUnit(this.getNumber(minVal), this.unitMatch(minVal.match(/[a-z]+/gi.join(""))), unitConfig);
-    let maxValBase = this.convertValueToBaseUnit(this.getNumber(maxVal), this.unitMatch(maxVal.match(/[a-z]+/gi.join(""))), unitConfig);
-    let inputBase = this.convertValueToBaseUnit(number, unitPTR, unitConfig);
-
-    if (inputBase < minValBase) {}
-    if (minVal <= inputBase <= maxValBase) {}
-    if (inputBase > maxValBase) {}
-  }
-  convertValuetoCPU(val) {
-    const numberRX = /-?[0-9]|\.?/gm;
-    const unitRX = /[a-z]+/gi;
-
-    let number = val.match(numberRX).join(""); // extract number
-    let unit = val.match(unitRX).join(""); // extract unit
-
-    if (this.unitMatch(unit, this.props.unitConfig) === 1) {
-      number = number * 1000;
     }
-
     return number;
   }
-
-  /**
-   * this function checks whether a quantity is under/above a set min/max Value and returns an Object containing
-   * a number, which is either the number passed or min/max-Val's number
-   * a message,
-   * and a corresponding unit for number
-   *
-   * @param {Number} input - number to be checked
-   * @param {String} unit - corresponding unit to number
-   * @param {String} minVal - string in form "NUMBER UNIT"
-   * @param {String} maxVal - string in form "NUMBER UNIT"
-   * @param {Array} unitConfig - Array of nested Objects which contain information about a unit
-   */
-  checkMinMax(input, minVal, maxVal, unit, unitConfig, unitConfigInUse) {
+  checkMinMax(number, minVal, maxVal, unitPTR, unitConfig) {
+    console.log("thats a yikes");
     let checked = {
-      number: input,
+      number: number,
       message: "",
-      unit: unit,
-      unitPTR: this.unitMatch(unit, unitConfig),
+      unit: unitConfig[unitPTR].unit,
+      unitPTR: unitPTR,
     };
-    if (unitConfigInUse === "Memory") {
-      // if Memory is used e.g. MiB, GiB, MB, GB
-      let minValByte = this.MemoryUtils.convertValueToBytes(minVal);
-      let maxValByte = this.MemoryUtils.convertValueToBytes(maxVal);
-      let inputByte = this.MemoryUtils.convertValueToBytes(input + unit);
-      
-      //special case for minVal = "0 UNIT" because convertValueToBytes doesnt handle negative values
-      if (
-        this.getNumber(minVal) === 0 &&
-        minVal.match("MiB") &&
-        input < this.getNumber(minVal)
-      ) {
-        let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-        checked.number = this.getNumber(minVal);
-        checked.unitPTR = this.unitMatch(minValUnit, unitConfig);
-        checked.unit = unitConfig[checked.unitPTR].unit;
-        checked.message = "minVal reached";
-        return checked;
-      }
-      //if input is within borders of min/max
-      if (minValByte <= inputByte && inputByte <= maxValByte) {
-        return checked;
-      }
-      // jumping to maxVal
-      if (inputByte > maxValByte) {
-        let maxValUnit = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-        checked.number = this.getNumber(maxVal);
-        checked.message = "maxVal reached";
-        checked.unitPTR = this.unitMatch(maxValUnit, unitConfig);
-        checked.unit = unitConfig[checked.unitPTR].unit;
-        return checked;
-      }
-      // jumping to minVal
-      if (inputByte < minValByte) {
-        let minValUnit = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-        checked.number = this.getNumber(minVal);
-        checked.message = "minVal reached";
-        checked.unitPTR = this.unitMatch(minValUnit, unitConfig);
-        checked.unit = unitConfig[checked.unitPTR].unit;
-        return checked;
-      }
+    let minValUnit = minVal.match(/[a-z]+/gi).join("");
+    let maxValUnit = maxVal.match(/[a-z]+/gi).join("");
+
+    let minValBase = this.convertValueToBaseUnit(
+      this.getNumber(minVal),
+      this.unitMatch(minValUnit, unitConfig),
+      unitConfig
+    );
+    let maxValBase = this.convertValueToBaseUnit(
+      this.getNumber(maxVal),
+      this.unitMatch(maxValUnit, unitConfig),
+      unitConfig
+    );
+    let inputBase = this.convertValueToBaseUnit(number, unitPTR, unitConfig);
+
+    if (minVal <= inputBase <= maxValBase) {
       return checked;
     }
-    if (unitConfigInUse === "vCPU") {
-      // if vCPU is used, e.g. m , vCPU
-      let minValCPU = this.convertValuetoCPU(minVal);
-      let maxValCPU = this.convertValuetoCPU(maxVal);
-      let inputCPU = this.convertValuetoCPU(input + unit);
 
-      if (minValCPU <= inputCPU && maxValCPU >= inputCPU) {
-        return checked;
-      }
-
-      if (inputCPU < minValCPU) {
-        checked.number = this.getNumber(minVal);
-        checked.message = "minVal reached";
-
-        minVal = minVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-
-        checked.unit = unitConfig[this.unitMatch(minVal, unitConfig)].unit;
-        return checked;
-      }
-
-      if (inputCPU > maxValCPU) {
-        checked.number = this.getNumber(maxVal);
-        checked.message = "maxVal reached";
-
-        maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-        checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
-        return checked;
-      }
+    if (inputBase < minValBase) {
+      checked.number = this.getNumber(minVal);
+      checked.message = "minVal reached";
+      checked.unitPTR = this.unitMatch(minValUnit, unitConfig);
+      checked.unit = unitConfig[checked.unitPTR].unit;
+      return checked;
     }
+
+    if (inputBase > maxValBase) {
+      checked.number = this.getNumber(maxVal);
+      checked.message = "maxVal reached";
+      checked.unitPTR = this.unitMatch(maxValUnit, unitConfig);
+      checked.unit = unitConfig[checked.unitPTR].unit;
+      return checked;
+    }
+    return checked;
   }
+  
 
   /**
    * this functions receives a number and oth parameters and returns an object containing
@@ -211,14 +143,12 @@ class QInput extends React.Component {
     ); //converting
 
     newNumber.unitPTR = convertedNumber.unitPTR;
-
     let checked = this.checkMinMax(
       convertedNumber.number,
       minVal,
       maxVal,
-      convertedNumber.unit,
-      unitConfig,
-      unitConfigInUse
+      convertedNumber.unitPTR,
+      unitConfig
     );
 
     newNumber.unitPTR = checked.unitPTR;
@@ -275,9 +205,8 @@ class QInput extends React.Component {
       convertedNumber.number,
       minVal,
       maxVal,
-      convertedNumber.unit,
-      unitConfig,
-      unitConfigInUse
+      convertedNumber.unitPTR,
+      unitConfig
     );
     newNumber.unitPTR = checked.unitPTR;
     newNumber.unit = checked.unit;
@@ -405,7 +334,11 @@ class QInput extends React.Component {
     const justLetters = /[a-z]+/gi;
     const numbersAfterUnit = /.[a-z]+.[0-9]+/gi;
 
-    let report = { message: " ", isValid: true, unitPTR: this.props.defaultUnit };
+    let report = {
+      message: " ",
+      isValid: true,
+      unitPTR: this.props.defaultUnit,
+    };
     let otherChars,
       matchNumberAfterUnit,
       letters,
@@ -457,14 +390,7 @@ class QInput extends React.Component {
       report.message = `recognized unit: ${word}`;
       report.unitPTR = indexOfMatchedUnit;
     }
-    checked = this.checkMinMax(
-      number,
-      minVal,
-      maxVal,
-      word,
-      unitConfig,
-      this.props.unitConfigInUse
-    );
+    checked = this.checkMinMax(number, minVal, maxVal, word, unitConfig);
     if (checked.message === "") {
       return report;
     } else {
@@ -481,12 +407,16 @@ class QInput extends React.Component {
     if (!isNaN(userInput) && userInput !== "-" && isValid) {
       userInput = `${userInput} ${unit}`;
     }
-    onChange({target:{value:userInput}});
+    onChange({ target: { value: userInput } });
     return userInput;
   }
   addUnit2() {
-    if(!isNaN(this.state.value) && this.state.value !== "") {
-      this.setState({value: `${this.state.value} ${this.props.unitConfig[this.state.unitInUsePTR].unit}`});
+    if (!isNaN(this.state.value) && this.state.value !== "") {
+      this.setState({
+        value: `${this.state.value} ${
+          this.props.unitConfig[this.state.unitInUsePTR].unit
+        }`,
+      });
     }
   }
   delayedCall = _.debounce(this.addUnit2, 2500);
@@ -629,9 +559,7 @@ class QInput extends React.Component {
       this.props.onUpdate(newValue);
     }
   }
-  addOnlyUnit() {
-
-  }
+  addOnlyUnit() {}
   addAfter(event) {
     let userInput = event.target.value;
     this.onChange(event);
@@ -788,9 +716,8 @@ QInput.defaultProps = {
   minVal: "1023 KiB",
   maxVal: "10 TiB",
   unitConfig: Memory,
-  unitConfigInUse: "Memory",
   passValueAsNumbersOnly: true,
-  defaultUnit: 2, 
+  defaultUnit: 2,
 };
 
 export default QInput;

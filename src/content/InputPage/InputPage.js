@@ -43,12 +43,11 @@ class InputPage extends React.Component {
             RAM
             <QInput
               unitConfig={Memory}
-              minVal = {"10 MiB"}
-              maxVal = {"100 TiB"}
-              unitConfigInUse= {"Memory"}
+              minVal={"10 MiB"}
+              maxVal={"100 TiB"}
               onUpdate={this.onChange.bind(this, "RAM")}
               value={this.state.RAM1}
-              defaultUnit = {2}
+              defaultUnit={2}
             />
           </label>
 
@@ -56,12 +55,11 @@ class InputPage extends React.Component {
             CPU
             <QInput
               unitConfig={vCPU}
-              minVal = {"100 m"}
-              maxVal = {"100 vCPU"}
-              unitConfigInUse= {"vCPU"}
+              minVal={"100 m"}
+              maxVal={"100 vCPU"}
               onUpdate={this.onChange.bind(this, "CPU")}
               value={this.state.MEMORY1}
-              defaultUnit = {0}
+              defaultUnit={0}
             />
           </label>
         </div>
@@ -76,10 +74,7 @@ class InputPage extends React.Component {
           <h1 style={{ fontSize: "70px", marginBottom: "20px" }}>Output</h1>
           <label>
             RAM
-            <Tile style={{ marginBottom: "26px" }}>
-              {" "}
-              {this.state.RAM1} 
-            </Tile>
+            <Tile style={{ marginBottom: "26px" }}> {this.state.RAM1}</Tile>
           </label>
 
           <label>
