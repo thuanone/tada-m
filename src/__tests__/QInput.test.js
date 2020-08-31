@@ -730,6 +730,18 @@ describe("functions as is", () => {
         it("1 MiB => 1048576 byte", () => {
             expect(instance.convertValueToBaseUnit(1, 2, unitConfig)).toBe(1048576);
         });
+        it("1.5 MiB => 1572864 byte", () => {
+            expect(instance.convertValueToBaseUnit(1.5, 2, unitConfig)).toBe(1572864);
+        });
+        it("-1.5 MiB => - 1572864 byte", () => {
+            expect(instance.convertValueToBaseUnit(-1.5, 2, unitConfig)).toBe(-1572864);
+        });
+        it("23 GiB => 24696061952 byte", () => {
+            expect(instance.convertValueToBaseUnit(23, 3, unitConfig)).toBe(24696061952);
+        });
+        it("23 TiB => 24696061952 byte", () => {
+            expect(instance.convertValueToBaseUnit(23, 4, unitConfig)).toBe(25288767438848);
+        });
     });
   });
   describe("addUnit(userInput, unit, isValid)", () => {});

@@ -27,6 +27,7 @@ class QInput extends React.Component {
     this.checkMinMax = this.checkMinMax.bind(this);
     this.addUnit = this.addUnit.bind(this);
     this.addAfter = this.addAfter.bind(this);
+    this.addUnit2 = this.addUnit2.bind(this);
 
     this.convertValuetoCPU = this.convertValuetoCPU.bind(this);
 
@@ -483,6 +484,12 @@ class QInput extends React.Component {
     onChange({target:{value:userInput}});
     return userInput;
   }
+  addUnit2() {
+    if(!isNaN(this.state.value) && this.state.value !== "") {
+      this.setState({value: `${this.state.value} ${this.props.unitConfig[this.state.unitInUsePTR].unit}`});
+    }
+  }
+  delayedCall = _.debounce(this.addUnit2, 2500);
 
   /**
    * this function handles button clicks and sets
@@ -656,6 +663,9 @@ class QInput extends React.Component {
                   placeholder="e.g. 1 MiB"
                   value={this.state.value}
                   onChange={this.onChange}
+                  onKeyPress={() => {
+                    this.delayedCall();
+                  }}
                 />
                 <div class="bx--number__controls">
                   <button
