@@ -433,7 +433,6 @@ describe("functions as is", () => {
     });
     it("doesnt convert above biggest unit", () => {
       [unitInUsePTR, unitConfig,] = [4, MemoryFromUnits,];
-      console.log();
       unit = unitConfig[unitInUsePTR].unit;
       number = unitConfig[unitInUsePTR].convertUpAt;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
@@ -713,7 +712,26 @@ describe("functions as is", () => {
     it("jumps to maxVal", () => {});
     it("returns as is at no violation", () => {});
   });
-
+  describe("convertValueToBaseUnit", () => {
+    let wrapper, instance, component;
+    beforeEach(() => {
+      wrapper = shallow(<QInput />);
+      instance = wrapper.instance();
+      component = mount(<QInput/>);
+    });
+    afterEach(() => {
+        component.unmount();
+    });
+    describe("MemoryUnit", () => {
+        let unitConfig, number, unitPTR;
+        beforeEach(() => {
+            unitConfig = MemoryFromUnits;
+        });
+        it("1 MiB => 1048576 byte", () => {
+            expect(instance.convertValueToBaseUnit(1, 2, unitConfig)).toBe(1048576);
+        });
+    });
+  });
   describe("addUnit(userInput, unit, isValid)", () => {});
   describe("convertValueToCPU(val)", () => {});
   describe("onClick(buttonID, unitInUsePTR)", () => {});

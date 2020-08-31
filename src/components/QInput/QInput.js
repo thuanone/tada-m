@@ -41,6 +41,26 @@ class QInput extends React.Component {
     this.populateToParent(this.state.value, this.props.unitConfigInUse);
   }
 
+  convertValueToBaseUnit(number, unitPTR, unitConfig) {
+    while(unitPTR > 0) {
+      console.log(number, unitPTR);
+      number = number * unitConfig[unitPTR - 1].convertUpAt;
+      unitPTR -= 1;
+      console.log(number, unitPTR);
+  }
+  return number;
+  }
+  chekkMinMax(number, unitPTR, minVal, maxVal, unitConfig) {
+    let report = {number, unitPTR, message:""};
+
+    let minValBase = this.convertValueToBaseUnit(this.getNumber(minVal), this.unitMatch(minVal.match(/[a-z]+/gi.join(""))), unitConfig);
+    let maxValBase = this.convertValueToBaseUnit(this.getNumber(maxVal), this.unitMatch(maxVal.match(/[a-z]+/gi.join(""))), unitConfig);
+    let inputBase = this.convertValueToBaseUnit(number, unitPTR, unitConfig);
+
+    if (inputBase < minValBase) {}
+    if (minVal <= inputBase <= maxValBase) {}
+    if (inputBase > maxValBase) {}
+  }
   convertValuetoCPU(val) {
     const numberRX = /-?[0-9]|\.?/gm;
     const unitRX = /[a-z]+/gi;
