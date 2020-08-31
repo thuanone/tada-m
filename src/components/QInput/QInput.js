@@ -50,7 +50,7 @@ class QInput extends React.Component {
     while (unitPTR > 0) {
       number = number * unitConfig[unitPTR - 1].convertUpAt;
       unitPTR -= 1;
-
+    }
     return number;
   }
   checkMinMax(number, minVal, maxVal, unitPTR, unitConfig) {
