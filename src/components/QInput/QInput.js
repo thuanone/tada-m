@@ -48,15 +48,12 @@ class QInput extends React.Component {
 
   convertValueToBaseUnit(number, unitPTR, unitConfig) {
     while (unitPTR > 0) {
-      console.log(number, unitPTR);
       number = number * unitConfig[unitPTR - 1].convertUpAt;
       unitPTR -= 1;
-      console.log(number, unitPTR);
-    }
+
     return number;
   }
   checkMinMax(number, minVal, maxVal, unitPTR, unitConfig) {
-    console.log("thats a yikes");
     let checked = {
       number: number,
       message: "",
@@ -390,7 +387,7 @@ class QInput extends React.Component {
       report.message = `recognized unit: ${word}`;
       report.unitPTR = indexOfMatchedUnit;
     }
-    checked = this.checkMinMax(number, minVal, maxVal, word, unitConfig);
+    checked = this.checkMinMax(number, minVal, maxVal, this.unitMatch(word, unitConfig), unitConfig);
     if (checked.message === "") {
       return report;
     } else {
