@@ -46,7 +46,7 @@ class QInput extends React.Component {
     let number = val.match(numberRX).join(""); // extract number
     let unit = val.match(unitRX).join(""); // extract unit
 
-    if (this.unitMatch(unit, this.props) === 1) {
+    if (this.unitMatch(unit, this.props.unitConfig) === 1) {
       number = number * 1000;
     }
 
@@ -140,12 +140,6 @@ class QInput extends React.Component {
         checked.message = "maxVal reached";
 
         maxVal = maxVal.match(/[a-z]+/gi).join(""); // extracting unit from maxVal
-        console.log(
-          "maxVal",
-          maxVal,
-          "unitMatch",
-          this.unitMatch(maxVal, unitConfig)
-        );
         checked.unit = unitConfig[this.unitMatch(maxVal, unitConfig)].unit;
         return checked;
       }
