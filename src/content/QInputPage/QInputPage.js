@@ -14,7 +14,6 @@ class QInputPage extends React.Component {
   }
 
   onChange(newValue) {
-    console.log("newValue Paren", newValue);
     this.setState({ value: newValue });
   }
 
@@ -32,12 +31,8 @@ class QInputPage extends React.Component {
 
         <label>
           <QInput 
-            unitConfig={vCPU}
-            minVal={"100 m"}
-            maxVal={"1 vCPU"}
             onUpdate={this.onChange}
             value={this.state.value}
-            defaultUnit={0}
           />
         </label>
 

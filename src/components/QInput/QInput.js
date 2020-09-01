@@ -553,9 +553,8 @@ class QInput extends React.Component {
                   placeholder="e.g. 1 MiB"
                   value={this.state.value}
                   onChange={this.onChange}
-                  onKeyPress={() => {
-                    console.log("reached");
-                    let d = _.debounce(this.addUnit, 1700);
+                  onKeyPress = {() => {
+                    let d =_.debounce(this.addUnit, 1700);
                     d();
                   }}
                 />
