@@ -521,6 +521,9 @@ class QInput extends React.Component {
       }
       this.props.onUpdate(newValue);
     }
+    else if (this.props.onUpdate && !this.state.isValid) {
+      this.props.onUpdate("-");
+    }
   }
   addUnit() {
     if (
