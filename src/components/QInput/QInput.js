@@ -516,7 +516,7 @@ class QInput extends React.Component {
               this.props.unitConfig
             );
       if (this.props.passValueAsNumbersOnly && newValue !== "-") {
-        let unit = this.props.unitConfig[this.state.unitInUsePTR].unit;
+        let unit = this.props.unitConfig[0].unit;
         newValue = `${newValue} ${unit}`;
       }
       this.props.onUpdate(newValue);
@@ -556,10 +556,8 @@ class QInput extends React.Component {
                   placeholder="e.g. 1 MiB"
                   value={this.state.value}
                   onChange={this.onChange}
-                  onKeyPress = {() => {
-                    let d =_.debounce(this.addUnit, 1700);
-                    d();
-                  }}
+                  onBlur = {this.addUnit
+                  }
                 />
                 <svg
                   opacity={this.state.isValid ? 0 : 1}
