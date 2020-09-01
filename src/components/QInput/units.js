@@ -90,6 +90,12 @@ const Time = [
     unit: "month",
     shortUnit: "mon",
     standardStepSize: 1,
+    convertUpAt: 12,
+  },
+  {
+    unit: "year",
+    shortUnit: "yr",
+    standardStepSize: 0.5,
     convertUpAt: Infinity,
   },
 ];

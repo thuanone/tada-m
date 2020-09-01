@@ -513,8 +513,7 @@ class QInput extends React.Component {
         newValue = `${newValue} ${unit}`;
       }
       this.props.onUpdate(newValue);
-    }
-    else if (this.props.onUpdate && !this.state.isValid) {
+    } else if (this.props.onUpdate && !this.state.isValid) {
       this.props.onUpdate("-");
     }
   }
@@ -546,11 +545,10 @@ class QInput extends React.Component {
                   class="bx--text-input bx--text__input"
                   type="text"
                   aria-label="Numeric input field with increment and decrement buttons"
-                  placeholder="e.g. 1 MiB"
+                  placeholder={this.props.placeholder}
                   value={this.state.value}
                   onChange={this.onChange}
-                  onBlur = {this.addUnit
-                  }
+                  onBlur={this.addUnit}
                 />
                 <svg
                   opacity={this.state.isValid ? 0 : 1}

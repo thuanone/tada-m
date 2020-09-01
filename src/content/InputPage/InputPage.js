@@ -11,7 +11,7 @@ class InputPage extends React.Component {
       RAM1: "",
       MEMORY1: "",
       CPU1: "",
-      TIME: "",
+      TIME1: "",
     };
     this.onChange = this.onChange.bind(this);
   }
@@ -27,7 +27,7 @@ class InputPage extends React.Component {
       this.setState({ CPU1: VALUE });
     }
     if (ID === "TIME") {
-      this.setState({ TIME: VALUE });
+      this.setState({ TIME1: VALUE });
     }
   }
 
@@ -47,8 +47,9 @@ class InputPage extends React.Component {
             RAM
             <QInput
               unitConfig={Memory}
-              minVal={"10 MiB"}
+              minVal={"1 MiB"}
               maxVal={"100 TiB"}
+              placeholder = "e.g. 1 MiB"
               onUpdate={this.onChange.bind(this, "RAM")}
               value={this.state.RAM1}
               defaultUnit={2}
@@ -61,6 +62,7 @@ class InputPage extends React.Component {
               unitConfig={vCPU}
               minVal={"100 m"}
               maxVal={"100 vCPU"}
+              placeholder = "e.g. 100 m"
               onUpdate={this.onChange.bind(this, "CPU")}
               value={this.state.MEMORY1}
               defaultUnit={0}
@@ -72,7 +74,8 @@ class InputPage extends React.Component {
             <QInput
               unitConfig={Time}
               minVal={"0 s"}
-              maxVal={"12 month"}
+              maxVal={"10 year"}
+              placeholder = "e.g. 1s"
               onUpdate={this.onChange.bind(this, "TIME")}
               value={this.state.TIME}
               defaultUnit={0}
@@ -95,7 +98,12 @@ class InputPage extends React.Component {
 
           <label>
             CPU
-            <Tile> {this.state.CPU1} </Tile>
+            <Tile style={{ marginBottom: "26px" }}> {this.state.CPU1} </Tile>
+          </label>
+
+          <label>
+            Time
+            <Tile> {this.state.TIME1} </Tile>
           </label>
         </div>
       </div>
