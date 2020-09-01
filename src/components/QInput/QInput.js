@@ -25,7 +25,7 @@ class QInput extends React.Component {
     this.unitMatch = this.unitMatch.bind(this);
     this.validate = this.validate.bind(this);
     this.checkMinMax = this.checkMinMax.bind(this);
-    
+
     this.addUnit = this.addUnit.bind(this);
 
     this.MemoryUtils = new MemoryUtils();
@@ -504,7 +504,7 @@ class QInput extends React.Component {
    * @param {String} value - this.state.value is passed to this function
    */
   populateToParent(value) {
-    if (this.props.onUpdate) {
+    if (this.props.onUpdate && this.state.isValid) {
       let newValue;
       let numberValue = this.getNumber(`${value}`);
       newValue =
@@ -515,7 +515,7 @@ class QInput extends React.Component {
               this.state.unitInUsePTR,
               this.props.unitConfig
             );
-      if (this.props.passValueAsNumbersOnly && newValue  !== "-") {
+      if (this.props.passValueAsNumbersOnly && newValue !== "-") {
         let unit = this.props.unitConfig[this.state.unitInUsePTR].unit;
         newValue = `${newValue} ${unit}`;
       }
@@ -523,8 +523,16 @@ class QInput extends React.Component {
     }
   }
   addUnit() {
-    if (this.state.isValid && this.state.value !== "" && !isNaN(this.state.value)) {
-      this.setState({value: `${this.state.value} ${this.props.unitConfig[this.state.unitInUsePTR].unit}`});
+    if (
+      this.state.isValid &&
+      this.state.value !== "" &&
+      !isNaN(this.state.value)
+    ) {
+      this.setState({
+        value: `${this.state.value} ${
+          this.props.unitConfig[this.state.unitInUsePTR].unit
+        }`,
+      });
     }
   }
   render() {
@@ -545,9 +553,9 @@ class QInput extends React.Component {
                   placeholder="e.g. 1 MiB"
                   value={this.state.value}
                   onChange={this.onChange}
-                  onKeyPress = {() => {
+                  onKeyPress={() => {
                     console.log("reached");
-                    let d =_.debounce(this.addUnit, 1700);
+                    let d = _.debounce(this.addUnit, 1700);
                     d();
                   }}
                 />
