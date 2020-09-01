@@ -2,7 +2,7 @@ import React from "react";
 import { Tile } from "carbon-components-react";
 
 import QInput from "../../components/QInput/QInput";
-import { Memory, vCPU } from "../../components/QInput/units";
+import { Memory, vCPU, Time } from "../../components/QInput/units";
 
 class InputPage extends React.Component {
   constructor(props) {
@@ -11,6 +11,7 @@ class InputPage extends React.Component {
       RAM1: "",
       MEMORY1: "",
       CPU1: "",
+      TIME: "",
     };
     this.onChange = this.onChange.bind(this);
   }
@@ -24,6 +25,9 @@ class InputPage extends React.Component {
     }
     if (ID === "CPU") {
       this.setState({ CPU1: VALUE });
+    }
+    if (ID === "TIME") {
+      this.setState({ TIME: VALUE });
     }
   }
 
@@ -59,6 +63,18 @@ class InputPage extends React.Component {
               maxVal={"100 vCPU"}
               onUpdate={this.onChange.bind(this, "CPU")}
               value={this.state.MEMORY1}
+              defaultUnit={0}
+            />
+          </label>
+
+          <label>
+            Time
+            <QInput
+              unitConfig={Time}
+              minVal={"0 s"}
+              maxVal={"12 month"}
+              onUpdate={this.onChange.bind(this, "TIME")}
+              value={this.state.TIME}
               defaultUnit={0}
             />
           </label>

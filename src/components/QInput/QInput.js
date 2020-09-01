@@ -418,13 +418,6 @@ class QInput extends React.Component {
         (this.state.message.match("minVal") ||
           this.state.message.match("maxVal")))
     ) {
-      //this block of code can potentially be removed
-      let nullIfNoMatch = `${this.state.value}`.match(/[a-z]+/gi); //produces null if no match
-      let unit = nullIfNoMatch
-        ? nullIfNoMatch.join() //if theres a match take unit
-        : this.props.unitConfig[unitInUsePTR].unit; //if no match get unitInUse
-      //-> diese 4 Zeilen ermöglichen Increments auf nur Zahlen
-
       let number = this.getNumber(this.state.value); //if no number returns 0
       let newNumber = { number: number, message: "" };
 
@@ -515,7 +508,7 @@ class QInput extends React.Component {
               this.state.unitInUsePTR,
               this.props.unitConfig
             );
-      if (this.props.passValueAsNumbersOnly && newValue !== "-") {
+      if (!this.props.passValueAsNumbersOnly && newValue !== "-") {
         let unit = this.props.unitConfig[0].unit;
         newValue = `${newValue} ${unit}`;
       }
@@ -660,10 +653,6 @@ class QInput extends React.Component {
 }
 QInput.propTypes = {
   /**
-   * optional starting value
-   */
-  defaultValue: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /**
    * Optional helper Text //-> to replace this.state.message
    */
   helperText: PropTypes.string,
@@ -701,8 +690,8 @@ QInput.defaultProps = {
   minVal: "1023 KiB",
   maxVal: "10 TiB",
   unitConfig: Memory,
-  passValueAsNumbersOnly: true,
-  defaultUnit: 2,
+  passValueAsNumbersOnly: false,
+  defaultUnit: 0,
 };
 
 export default QInput;
