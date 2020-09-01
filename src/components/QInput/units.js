@@ -13,7 +13,7 @@ const vCPU = [
     convertUpAt: Infinity,
   },
 ];
-const Memory = [
+const Memory_1 = [
   {
     unit: "Byte",
     shortUnit: "byte",
@@ -26,7 +26,7 @@ const Memory = [
     standardStepSize: 1,
     convertUpAt: 1024,
   },
-  
+
   {
     unit: "MiB",
     shortUnit: "Mi",
@@ -44,6 +44,39 @@ const Memory = [
     shortUnit: "Ti",
     standardStepSize: 0.1,
     convertUpAt: 1024,
+  },
+];
+const Memory_2 = [
+  {
+    unit: "Byte",
+    shortUnit: "byte",
+    standardStepSize: 1,
+    convertUpAt: 1000,
+  },
+  {
+    unit: "KB",
+    shortUnit: "Kb",
+    standardStepSize: 1,
+    convertUpAt: 1000,
+  },
+
+  {
+    unit: "MB",
+    shortUnit: "Mb",
+    standardStepSize: 1,
+    convertUpAt: 1000,
+  },
+  {
+    unit: "GB",
+    shortUnit: "Gb",
+    standardStepSize: 0.2,
+    convertUpAt: 1000,
+  },
+  {
+    unit: "TB",
+    shortUnit: "Tb",
+    standardStepSize: 0.1,
+    convertUpAt: 1000,
   },
 ];
 
@@ -65,7 +98,7 @@ const Time = [
   {
     unit: "Min",
     shortUnit: "min",
-    standardStepSize: 1, 
+    standardStepSize: 1,
     convertUpAt: 60,
   },
   {
@@ -84,7 +117,7 @@ const Time = [
     unit: "week",
     shortUnit: "w",
     standardStepSize: 1,
-    convertUpAt: 30
+    convertUpAt: 30,
   },
   {
     unit: "month",
@@ -99,4 +132,4 @@ const Time = [
     convertUpAt: Infinity,
   },
 ];
-export { vCPU, Memory, noUnit , Time};
+export { vCPU, Memory_1, Memory_2, noUnit, Time };

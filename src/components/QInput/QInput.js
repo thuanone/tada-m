@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MemoryUtils from "./memory-utils";
 import _ from "lodash";
 
-import { Memory, vCPU } from "./units";
+import { Memory_1, vCPU } from "./units";
 
 // TODO: add PropTypes
 
@@ -231,10 +231,11 @@ class QInput extends React.Component {
           unitConfig[convertedNumber.unitPTR].convertUpAt &&
         unitConfig[convertedNumber.unitPTR + 1] !== undefined
       ) {
-        convertedNumber.number = Math.round(
-          convertedNumber.number /
-            unitConfig[convertedNumber.unitPTR].convertUpAt
-        ); // round 0.00 (2 digits)
+        convertedNumber.number =
+          Math.round(
+            (convertedNumber.number * 10) /
+              unitConfig[convertedNumber.unitPTR].convertUpAt
+          ) / 10; // round 0.00 (2 digits)
         convertedNumber.unitPTR = convertedNumber.unitPTR + 1;
       }
 
@@ -687,7 +688,7 @@ QInput.propTypes = {
 QInput.defaultProps = {
   minVal: "1023 KiB",
   maxVal: "10 TiB",
-  unitConfig: Memory,
+  unitConfig: Memory_1,
   passValueAsNumbersOnly: false,
   defaultUnit: 0,
 };
