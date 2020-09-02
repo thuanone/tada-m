@@ -44,6 +44,12 @@ class QInput extends React.Component {
     this.populateToParent(this.state.value, this.props.unitConfigInUse);
   }
 
+  /**
+   * this functions takes a number and current unit pointer and converts it down to its base unit
+   * @param {Number} number - number to convert
+   * @param {Number} unitPTR - corresponding unit pointer
+   * @param {Number} unitConfig - unit object array to traverse
+   */
   convertValueToBaseUnit(number, unitPTR, unitConfig) {
     while (unitPTR > 0) {
       number = number * unitConfig[unitPTR - 1].convertUpAt;
@@ -51,6 +57,17 @@ class QInput extends React.Component {
     }
     return number;
   }
+
+  /**
+   * this function takes a number with its corresponding unit pointer and checks whether or not it is within min/maxVal borders
+   * - if so returns number and pointer as is
+   * - if not returns maxVal Value or minVal Value with their corresponding unit pointer
+   * @param {Number} number - value to check if within min max 
+   * @param {String} minVal - minVal String in form "[Number] [Unit]"
+   * @param {String} maxVal - maxVal String in form "[Number] [Unit]"
+   * @param {Number} unitPTR - corresponding unit pointer to value to be checked
+   * @param {Array} unitConfig - array of unit objects
+   */
   checkMinMax(number, minVal, maxVal, unitPTR, unitConfig) {
     let checked = {
       number: number,
@@ -211,12 +228,12 @@ class QInput extends React.Component {
 
   /**
    * this function receives a number, a corresponding unit with its pointer and an array of unit objects and returns
-   * - a number
+   * - a converted number
    * - a corresponding unit with its corresponding pointer
-   * @param {Number} number
-   * @param {Number} unitInUsePTR
-   * @param {String} unit
-   * @param {Array} unitConfig
+   * @param {Number} number - number to be converted into a new unit
+   * @param {Number} unitInUsePTR - pointer for current unit in use
+   * @param {String} unit - string of current unit
+   * @param {Array} unitConfig - array of unit objects
    */
   convert(number, unitInUsePTR, unit, unitConfig) {
     let convertedNumber = { number, unit, unitPTR: unitInUsePTR };
@@ -231,22 +248,24 @@ class QInput extends React.Component {
           unitConfig[convertedNumber.unitPTR].convertUpAt &&
         unitConfig[convertedNumber.unitPTR + 1] !== undefined
       ) {
+        console.log(convertedNumber.number);
         convertedNumber.number =
           Math.round(
             (convertedNumber.number * 10) /
               unitConfig[convertedNumber.unitPTR].convertUpAt
           ) / 10; // round 0.00 (2 digits)
+          console.log(convertedNumber.number);
         convertedNumber.unitPTR = convertedNumber.unitPTR + 1;
       }
 
-      convertedNumber.unit = unitConfig[convertedNumber.unitPTR].unit; //{unit:} is assigned to String
+      convertedNumber.unit = unitConfig[convertedNumber.unitPTR].unit;
     }
     if (number < 1 && unitConfig[unitInUsePTR - 1] !== undefined) {
       //down a unit
       convertedNumber.number =
         unitConfig[unitInUsePTR - 1].convertUpAt -
         unitConfig[unitInUsePTR - 1].standardStepSize;
-      convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit; //{unit:} is assigned to String
+      convertedNumber.unit = unitConfig[unitInUsePTR - 1].unit;
       convertedNumber.unitPTR = unitInUsePTR - 1;
     }
     convertedNumber.number = Math.round(convertedNumber.number * 10) / 10; // round 0.00 (2 digits)

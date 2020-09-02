@@ -117,7 +117,7 @@ const Time = [
     unit: "week",
     shortUnit: "w",
     standardStepSize: 1,
-    convertUpAt: 30,
+    convertUpAt: 4,
   },
   {
     unit: "month",
