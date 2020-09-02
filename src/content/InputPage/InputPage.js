@@ -56,7 +56,7 @@ class InputPage extends React.Component {
               placeholder="e.g. 1 MiB"
               onUpdate={this.onChange.bind(this, "RAM")}
               value={this.state.RAM1}
-              defaultUnit={2}
+              defaultUnit={1}
             />
           </label>
 
@@ -69,7 +69,7 @@ class InputPage extends React.Component {
               placeholder="e.g. 100 m"
               onUpdate={this.onChange.bind(this, "CPU")}
               value={this.state.MEMORY1}
-              defaultUnit={0}
+              defaultUnit={1}
             />
           </label>
 

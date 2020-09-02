@@ -4,7 +4,7 @@ import Adapter from "enzyme-adapter-react-16";
 import QInput from "../components/QInput";
 import QInputPage from "../content/QInputPage";
 import { vCPU as vCPUFromUnits } from "../components/QInput/units";
-import { Memory as MemoryFromUnits } from "../components/QInput/units";
+import { Memory_1 as MemoryFromUnits } from "../components/QInput/units";
 import { noUnit as noUnitFromUnits } from "../components/QInput/units";
 
 Enzyme.configure({ adapter: new Adapter() });
@@ -510,11 +510,11 @@ describe("functions as is", () => {
     let unitConfig, minVal, maxVal;
     beforeEach(() => {
       wrapper = shallow(
-        <QInput unitConfig={MemoryFromUnits} minVal="1 MiB" maxVal="10 TiB" />
+        <QInput unitConfig={MemoryFromUnits} minVal="1 MiB" maxVal="10 TiB" defaultUnit={2}/>
       );
       instance = wrapper.instance();
       component = mount(
-        <QInput unitConfig={MemoryFromUnits} minVal="1 MiB" maxVal="10 TiB" />
+        <QInput unitConfig={MemoryFromUnits} minVal="1 MiB" maxVal="10 TiB" defaultUnit={2}/>
       );
       unitConfig = component.props().unitConfig;
       minVal = component.props().minVal;
@@ -526,6 +526,7 @@ describe("functions as is", () => {
     describe("should be valid", () => {
       it("non string integers only", () => {
         let input = 22;
+        console.log(instance.validate(input, unitConfig, minVal, maxVal).message);
         expect(
           instance.validate(input, unitConfig, minVal, maxVal).isValid
         ).toBe(true);

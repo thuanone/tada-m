@@ -62,7 +62,7 @@ class QInput extends React.Component {
    * this function takes a number with its corresponding unit pointer and checks whether or not it is within min/maxVal borders
    * - if so returns number and pointer as is
    * - if not returns maxVal Value or minVal Value with their corresponding unit pointer
-   * @param {Number} number - value to check if within min max 
+   * @param {Number} number - value to check if within min max
    * @param {String} minVal - minVal String in form "[Number] [Unit]"
    * @param {String} maxVal - maxVal String in form "[Number] [Unit]"
    * @param {Number} unitPTR - corresponding unit pointer to value to be checked
@@ -248,13 +248,11 @@ class QInput extends React.Component {
           unitConfig[convertedNumber.unitPTR].convertUpAt &&
         unitConfig[convertedNumber.unitPTR + 1] !== undefined
       ) {
-        console.log(convertedNumber.number);
         convertedNumber.number =
           Math.round(
             (convertedNumber.number * 10) /
               unitConfig[convertedNumber.unitPTR].convertUpAt
           ) / 10; // round 0.00 (2 digits)
-          console.log(convertedNumber.number);
         convertedNumber.unitPTR = convertedNumber.unitPTR + 1;
       }
 
@@ -517,25 +515,29 @@ class QInput extends React.Component {
    * @param {String} value - this.state.value is passed to this function
    */
   populateToParent(value) {
-    if (this.props.onUpdate && this.state.isValid) {
-      let newValue;
-      let numberValue = this.getNumber(`${value}`);
-      newValue =
-        value === "" || value === "-" || value === undefined
-          ? "-"
-          : this.convertValueToBaseUnit(
-              numberValue,
-              this.state.unitInUsePTR,
-              this.props.unitConfig
-            );
-      if (!this.props.passValueAsNumbersOnly && newValue !== "-") {
-        let unit = this.props.unitConfig[0].unit;
-        newValue = `${newValue} ${unit}`;
-      }
-      this.props.onUpdate(newValue);
-    } else if (this.props.onUpdate && !this.state.isValid) {
-      this.props.onUpdate("-");
+    if (!this.props.onUpdate) {
+      return;
     }
+    if (!this.state.isValid) {
+      this.props.onUpdate("-");
+      return;
+    }
+
+    let newValue;
+    let numberValue = this.getNumber(`${value}`);
+    newValue =
+      value === "" || value === "-" || value === undefined
+        ? "-"
+        : this.convertValueToBaseUnit(
+            numberValue,
+            this.state.unitInUsePTR,
+            this.props.unitConfig
+          );
+    if (!this.props.passValueAsNumbersOnly && newValue !== "-") {
+      let unit = this.props.unitConfig[0].unit;
+      newValue = `${newValue} ${unit}`;
+    }
+    this.props.onUpdate(newValue);
   }
   addUnit() {
     if (
@@ -709,7 +711,7 @@ QInput.defaultProps = {
   maxVal: "10 TiB",
   unitConfig: Memory_1,
   passValueAsNumbersOnly: false,
-  defaultUnit: 0,
+  defaultUnit: 1,
 };
 
 export default QInput;
