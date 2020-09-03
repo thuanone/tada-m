@@ -3,7 +3,7 @@ import QInput from "../../components/QInput/QInput";
 
 import { Memory_1, vCPU } from "../../components/QInput/units";
 
-class QInputPage extends React.Component {
+class QInputPage extends React.Component <{}, { value: string }> {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,7 +13,7 @@ class QInputPage extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange(newValue) {
+  onChange(newValue: any) {
     this.setState({ value: newValue });
   }
 
@@ -33,7 +33,7 @@ class QInputPage extends React.Component {
           <QInput onUpdate={this.onChange} value={this.state.value} />
         </label>
 
-        <div class="bx--form__helper-text">Output: {this.state.value}</div>
+        <div className="bx--form__helper-text">Output: {this.state.value}</div>
       </div>
     );
   }

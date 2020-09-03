@@ -9,7 +9,7 @@ import { Memory_1, vCPU } from "./units";
 class QInput extends React.Component <{}, { value: string , unitInUsePTR: number, message: string, isValid: boolean}> {
   constructor(props) {
     super(props);
-    this.state = {
+    this.state= {
       //actively used properties
       value: props.value || "", // if no unit -> handle as bytes and calculate the best unit
       // if number -> handle as bytes and calculate the best unit
@@ -28,19 +28,19 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
     this.addUnit = this.addUnit.bind(this);
 
   }
-
   /**
    * this function makes sure that default values are fed to the parent component
    */
-  componentDidMount( value: string, unitConfig: object, minVal: string, maxVal:string){
+   componentDidMount( value: string, unitConfig: object, minVal: string, maxVal:string){
     this.validate(
       this.state.value,
       this.props.unitConfig,
       this.props.minVal,
       this.props.maxVal
     );
-    this.populateToParent(this.state.value, this.props.unitConfigInUse);
+    this.populateToParent(this.state.value);
   }
+  
 
   /**
    * this functions takes a number and current unit pointer and converts it down to its base unit
@@ -48,6 +48,7 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
    * @param {Number} unitPTR - corresponding unit pointer
    * @param {Number} unitConfig - unit object array to traverse
    */
+
   convertValueToBaseUnit(number: number, unitPTR: number, unitConfig: object) {
     while (unitPTR > 0) {
       number = number * unitConfig[unitPTR - 1].convertUpAt;

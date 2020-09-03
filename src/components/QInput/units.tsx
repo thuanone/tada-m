@@ -1,5 +1,5 @@
 ///
-const vCPU = [
+const vCPU/*: number[]*/= [
   {
     unit: "m",
     shortUnit: "m",
@@ -13,7 +13,7 @@ const vCPU = [
     convertUpAt: Infinity,
   },
 ];
-const Memory_1 = [
+const Memory_1/*: Array<number>*/ = [
   {
     unit: "Byte",
     shortUnit: "byte",

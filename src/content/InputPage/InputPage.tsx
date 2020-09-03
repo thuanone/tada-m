@@ -4,7 +4,7 @@ import { Tile } from "carbon-components-react";
 import QInput from "../../components/QInput/QInput";
 import { Memory_1, vCPU, Time, Memory_2 } from "../../components/QInput/units";
 
-class InputPage extends React.Component {
+class InputPage extends React.Component <{}, { RAM1: string , MEMORY1: string, CPU1: string, TIME1: string}>{
   constructor(props) {
     super(props);
     this.state = {
@@ -16,7 +16,7 @@ class InputPage extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange(ID, populate) {
+  onChange(ID: string, populate: object) {
     if (ID === "RAM") {
       this.setState({
         RAM1: `Value: ${populate.value} Message: ${populate.message} Valid: ${populate.valid}`,
