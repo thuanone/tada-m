@@ -10,28 +10,32 @@ class InputPage extends React.Component {
     this.state = {
       RAM1: "",
       MEMORY1: "",
-      MEMORY2: "",
       CPU1: "",
       TIME1: "",
     };
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange(ID, VALUE) {
+  onChange(ID, populate) {
     if (ID === "RAM") {
-      this.setState({ RAM1: VALUE });
+      this.setState({
+        RAM1: `Value: ${populate.value} Message: ${populate.message} Valid: ${populate.valid}`,
+      });
     }
     if (ID === "MEMORY1") {
-      this.setState({ MEMORY1: VALUE });
-    }
-    if (ID === "MEMORY2") {
-      this.setState({ MEMORY2: VALUE });
+      this.setState({
+        MEMORY1: `Value: ${populate.value} Message: ${populate.message} Valid: ${populate.valid}`,
+      });
     }
     if (ID === "CPU") {
-      this.setState({ CPU1: VALUE });
+      this.setState({
+        CPU1: `Value: ${populate.value} Message: ${populate.message} Valid: ${populate.valid}`,
+      });
     }
     if (ID === "TIME") {
-      this.setState({ TIME1: VALUE });
+      this.setState({
+        TIME1: `Value: ${populate.value} Message: ${populate.message} Valid: ${populate.valid}`,
+      });
     }
   }
 
@@ -68,7 +72,7 @@ class InputPage extends React.Component {
               maxVal={"100 vCPU"}
               placeholder="e.g. 100 m"
               onUpdate={this.onChange.bind(this, "CPU")}
-              value={this.state.MEMORY1}
+              value={this.state.CPU1}
               defaultUnit={1}
             />
           </label>
@@ -86,14 +90,14 @@ class InputPage extends React.Component {
             />
           </label>
           <label>
-            Memory 2
+            Memory
             <QInput
               unitConfig={Memory_2}
               minVal={"1 MB"}
               maxVal={"100 TB"}
               placeholder="e.g. 1 MB"
-              onUpdate={this.onChange.bind(this, "MEMORY2")}
-              value={this.state.MEMORY2}
+              onUpdate={this.onChange.bind(this, "MEMORY1")}
+              value={this.state.MEMORY1}
               defaultUnit={2}
             />
           </label>
@@ -122,7 +126,7 @@ class InputPage extends React.Component {
             <Tile style={{ marginBottom: "26px" }}> {this.state.TIME1} </Tile>
           </label>
           <label>
-            Memory 2<Tile> {this.state.MEMORY2} </Tile>
+            Memory <Tile> {this.state.MEMORY1} </Tile>
           </label>
         </div>
       </div>

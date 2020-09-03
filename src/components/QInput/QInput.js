@@ -515,17 +515,22 @@ class QInput extends React.Component {
    * @param {String} value - this.state.value is passed to this function
    */
   populateToParent(value) {
+    let populate = {
+      value: "-",
+      message: "",
+      valid: this.state.isValid,
+    };
     if (!this.props.onUpdate) {
       return;
     }
     if (!this.state.isValid) {
-      this.props.onUpdate("-");
+      populate.message = "invalid";
+      this.props.onUpdate(populate);
       return;
     }
 
-    let newValue;
     let numberValue = this.getNumber(`${value}`);
-    newValue =
+    populate.value =
       value === "" || value === "-" || value === undefined
         ? "-"
         : this.convertValueToBaseUnit(
@@ -533,11 +538,11 @@ class QInput extends React.Component {
             this.state.unitInUsePTR,
             this.props.unitConfig
           );
-    if (!this.props.passValueAsNumbersOnly && newValue !== "-") {
+    if (!this.props.passValueAsNumbersOnly && populate.value !== "-") {
       let unit = this.props.unitConfig[0].unit;
-      newValue = `${newValue} ${unit}`;
+      populate.value = `${populate.value} ${unit}`;
     }
-    this.props.onUpdate(newValue);
+    this.props.onUpdate(populate);
   }
   addUnit() {
     if (
