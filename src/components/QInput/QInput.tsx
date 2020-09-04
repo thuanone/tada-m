@@ -1,15 +1,78 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
 import { Memory_1, vCPU } from "./units";
 
-// TODO: add PropTypes
+interface IQInputProps {
+  value: string,
+  helperText: string,
+  unitConfig: Unit[],
+  minVal: string,
+  maxVal: string,
+  startingUnit: number,
+  onUpdate: () => {},
+  passValueAsNumbersOnly: boolean,
+  defaultUnit: number,
+}
 
-class QInput extends React.Component <{}, { value: string , unitInUsePTR: number, message: string, isValid: boolean}> {
+interface IQInputState {
+  value: string,
+  unitInUsePTR: number,
+  message: string,
+  isValid: boolean
+}
+
+type NumberOrString = number | string
+
+interface Unit {
+  unit: string,
+  shortUnit: string,
+  standardStepSize: number,
+  convertUpAt: number
+}
+
+class QInput extends Component<IQInputProps, IQInputState> {
+
+  static propTypes = {
+    value: PropTypes.string,
+    /**
+     * Optional helper Text //-> to replace this.state.message
+     */
+    helperText: PropTypes.string,
+    /**
+     * Array of UnitObjects
+     */
+    unitConfig: PropTypes.array,
+    /**
+     * optional: the minimal value, by default set to 0
+     */
+    minVal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    /**
+     * optional: the maximum value, by default set to undefined
+     */
+    maxVal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    /**
+     * Define at which unit to start at
+     */
+    startingUnit: PropTypes.number,
+    /**
+     * specify function to feed parent component with information
+     */
+    onUpdate: PropTypes.func,
+    /**
+     *
+     */
+    passValueAsNumbersOnly: PropTypes.bool,
+    /**
+     *
+     */
+    defaultUnit: PropTypes.number,
+  }
+
   constructor(props) {
     super(props);
-    this.state= {
+    this.state = {
       //actively used properties
       value: props.value || "", // if no unit -> handle as bytes and calculate the best unit
       // if number -> handle as bytes and calculate the best unit
@@ -19,19 +82,18 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
       message: "",
       isValid: true,
     };
+
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
     this.unitMatch = this.unitMatch.bind(this);
     this.validate = this.validate.bind(this);
     this.checkMinMax = this.checkMinMax.bind(this);
-
     this.addUnit = this.addUnit.bind(this);
-
   }
   /**
    * this function makes sure that default values are fed to the parent component
    */
-   componentDidMount( value: string, unitConfig: object, minVal: string, maxVal:string){
+  componentDidMount() {
     this.validate(
       this.state.value,
       this.props.unitConfig,
@@ -40,7 +102,7 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
     );
     this.populateToParent(this.state.value);
   }
-  
+
 
   /**
    * this functions takes a number and current unit pointer and converts it down to its base unit
@@ -49,12 +111,17 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
    * @param {Number} unitConfig - unit object array to traverse
    */
 
-  convertValueToBaseUnit(number: number, unitPTR: number, unitConfig: object) {
-    while (unitPTR > 0) {
-      number = number * unitConfig[unitPTR - 1].convertUpAt;
-      unitPTR -= 1;
+  convertValueToBaseUnit(number: number, unitPTR: NumberOrString, unitConfig: Unit[]) {
+    try {
+      while (unitPTR as number > 0) {
+        number = number * unitConfig[unitPTR as number - 1].convertUpAt;
+        (unitPTR as number) -= 1;
+      }
+      return number;
+
+    } catch (error) {
+      throw new Error(`unitPTR is not a number: ${error}`);
     }
-    return number;
   }
 
   /**
@@ -67,25 +134,28 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
    * @param {Number} unitPTR - corresponding unit pointer to value to be checked
    * @param {Array} unitConfig - array of unit objects
    */
-  checkMinMax(number: number, minVal: string, maxVal:string, unitPTR:number, unitConfig:object) {
-    let checked: object = {
-      number:  number,
+  checkMinMax(number: number, minVal: string, maxVal: string, unitPTR: any, unitConfig: Unit[]) {
+    let checked = {
+      number: number,
       message: "",
       unit: unitConfig[unitPTR].unit,
       unitPTR: unitPTR,
     };
-    let minValUnit: string = minVal.match(/[a-z]+/gi).join("");
-    let maxValUnit: string = maxVal.match(/[a-z]+/gi).join("");
-
-    let minValBase : number = this.convertValueToBaseUnit(
+    
+    const minValUnitMatch = minVal.match(/[a-z]+/gi);
+    const minValUnit = minValUnitMatch ? minValUnitMatch.join("") : '';
+    const maxValUnitMatch = maxVal.match(/[a-z]+/gi);
+    const maxValUnit = maxValUnitMatch ? maxValUnitMatch.join("") : '';
+    
+    let minValBase = this.convertValueToBaseUnit(
       this.getNumber(minVal),
       this.unitMatch(minValUnit, unitConfig),
       unitConfig
-    );
-    let maxValBase: number = this.convertValueToBaseUnit(
-      this.getNumber(maxVal),
-      this.unitMatch(maxValUnit, unitConfig),
-      unitConfig
+      );
+      let maxValBase: number = this.convertValueToBaseUnit(
+        this.getNumber(maxVal),
+        this.unitMatch(maxValUnit, unitConfig),
+        unitConfig
     );
     let inputBase: number = this.convertValueToBaseUnit(number, unitPTR, unitConfig);
     if (minValBase <= inputBase && inputBase <= maxValBase) {
@@ -117,21 +187,21 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
    * - and a message
    *
    * the passed number is either incremented, converted to a different unit or set to minVal if the number is below minval
-   * @param {Number} number - number to be incremented
+   * @param {Number} num - number to be incremented
    * @param {Number} unitInUsePTR - Pointer needed to access certain information in unitConfig
    * @param {Array} unitConfig - Array of Objects containing informtation on units
    * @param {String} minVal - string in form "NUMBER UNIT"
    * @param {String} maxVal - string in form "NUMBER UNIT"
    */
-  increment(number: number, unitInUsePTR:number, unitConfig: object, minVal: string, maxVal:string) {
-    let newNumber: object = {
-      number: number,
+  increment(num: NumberOrString, unitInUsePTR: number, unitConfig: Unit[], minVal: string, maxVal: string) {
+    let newNumber: any = {
+      num,
       message: "",
       unit: unitConfig[unitInUsePTR].unit,
       unitPTR: unitInUsePTR,
     };
 
-    if (number === "-") {
+    if (num === "-") {
       let minValUnit: string = minVal.match(/[a-z]+/gi).join(""); // extracting unit from minVal
       let unit: string = unitConfig[this.unitMatch(minValUnit, unitConfig)].unit;
       return {
@@ -142,9 +212,9 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
     }
 
     let stepsize: number = unitConfig[unitInUsePTR].standardStepSize;
-    newNumber.number = number + stepsize;
+    newNumber.number = num as number + stepsize;
 
-    let convertedNumber: objectc= this.convert(
+    let convertedNumber: any = this.convert(
       newNumber.number,
       unitInUsePTR,
       newNumber.unit,
@@ -152,7 +222,7 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
     ); //converting
 
     newNumber.unitPTR = convertedNumber.unitPTR;
-    let checked: object = this.checkMinMax(
+    let checked: any = this.checkMinMax(
       convertedNumber.number,
       minVal,
       maxVal,
@@ -181,8 +251,8 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
    * @param {String} minVal - string in form "NUMBER UNIT"
    * @param {String} maxVal - string in form "NUMBER UNIT"
    */
-  decrement(number: number, unitInUsePTR: number, unitConfig:object, minVal:string, maxVal:string) {
-    let newNumber: object = {
+  decrement(number: number, unitInUsePTR: number, unitConfig: any, minVal: string, maxVal: string) {
+    let newNumber: any = {
       number: number,
       message: "",
       unit: unitConfig[unitInUsePTR].unit,
@@ -201,7 +271,7 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
     let stepsize: number = unitConfig[unitInUsePTR].standardStepSize;
     newNumber.number = number - stepsize;
 
-    let convertedNumber: object = this.convert(
+    let convertedNumber: any = this.convert(
       newNumber.number,
       unitInUsePTR,
       newNumber.unit,
@@ -210,7 +280,7 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
 
     newNumber.unitPTR = convertedNumber.unitPTR;
 
-    let checked: object = this.checkMinMax(
+    let checked: any = this.checkMinMax(
       convertedNumber.number,
       minVal,
       maxVal,
@@ -234,8 +304,8 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
    * @param {String} unit - string of current unit
    * @param {Array} unitConfig - array of unit objects
    */
-  convert(number: number, unitInUsePTR:number, unit:string, unitConfig: object) {
-    let convertedNumber: object = { number, unit, unitPTR: unitInUsePTR };
+  convert(number: number, unitInUsePTR: number, unit: string, unitConfig: Unit[]) {
+    let convertedNumber: any = { number, unit, unitPTR: unitInUsePTR };
 
     if (
       number >= unitConfig[unitInUsePTR].convertUpAt &&
@@ -244,13 +314,13 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
       //up a unit
       while (
         convertedNumber.number >=
-          unitConfig[convertedNumber.unitPTR].convertUpAt &&
+        unitConfig[convertedNumber.unitPTR].convertUpAt &&
         unitConfig[convertedNumber.unitPTR + 1] !== undefined
       ) {
         convertedNumber.number =
           Math.round(
             (convertedNumber.number * 10) /
-              unitConfig[convertedNumber.unitPTR].convertUpAt
+            unitConfig[convertedNumber.unitPTR].convertUpAt
           ) / 10; // round 0.00 (2 digits)
         convertedNumber.unitPTR = convertedNumber.unitPTR + 1;
       }
@@ -294,10 +364,10 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
       input === ""
         ? 0 //????????
         : input === "-"
-        ? "-"
-        : numbersMatch
-        ? parseFloat(numbersMatch.join(""))
-        : "-";
+          ? "-"
+          : numbersMatch
+            ? parseFloat(numbersMatch.join(""))
+            : "-";
     return number;
   }
 
@@ -308,7 +378,7 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
    * @param {String} string
    * @param {Array} unitConfig
    */
-  unitMatch(string: string, unitConfig: object) {
+  unitMatch(string: string, unitConfig: Unit[]): NumberOrString {
     if (!string) {
       //null / undefined '', falsy
       return "notValid";
@@ -339,12 +409,12 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
    * @param {String} minVal
    * @param {String} maxVal
    */
-  validate(userInput: any, unitConfig: object, minVal: string, maxVal:string) {
+  validate(userInput: any, unitConfig: any, minVal: string, maxVal: string) {
     const anythingButNumsLetters = /[^a-zA-Z0-9\s.]/gi;
     const justLetters = /[a-z]+/gi;
     const numbersAfterUnit = /.[a-z]+.[0-9]+/gi;
 
-    let report: object = {
+    let report: any = {
       message: " ",
       isValid: true,
       unitPTR: this.props.defaultUnit,
@@ -352,10 +422,10 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
     let otherChars,
       matchNumberAfterUnit: any,
       letters: string,
-      word:string,
+      word: string,
       number: number,
       indexOfMatchedUnit: number,
-      checked:object;
+      checked: any;
 
     try {
       otherChars = `${userInput}`.match(anythingButNumsLetters);
@@ -436,7 +506,7 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
           this.state.message.match("maxVal")))
     ) {
       let number: number = this.getNumber(this.state.value); //if no number returns 0
-      let newNumber: object = { number: number, message: "" };
+      let newNumber: any = { number: number, message: "" };
 
       let minVal: string = this.props.minVal;
       let maxVal: string = this.props.maxVal;
@@ -487,7 +557,7 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
    */
   onChange(event) {
     let userInput: any = event.target.value;
-    let report: object = this.validate(
+    let report: any = this.validate(
       userInput,
       this.props.unitConfig,
       this.props.minVal,
@@ -514,7 +584,7 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
    * @param {String} value - this.state.value is passed to this function
    */
   populateToParent(value: any) {
-    let populate: object = {
+    let populate: any = {
       value: "-",
       message: "",
       valid: this.state.isValid,
@@ -533,10 +603,10 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
       value === "" || value === "-" || value === undefined
         ? "-"
         : this.convertValueToBaseUnit(
-            numberValue,
-            this.state.unitInUsePTR,
-            this.props.unitConfig
-          );
+          numberValue,
+          this.state.unitInUsePTR,
+          this.props.unitConfig
+        );
     if (!this.props.passValueAsNumbersOnly && populate.value !== "-") {
       let unit: string = this.props.unitConfig[0].unit;
       populate.value = `${populate.value} ${unit}`;
@@ -552,23 +622,23 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
       this.setState({
         value: `${this.state.value} ${
           this.props.unitConfig[this.state.unitInUsePTR].unit
-        }`,
+          }`,
       });
     }
   }
   render() {
     const NumberInput = (
       <div>
-        <label class="bx--label">QInput v1.0</label>
-        <div class="bx--form-item bx--text-input-wrapper">
-          <div class="bx--number bx--number--helpertext">
-            <div class="bx--text-input__field-outer-wrapper">
+        <label className="bx--label">QInput v1.0</label>
+        <div className="bx--form-item bx--text-input-wrapper">
+          <div className="bx--number bx--number--helpertext">
+            <div className="bx--text-input__field-outer-wrapper">
               <div
-                class="bx--text-input__field-wrapper"
+                className="bx--text-input__field-wrapper"
                 data-invalid={!this.state.isValid || null}
               >
                 <input
-                  class="bx--text-input bx--text__input"
+                  className="bx--text-input bx--text__input"
                   type="text"
                   aria-label="Numeric input field with increment and decrement buttons"
                   placeholder={this.props.placeholder}
@@ -586,7 +656,7 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
                   height="16"
                   viewBox="0 0 16 16"
                   aria-hidden="true"
-                  class="bx--number__invalid"
+                  className="bx--number__invalid"
                 >
                   <path d="M8,1C4.2,1,1,4.2,1,8s3.2,7,7,7s7-3.1,7-7S11.9,1,8,1z M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2    c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z"></path>
                   <path
@@ -595,9 +665,9 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
                     opacity="0"
                   ></path>
                 </svg>
-                <div class="bx--number__controls">
+                <div className="bx--number__controls">
                   <button
-                    class="bx--number__control-btn up-icon"
+                    className="bx--number__control-btn up-icon"
                     type="button"
                     title="Increment number"
                     aria-label="Increment number"
@@ -622,13 +692,13 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
                       height="4"
                       viewBox="0 0 8 4"
                       aria-hidden="true"
-                      class="up-icon"
+                      className="up-icon"
                     >
                       <path d="M0 4l4-4 4 4z"></path>
                     </svg>
                   </button>
                   <button
-                    class="bx--number__control-btn down-icon"
+                    className="bx--number__control-btn down-icon"
                     type="button"
                     title="Decrement number"
                     aria-label="Decrement number"
@@ -653,7 +723,7 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
                       height="4"
                       viewBox="0 0 8 4"
                       aria-hidden="true"
-                      class="down-icon"
+                      className="down-icon"
                     >
                       <path d="M8 0L4 4 0 0z"></path>
                     </svg>
@@ -663,11 +733,11 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
             </div>
           </div>
         </div>
-        <div class="bx--form__helper-text">
+        <div className="bx--form__helper-text">
           Active Unit: {this.props.unitConfig[this.state.unitInUsePTR].unit}
         </div>
 
-        <div class="bx--form__helper-text" style={{ color: "#da1e28" }}>
+        <div className="bx--form__helper-text" style={{ color: "#da1e28" }}>
           {this.state.message}
         </div>
       </div>
@@ -675,40 +745,6 @@ class QInput extends React.Component <{}, { value: string , unitInUsePTR: number
     return NumberInput;
   }
 }
-QInput.propTypes = {
-  /**
-   * Optional helper Text //-> to replace this.state.message
-   */
-  helperText: PropTypes.string,
-  /**
-   * Array of UnitObjects
-   */
-  units: PropTypes.array,
-  /**
-   * optional: the minimal value, by default set to 0
-   */
-  minVal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /**
-   * optional: the maximum value, by default set to undefined
-   */
-  maxVal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  /**
-   * Define at which unit to start at
-   */
-  startingUnit: PropTypes.number,
-  /**
-   * specify function to feed parent component with information
-   */
-  onUpdate: PropTypes.func,
-  /**
-   *
-   */
-  passValueAsNumbersOnly: PropTypes.bool,
-  /**
-   *
-   */
-  defaultUnit: PropTypes.number,
-};
 
 QInput.defaultProps = {
   minVal: "1023 KiB",
