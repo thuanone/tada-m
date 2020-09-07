@@ -489,19 +489,19 @@ describe("functions as is", () => {
       let unit = unitConfig[0].shortUnit;
       expect(instance.unitMatch(unit, unitConfig)).toBe(0);
     });
-    it(`"" => notValid => notValid`, () => {
+    it(`"" => -1 => -1`, () => {
       let unit = "";
-      expect(instance.unitMatch(unit, unitConfig)).toBe("notValid");
+      expect(instance.unitMatch(unit, unitConfig)).toBe(-1);
     });
-    it("1st unit + additional Characters => notValid", () => {});
+    it("1st unit + additional Characters => -1", () => {});
     describe("misc", () => {
-      it("null => notValid", () => {
+      it("null => -1", () => {
         let unit = null;
-        expect(instance.unitMatch(unit, unitConfig)).toBe("notValid");
+        expect(instance.unitMatch(unit, unitConfig)).toBe(-1);
       });
-      it("undefined => notValid", () => {
+      it("undefined => -1", () => {
         let unit = undefined;
-        expect(instance.unitMatch(unit, unitConfig)).toBe("notValid");
+        expect(instance.unitMatch(unit, unitConfig)).toBe(-1);
       });
     });
   });

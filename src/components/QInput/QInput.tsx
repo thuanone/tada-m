@@ -771,7 +771,6 @@ class QInput extends Component<IQInputProps, IQInputState> {
           </div>
         </div>
         <div className="bx--form__helper-text"></div>
-
         <div className="bx--form__helper-text" style={{ color: "#da1e28" }}>
           {this.state.message}
         </div>
