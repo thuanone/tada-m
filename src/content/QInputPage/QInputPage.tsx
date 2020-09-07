@@ -5,7 +5,7 @@ import { Memory_1 } from "../../components/QInput/units";
 
 type NumberOrString = number | string
 
-interface onPopulate{
+interface onPopulate {
   value: NumberOrString,
   message: string,
   valid: boolean,

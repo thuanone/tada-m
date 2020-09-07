@@ -6,7 +6,7 @@ import { Memory_1, vCPU, Time, Memory_2 } from "../../components/QInput/units";
 
 type NumberOrString = number | string
 
-interface onPopulate{
+interface onPopulate {
   value: NumberOrString,
   message: string,
   valid: boolean,

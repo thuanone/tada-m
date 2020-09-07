@@ -31,7 +31,7 @@ interface Unit {
   convertUpAt: number
 }
 
-interface onPopulate{
+interface onPopulate {
   value: NumberOrString,
   message: string,
   valid: boolean,
