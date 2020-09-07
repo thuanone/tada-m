@@ -81,7 +81,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
     defaultUnit: 1,
     placeholder: "e.g. 1 MiB",
   };
-  
+
   constructor(props) {
     super(props);
     this.state = {
