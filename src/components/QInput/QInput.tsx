@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import _ from "lodash";
 
-import { Memory_1, vCPU } from "./units";
+import { Memory_1 } from "./units";
 
 interface IQInputProps {
   value?: NumberOrString,

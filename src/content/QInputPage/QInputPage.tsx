@@ -1,7 +1,7 @@
 import React from "react";
 import QInput from "../../components/QInput/QInput";
 
-import { Memory_1, vCPU } from "../../components/QInput/units";
+import { Memory_1 } from "../../components/QInput/units";
 
 type NumberOrString = number | string
 
