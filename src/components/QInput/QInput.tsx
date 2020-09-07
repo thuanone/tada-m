@@ -5,15 +5,13 @@ import _ from "lodash";
 import { Memory_1, vCPU } from "./units";
 
 interface IQInputProps {
-  value: number,
-  helperText: string,
+  value?: NumberOrString,
   unitConfig: Unit[],
   minVal: string,
   maxVal: string,
-  placeholder: string,
-  startingUnit: number,
-  onUpdate: (populate) => {},
-  passValueAsNumbersOnly: boolean,
+  placeholder?: string,
+  onUpdate?: (populate: onPopulate) => void,
+  passValueAsNumbersOnly?: boolean,
   defaultUnit: number,
 }
 
@@ -33,13 +31,27 @@ interface Unit {
   convertUpAt: number
 }
 
+interface onPopulate{
+  value: NumberOrString,
+  message: string,
+  valid: boolean,
+}
+
 class QInput extends Component<IQInputProps, IQInputState> {
 
   static propTypes = {
+    defaultProps: {
+      minVal: "1023 KiB",
+      maxVal: "10 TiB",
+      unitConfig: Memory_1,
+      passValueAsNumbersOnly: false,
+      defaultUnit: 1,
+      placeholder: "e.g. 1 MiB",
+    },
     value: PropTypes.string,
     /**
      * Optional helper Text //-> to replace this.state.message
-     */
+     *
     helperText: PropTypes.string,
     /**
      * Array of UnitObjects
@@ -55,7 +67,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
     maxVal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     /**
      * Define at which unit to start at
-     */
+     *
     startingUnit: PropTypes.number,
     /**
      * specify function to feed parent component with information
@@ -586,7 +598,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
    * @param {String} value - this.state.value is passed to this function
    */
   populateToParent(value: any) {
-    let populate: any = {
+    let populate: onPopulate = {
       value: "-",
       message: "",
       valid: this.state.isValid,
@@ -709,7 +721,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
                       this.onClick(
                         "Decrement",
                         this.state.unitInUsePTR,
-                        this.props
+                        this.props.unitConfig
                       )
                     }
                   >
@@ -744,13 +756,15 @@ class QInput extends Component<IQInputProps, IQInputState> {
     return NumberInput;
   }
 }
-
+/*
 QInput.defaultProps = {
   minVal: "1023 KiB",
   maxVal: "10 TiB",
   unitConfig: Memory_1,
   passValueAsNumbersOnly: false,
   defaultUnit: 1,
+  placeholder:"e.g. 1 MiB",
 };
+*/
 
 export default QInput;

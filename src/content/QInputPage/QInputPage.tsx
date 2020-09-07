@@ -3,18 +3,26 @@ import QInput from "../../components/QInput/QInput";
 
 import { Memory_1, vCPU } from "../../components/QInput/units";
 
-class QInputPage extends React.Component <{}, { value: string }> {
+type NumberOrString = number | string
+
+interface onPopulate{
+  value: NumberOrString,
+  message: string,
+  valid: boolean,
+}
+
+class QInputPage extends React.Component<{}, { RAM1: string }> {
   constructor(props) {
     super(props);
     this.state = {
-      value: "",
+      RAM1: "",
     };
 
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange(newValue: any) {
-    this.setState({ value: newValue });
+  onChange(populate: onPopulate) {
+    this.setState({ RAM1: `Value: ${populate.value} Message: ${populate.message} Valid: ${populate.valid}` });
   }
 
   render() {
@@ -30,10 +38,17 @@ class QInputPage extends React.Component <{}, { value: string }> {
         <h1 style={{ fontSize: "70px", marginBottom: "20px" }}>QInput</h1>
 
         <label>
-          <QInput onUpdate={this.onChange} value={this.state.value} />
+          <QInput unitConfig={Memory_1}
+            minVal={"1 MiB"}
+            maxVal={"100 TiB"}
+            placeholder="e.g. 1 MiB"
+            onUpdate={this.onChange}
+            value={this.state.RAM1}
+            defaultUnit={2}
+          />
         </label>
 
-        <div className="bx--form__helper-text">Output: {this.state.value}</div>
+        <div className="bx--form__helper-text">Output: {this.state.RAM1}</div>
       </div>
     );
   }
