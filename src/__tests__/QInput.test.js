@@ -126,7 +126,7 @@ describe("functions as is", () => {
             minVal,
             maxVal,
             unitConfigInUse
-          ).number
+          ).num
         ).toBe(minValValue + stepSize);
       });
       it(`"-" => minVal`, () => {
@@ -139,7 +139,7 @@ describe("functions as is", () => {
             minVal,
             maxVal,
             unitConfigInUse
-          ).number
+          ).num
         ).toBe(minValValue);
       });
       it(`"0"+ => 1 MiB`, () => {
@@ -152,7 +152,7 @@ describe("functions as is", () => {
             minVal,
             maxVal,
             unitConfigInUse
-          ).number
+          ).num
         ).toBe(0 + stepSize);
       });
       it(`"0"++ => 2 MiB`, () => {
@@ -164,7 +164,7 @@ describe("functions as is", () => {
           minVal,
           maxVal,
           unitConfigInUse
-        ).number;
+        ).num;
         expect(
           instance.increment(
             onceIncremented,
@@ -173,7 +173,7 @@ describe("functions as is", () => {
             minVal,
             maxVal,
             unitConfigInUse
-          ).number
+          ).num
         ).toBe(stepSize + stepSize);
       });
       it(`stops at maxVal`, () => {
@@ -190,7 +190,7 @@ describe("functions as is", () => {
             maxVal,
             unitConfigInUse
           );
-          number = newNumber.number;
+          number = newNumber.num;
           unitInUsePTR = newNumber.unitPTR;
         }
         expect(number).toBe(instance.getNumber(maxVal));
@@ -206,7 +206,7 @@ describe("functions as is", () => {
               minVal,
               maxVal,
               unitConfigInUse
-            ).number
+            ).num
           ).toBe(minValValue);
         });
         it(`undefined => minVal`, () => {
@@ -219,7 +219,7 @@ describe("functions as is", () => {
               minVal,
               maxVal,
               unitConfigInUse
-            ).number
+            ).num
           ).toBe(minValValue);
         });
         it(`NaN => minVal`, () => {
@@ -232,7 +232,7 @@ describe("functions as is", () => {
               minVal,
               maxVal,
               unitConfigInUse
-            ).number
+            ).num
           ).toBe(minValValue);
         });
       });
@@ -248,7 +248,7 @@ describe("functions as is", () => {
             minVal,
             maxVal,
             unitConfigInUse
-          ).number
+          ).num
         ).toBe(minValValue);
       });
       it(`"-" => minVal`, () => {
@@ -261,7 +261,7 @@ describe("functions as is", () => {
             minVal,
             maxVal,
             unitConfigInUse
-          ).number
+          ).num
         ).toBe(minValValue);
       });
       it(`"0"- => minVal`, () => {
@@ -274,7 +274,7 @@ describe("functions as is", () => {
             minVal,
             maxVal,
             unitConfigInUse
-          ).number
+          ).num
         ).toBe(minValValue);
       });
       it(`"1"- => 0 MiB`, () => {
@@ -287,7 +287,7 @@ describe("functions as is", () => {
             minVal,
             maxVal,
             unitConfigInUse
-          ).number
+          ).num
         ).toBe(1 - stepSize);
       });
       it(`"2"-- => 0 MiB`, () => {
@@ -299,7 +299,7 @@ describe("functions as is", () => {
           minVal,
           maxVal,
           unitConfigInUse
-        ).number;
+        ).num;
         expect(
           instance.decrement(
             onceDecremented,
@@ -308,7 +308,7 @@ describe("functions as is", () => {
             minVal,
             maxVal,
             unitConfigInUse
-          ).number
+          ).num
         ).toBe(2 - stepSize - stepSize);
       });
       it(`stops at minVal`, () => {
@@ -325,7 +325,7 @@ describe("functions as is", () => {
             maxVal,
             unitConfigInUse
           );
-          number = newNumber.number;
+          number = newNumber.num;
           unitInUsePTR = newNumber.unitPTR;
         }
         expect(number).toBe(instance.getNumber(minVal));
@@ -341,7 +341,7 @@ describe("functions as is", () => {
               minVal,
               maxVal,
               unitConfigInUse
-            ).number
+            ).num
           ).toBe(minVal);
         });
         it(`undefined => minVal`, () => {
@@ -354,7 +354,7 @@ describe("functions as is", () => {
               minVal,
               maxVal,
               unitConfigInUse
-            ).number
+            ).num
           ).toBe(minVal);
         });
         it(`NaN => minVal`, () => {
@@ -367,7 +367,7 @@ describe("functions as is", () => {
               minVal,
               maxVal,
               unitConfigInUse
-            ).number
+            ).num
           ).toBe(minVal);
         });
       });
@@ -393,7 +393,7 @@ describe("functions as is", () => {
       unit = unitConfig[unitInUsePTR].unit;
       number = unitConfig[unitInUsePTR].convertUpAt;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
-        number: 1,
+        num: 1,
         unit: unitConfig[unitInUsePTR + 1].unit,
         unitPTR: unitInUsePTR + 1,
       });
@@ -403,7 +403,7 @@ describe("functions as is", () => {
       unit = unitConfig[unitInUsePTR].unit;
       number = unitConfig[unitInUsePTR].convertUpAt;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
-        number: 1,
+        num: 1,
         unit: unitConfig[unitInUsePTR + 1].unit,
         unitPTR: unitInUsePTR + 1,
       });
@@ -413,7 +413,7 @@ describe("functions as is", () => {
       unit = unitConfig[unitInUsePTR].unit;
       number = 1 - unitConfig[unitInUsePTR].standardStepSize;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
-        number:
+        num:
           unitConfig[unitInUsePTR - 1].convertUpAt -
           unitConfig[unitInUsePTR - 1].standardStepSize,
         unit: unitConfig[unitInUsePTR - 1].unit,
@@ -425,7 +425,7 @@ describe("functions as is", () => {
       unit = unitConfig[unitInUsePTR].unit;
       number = 1 - unitConfig[unitInUsePTR].standardStepSize;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
-        number:
+        num:
           unitConfig[unitInUsePTR - 1].convertUpAt -
           unitConfig[unitInUsePTR - 1].standardStepSize,
         unit: unitConfig[unitInUsePTR - 1].unit,
@@ -437,7 +437,7 @@ describe("functions as is", () => {
       unit = unitConfig[unitInUsePTR].unit;
       number = unitConfig[unitInUsePTR].convertUpAt;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
-        number: number,
+        num: number,
         unit: unit,
         unitPTR: unitInUsePTR,
       });
@@ -447,7 +447,7 @@ describe("functions as is", () => {
       unit = unitConfig[unitInUsePTR].unit;
       number = 1 - unitConfig[unitInUsePTR].standardStepSize;
       expect(instance.convert(number, unitInUsePTR, unit, unitConfig)).toEqual({
-        number: number,
+        num: number,
         unit: unit,
         unitPTR: unitInUsePTR,
       });
@@ -726,7 +726,7 @@ describe("functions as is", () => {
       let unitInUsePTR = minValUnitPTR-1;
       expect(
         instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
-          .number
+          .num
       ).toBe(minValValue);
       expect(
         instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
@@ -742,7 +742,7 @@ describe("functions as is", () => {
       let unitInUsePTR = maxValUnitPTR;
       expect(
         instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
-          .number
+          .num
       ).toBe(maxValValue);
       expect(
         instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
@@ -758,7 +758,7 @@ describe("functions as is", () => {
       let unitInUsePTR = minValUnitPTR;
       expect(
         instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
-          .number
+          .num
       ).toBe(number);
       expect(
         instance.checkMinMax(number, minVal, maxVal, unitInUsePTR, unitConfig)
