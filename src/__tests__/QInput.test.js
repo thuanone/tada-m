@@ -66,11 +66,14 @@ describe("functions as is", () => {
       it(`"-1.23 asdf => -1.23`, () => {
         expect(instance.getNumber("-1.23 asdf")).toBe(-1.23);
       });
-    });
-    describe("misc", () => {
       it(`"-" => - `, () => {
         expect(instance.getNumber("-")).toBe("-");
       });
+      it(`"" => 0 `, () => {
+        expect(instance.getNumber("")).toBe(0);
+      });
+    });
+    describe("misc", () => {
       it(`"." => NaN `, () => {
         expect(instance.getNumber(".")).toBe(NaN);
       });
@@ -82,10 +85,7 @@ describe("functions as is", () => {
       });
       it(`undefined => NaN `, () => {
         expect(instance.getNumber(null)).toBe(NaN);
-      });
-      it(`"" => - `, () => {
-        expect(instance.getNumber("")).toBe("-");
-      });
+      });  
     });
   });
   describe("incr/decr", () => {

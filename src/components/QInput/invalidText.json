@@ -1,0 +1,9 @@
+{
+    "nullUndefError": "null/undefined has been passed into the function",
+    "inValidCharsUsed" : "invalid Characters used:",
+    "wrongFormat" : "please type in value in [Number] [Unit] Format",
+    "noNumber": "does not contain a valid number",
+    "notUnit": "is not a valid unit",
+    "valueBelowMinVal": "is below minimum possible value",
+    "valueAboceMaxVal": "is above maximum possible value" 
+}
