@@ -879,13 +879,11 @@ describe("user interaction mock, indirect test", () => {
         let currBase = instance.convertValueToBaseUnit(instance.getNumber(curr), component.state().unitInUsePTR, component.props().unitConfig);
         let newVal;
         decr.simulate("mousedown");
-
         newVal = shallow(<QInput />)
           .instance()
           .getNumber(component.state().value);
 
         let newValBase = instance.convertValueToBaseUnit(instance.getNumber(newVal), component.state().unitInUsePTR, component.props().unitConfig);
-        
         expect(newValBase).toBeLessThan(currBase);
       });
       it("changes input", () => {

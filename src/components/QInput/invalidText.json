@@ -5,5 +5,5 @@
     "noNumber": "does not contain a valid number",
     "notUnit": "is not a valid unit",
     "valueBelowMinVal": "is below minimum possible value",
-    "valueAboceMaxVal": "is above maximum possible value" 
+    "valueAboveMaxVal": "is above maximum possible value" 
 }

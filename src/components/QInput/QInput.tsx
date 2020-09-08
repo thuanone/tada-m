@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { Memory_1 } from "./units";
+import invaltxt from "./invalidText.json";
 
 interface IQInputProps {
   value?: NumberOrString;
@@ -396,7 +397,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
         : parseFloat(numbersMatch.join("")); //if numbersMatch is a number return that number
     if (isNaN(num) && num !== "-") {
       throw new Error(
-        `${input} passed into function is neither number or "-", ${num}`
+        `${input} passed into function is neither number or "-"`
       );
     }
     return num;
@@ -471,7 +472,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
 
       num = this.getNumber(userInput);
     } catch {
-      report.message = "undefined / null passed into validate()";
+      report.message = invaltxt.nullUndefError;
       report.isValid = false;
       return report;
     }
@@ -480,17 +481,17 @@ class QInput extends Component<IQInputProps, IQInputState> {
       return report;
     }
     if (otherChars) {
-      report.message = `invalid Character used: '${otherChars}'`;
+      report.message = `${invaltxt.inValidCharsUsed} '${otherChars}'`;
       report.isValid = false;
       return report;
     }
     if (matchNumberAfterUnit) {
-      report.message = "please input in this format : [Number] [Unit]";
+      report.message = `${invaltxt.wrongFormat}`;
       report.isValid = false;
       return report;
     }
     if (isNaN(num)) {
-      report.message = `${userInput} does not contain a valid number`;
+      report.message = `${userInput} ${invaltxt.noNumber}`;
       report.isValid = false;
       return report;
     }
@@ -498,7 +499,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
     indexOfMatchedUnit = this.unitMatch(word, unitConfig);
 
     if (indexOfMatchedUnit === -1 && word !== "") {
-      report.message = `${word} is not a valid unit`;
+      report.message = `${word} ${invaltxt.notUnit}`;
       report.isValid = false;
       return report;
     }
@@ -521,8 +522,8 @@ class QInput extends Component<IQInputProps, IQInputState> {
     }
     report.message =
       checked.message === "minVal reached"
-        ? `${userInput} is below minVal`
-        : `${userInput} is above maxVal`;
+        ? `${userInput} ${invaltxt.valueBelowMinVal}`
+        : `${userInput} ${invaltxt.valueAboveMaxVal}`;
     report.isValid = false;
     return report;
   }
