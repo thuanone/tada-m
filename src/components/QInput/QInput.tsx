@@ -395,7 +395,9 @@ class QInput extends Component<IQInputProps, IQInputState> {
         ? "-"
         : parseFloat(numbersMatch.join("")); //if numbersMatch is a number return that number
     if (isNaN(num) && num !== "-") {
-      throw new Error(`${input} passed into function is neither number or "-", ${num}`);
+      throw new Error(
+        `${input} passed into function is neither number or "-", ${num}`
+      );
     }
     return num;
   }
@@ -492,18 +494,21 @@ class QInput extends Component<IQInputProps, IQInputState> {
       report.isValid = false;
       return report;
     }
+
     indexOfMatchedUnit = this.unitMatch(word, unitConfig);
+
     if (indexOfMatchedUnit === -1 && word !== "") {
       report.message = `${word} is not a valid unit`;
       report.isValid = false;
       return report;
-    } else if (word === "") {
+    }
+    if (word === "") {
       report.isValid = true;
       word = unitConfig[this.props.defaultUnit].unit; // neccessary for checkMinMax
-    } else {
-      report.message = `recognized unit: ${word}`;
-      report.unitPTR = indexOfMatchedUnit;
     }
+
+    report.message = `recognized unit: ${word}`;
+    report.unitPTR = indexOfMatchedUnit;
     checked = this.checkMinMax(
       num,
       minVal,
@@ -513,14 +518,13 @@ class QInput extends Component<IQInputProps, IQInputState> {
     );
     if (checked.message === "") {
       return report;
-    } else {
-      report.message =
-        checked.message === "minVal reached"
-          ? `${userInput} is below minVal`
-          : `${userInput} is above maxVal`;
-      report.isValid = false;
-      return report;
     }
+    report.message =
+      checked.message === "minVal reached"
+        ? `${userInput} is below minVal`
+        : `${userInput} is above maxVal`;
+    report.isValid = false;
+    return report;
   }
 
   /**
