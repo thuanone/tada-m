@@ -650,6 +650,9 @@ class QInput extends Component<IQInputProps, IQInputState> {
     }
     this.props.onUpdate(populate);
   }
+  /**
+   * this functions adds the default unit after a string only containg numbers
+   */
   addUnit() {
     if (
       this.state.isValid &&
