@@ -396,9 +396,12 @@ class QInput extends Component<IQInputProps, IQInputState> {
         ? "-"
         : parseFloat(numbersMatch.join("")); //if numbersMatch is a number return that number
     if (isNaN(num) && num !== "-") {
+      return NaN;
+      /*
       throw new Error(
         `${input} passed into function is neither number or "-"`
       );
+      */
     }
     return num;
   }
@@ -466,10 +469,9 @@ class QInput extends Component<IQInputProps, IQInputState> {
     try {
       otherChars = `${userInput}`.match(anythingButNumsLetters);
       matchNumberAfterUnit = `${userInput}`.match(numbersAfterUnit);
-
       wordMatch = `${userInput}`.match(stringRX);
+      
       word = wordMatch ? wordMatch.join("") : "";
-
       num = this.getNumber(userInput);
     } catch {
       report.message = invaltxt.nullUndefError;
