@@ -507,9 +507,10 @@ class QInput extends Component<IQInputProps, IQInputState> {
     }
     if (word === "") {
       report.isValid = true;
+      indexOfMatchedUnit = this.props.defaultUnit;
       word = unitConfig[this.props.defaultUnit].unit; // neccessary for checkMinMax
     }
-
+    console.log(indexOfMatchedUnit);
     report.message = `recognized unit: ${word}`;
     report.unitPTR = indexOfMatchedUnit;
     checked = this.checkMinMax(
