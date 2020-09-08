@@ -45,8 +45,8 @@ describe("functions as is", () => {
       });
     });
     describe("strings (+ numbers)", () => {
-      it(`"asdf => NaN`, () => {
-        expect(instance.getNumber("asdf")).toBe(NaN);
+      it(`"asdf => throw Error`, () => {
+        expect(() => {instance.getNumber("asdf");}).toThrow(Error);
       });
       it(`"123 asdf" => 123`, () => {
         expect(instance.getNumber("123 asdf")).toBe(123);
@@ -57,8 +57,10 @@ describe("functions as is", () => {
       it(`"-123 asdf 123 => -123123`, () => {
         expect(instance.getNumber("-123 asdf 123")).toBe(-123123);
       });
-      it(`"123 asdf -123 => ????`, () => {
-        expect(instance.getNumber("123 asdf -123")).toBe(123123);
+      it(`"123 asdf -123 => 123`, () => {
+        let num = instance.getNumber("123 asdf -123");
+        console.log(num);
+        expect(instance.getNumber("123 asdf -123")).toBe(123);
       });
       it(`"-12.3 asdf 123 => -12.3123`, () => {
         expect(instance.getNumber("-12.3 asdf 123")).toBe(-12.3123);
@@ -74,17 +76,17 @@ describe("functions as is", () => {
       });
     });
     describe("misc", () => {
-      it(`"." => NaN `, () => {
-        expect(instance.getNumber(".")).toBe(NaN);
+      it(`"." => throw Error `, () => {
+        expect(() => {instance.getNumber(".");}).toThrow(Error);
       });
-      it(`"//%?" => NaN `, () => {
-        expect(instance.getNumber("//%?")).toBe(NaN);
+      it(`"//%?" => throw Error `, () => {
+        expect(() => {instance.getNumber("//%?");}).toThrow(Error);
       });
-      it(`null => NaN `, () => {
-        expect(instance.getNumber(null)).toBe(NaN);
+      it(`null => throw Error `, () => {
+        expect(() => {instance.getNumber(null);}).toThrow(Error);
       });
-      it(`undefined => NaN `, () => {
-        expect(instance.getNumber(null)).toBe(NaN);
+      it(`undefined => throw Error `, () => {
+        expect(() => {instance.getNumber(null);}).toThrow(Error);
       });  
     });
   });
@@ -818,7 +820,10 @@ describe("mock user interaction", () => {});
 describe("user interaction mock, indirect test", () => {
   describe("JSX Tag as is", () => {
     let component, incr, decr, inputField;
+    let wrapper, instance;
     beforeEach(() => {
+      wrapper = shallow(<QInput/>);
+      instance = wrapper.instance();
       component = mount(<QInput />);
       expect(component.props()).toBeDefined();
       incr = component.find("button#incrementButton");
@@ -871,13 +876,17 @@ describe("user interaction mock, indirect test", () => {
         const curr = shallow(<QInput />)
           .instance()
           .getNumber(component.state().value);
+        let currBase = instance.convertValueToBaseUnit(instance.getNumber(curr), component.state().unitInUsePTR, component.props().unitConfig);
         let newVal;
         decr.simulate("mousedown");
 
         newVal = shallow(<QInput />)
           .instance()
           .getNumber(component.state().value);
-        expect(newVal).toBeLessThan(curr);
+
+        let newValBase = instance.convertValueToBaseUnit(instance.getNumber(newVal), component.state().unitInUsePTR, component.props().unitConfig);
+        
+        expect(newValBase).toBeLessThan(currBase);
       });
       it("changes input", () => {
         const curr = component.state().value;

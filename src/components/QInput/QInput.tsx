@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
-import { Memory_1 } from './units';
+import { Memory_1 } from "./units";
 
 interface IQInputProps {
   value?: NumberOrString;
@@ -74,24 +74,24 @@ class QInput extends Component<IQInputProps, IQInputState> {
   };
 
   static defaultProps = {
-    minVal: '1023 KiB',
-    maxVal: '10 TiB',
+    minVal: "1023 KiB",
+    maxVal: "10 TiB",
     unitConfig: Memory_1,
     passValueAsNumbersOnly: false,
     defaultUnit: 1,
-    placeholder: 'e.g. 1 MiB',
+    placeholder: "e.g. 1 MiB",
   };
 
   constructor(props) {
     super(props);
     this.state = {
       //actively used properties
-      value: props.value || '', // if no unit -> handle as bytes and calculate the best unit
+      value: props.value || "", // if no unit -> handle as bytes and calculate the best unit
       // if number -> handle as bytes and calculate the best unit
       // if string incl unit -> handle as-is
       // if undefined -> print '-'
       unitInUsePTR: props.defaultUnit || 0, // change this to this.unitMatch(minVal.match(/[a-z]+/gi).join(''), this.props) (doesnt work yet)
-      message: '',
+      message: "",
       isValid: true,
     };
 
@@ -157,15 +157,15 @@ class QInput extends Component<IQInputProps, IQInputState> {
   ) {
     let checked = {
       num: num,
-      message: '',
+      message: "",
       unit: unitConfig[unitPTR].unit,
       unitPTR: unitPTR,
     };
 
     const minValUnitMatch = minVal.match(/[a-z]+/gi);
-    const minValUnit = minValUnitMatch ? minValUnitMatch.join('') : '';
+    const minValUnit = minValUnitMatch ? minValUnitMatch.join("") : "";
     const maxValUnitMatch = maxVal.match(/[a-z]+/gi);
-    const maxValUnit = maxValUnitMatch ? maxValUnitMatch.join('') : '';
+    const maxValUnit = maxValUnitMatch ? maxValUnitMatch.join("") : "";
 
     let minValBase: number = this.convertValueToBaseUnit(
       this.getNumber(minVal),
@@ -188,7 +188,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
 
     if (inputBase < minValBase) {
       checked.num = this.getNumber(minVal);
-      checked.message = 'minVal reached';
+      checked.message = "minVal reached";
       checked.unitPTR = this.unitMatch(minValUnit, unitConfig);
       checked.unit = unitConfig[checked.unitPTR].unit;
       return checked;
@@ -196,7 +196,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
 
     if (inputBase > maxValBase) {
       checked.num = this.getNumber(maxVal);
-      checked.message = 'maxVal reached';
+      checked.message = "maxVal reached";
       checked.unitPTR = this.unitMatch(maxValUnit, unitConfig);
       checked.unit = unitConfig[checked.unitPTR].unit;
       return checked;
@@ -226,14 +226,14 @@ class QInput extends Component<IQInputProps, IQInputState> {
   ) {
     let newNumber: any = {
       num,
-      message: '',
+      message: "",
       unit: unitConfig[unitInUsePTR].unit,
       unitPTR: unitInUsePTR,
     };
 
-    if (num === '-') {
+    if (num === "-") {
       const minValUnitMatch = minVal.match(/[a-z]+/gi);
-      const minValUnit = minValUnitMatch ? minValUnitMatch.join('') : '';
+      const minValUnit = minValUnitMatch ? minValUnitMatch.join("") : "";
       let unit: string =
         unitConfig[this.unitMatch(minValUnit, unitConfig)].unit;
       return {
@@ -292,13 +292,13 @@ class QInput extends Component<IQInputProps, IQInputState> {
   ) {
     let newNumber: any = {
       num: num,
-      message: '',
+      message: "",
       unit: unitConfig[unitInUsePTR].unit,
       unitPTR: unitInUsePTR,
     };
-    if (num === '-') {
+    if (num === "-") {
       const minValUnitMatch = minVal.match(/[a-z]+/gi);
-      const minValUnit = minValUnitMatch ? minValUnitMatch.join('') : '';
+      const minValUnit = minValUnitMatch ? minValUnitMatch.join("") : "";
       let unit: string =
         unitConfig[this.unitMatch(minValUnit, unitConfig)].unit;
       return {
@@ -387,23 +387,16 @@ class QInput extends Component<IQInputProps, IQInputState> {
     const numbersOnly = /-?[0-9]|\.?/gm;
     let numbersMatch;
     let num;
-
-    try {
-      numbersMatch = `${input}`.match(numbersOnly);
-    } catch (error) {
-      input = '-';
-      this.setState({
-        message: `undefined/null has been passed into get Number -> input turned to '-'`,
-      });
-    }//try catch block for catching null/undefined values passed into getNumber()
+    numbersMatch = `${input}`.match(numbersOnly);
     num =
-      input === ''
+      input === ""
         ? 0 //minVal would be best I guess?
-        : input === '-'
-        ? '-'
-        : !isNaN(numbersMatch.join(''))
-        ? parseFloat(numbersMatch.join(''))//if numbersMatch is a number return that number
-        : NaN; //else return undefined
+        : input === "-"
+        ? "-"
+        : parseFloat(numbersMatch.join("")); //if numbersMatch is a number return that number
+    if (isNaN(num) && num !== "-") {
+      throw new Error(`${input} passed into function is neither number or "-", ${num}`);
+    }
     return num;
   }
 
@@ -419,7 +412,6 @@ class QInput extends Component<IQInputProps, IQInputState> {
       //null / undefined '', falsy
       return -1;
     }
-
     var i: number;
     for (
       i = 0;
@@ -445,20 +437,25 @@ class QInput extends Component<IQInputProps, IQInputState> {
    * @param {String} minVal
    * @param {String} maxVal
    */
-  validate(userInput: any, unitConfig: any, minVal: string, maxVal: string) {
+  validate(
+    userInput: NumberOrString,
+    unitConfig: Unit[],
+    minVal: string,
+    maxVal: string
+  ) {
     const anythingButNumsLetters = /[^a-zA-Z0-9\s.]/gi;
     const stringRX = /[a-z]+/gi;
     const numbersAfterUnit = /.[a-z]+.[0-9]+/gi;
 
     let report: any = {
-      message: ' ',
+      message: " ",
       isValid: true,
       unitPTR: this.props.defaultUnit,
     };
-    let otherChars,
+    let otherChars: any,
       matchNumberAfterUnit: any,
-      word: string,
       wordMatch: any,
+      word: string,
       num: number,
       indexOfMatchedUnit: number,
       checked: any;
@@ -468,15 +465,15 @@ class QInput extends Component<IQInputProps, IQInputState> {
       matchNumberAfterUnit = `${userInput}`.match(numbersAfterUnit);
 
       wordMatch = `${userInput}`.match(stringRX);
-      word = wordMatch ? wordMatch.join('') : '';
+      word = wordMatch ? wordMatch.join("") : "";
 
       num = this.getNumber(userInput);
     } catch {
-      report.message = 'undefined / null passed into validate()';
+      report.message = "undefined / null passed into validate()";
       report.isValid = false;
       return report;
     }
-    if (userInput === '-' || userInput === '') {
+    if (userInput === "-" || userInput === "") {
       report.isValid = true;
       return report;
     }
@@ -486,7 +483,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
       return report;
     }
     if (matchNumberAfterUnit) {
-      report.message = 'please input in this format : [Number] [Unit]';
+      report.message = "please input in this format : [Number] [Unit]";
       report.isValid = false;
       return report;
     }
@@ -496,11 +493,11 @@ class QInput extends Component<IQInputProps, IQInputState> {
       return report;
     }
     indexOfMatchedUnit = this.unitMatch(word, unitConfig);
-    if (indexOfMatchedUnit === -1 && word !== '') {
+    if (indexOfMatchedUnit === -1 && word !== "") {
       report.message = `${word} is not a valid unit`;
       report.isValid = false;
       return report;
-    } else if (word === '') {
+    } else if (word === "") {
       report.isValid = true;
       word = unitConfig[this.props.defaultUnit].unit; // neccessary for checkMinMax
     } else {
@@ -514,11 +511,11 @@ class QInput extends Component<IQInputProps, IQInputState> {
       this.unitMatch(word, unitConfig),
       unitConfig
     );
-    if (checked.message === '') {
+    if (checked.message === "") {
       return report;
     } else {
       report.message =
-        checked.message === 'minVal reached'
+        checked.message === "minVal reached"
           ? `${userInput} is below minVal`
           : `${userInput} is above maxVal`;
       report.isValid = false;
@@ -539,16 +536,16 @@ class QInput extends Component<IQInputProps, IQInputState> {
     if (
       this.state.isValid ||
       (!this.state.isValid &&
-        (this.state.message.match('minVal') ||
-          this.state.message.match('maxVal')))
+        (this.state.message.match("minVal") ||
+          this.state.message.match("maxVal")))
     ) {
-      let num: number = this.getNumber(this.state.value); //if no number returns 0
-      let newNumber: any = { num: num, message: '' };
+      let num: number = this.getNumber(this.state.value);
+      let newNumber: any = { num: num, message: "" };
 
       let minVal: string = this.props.minVal;
       let maxVal: string = this.props.maxVal;
 
-      if (buttonID === 'Increment') {
+      if (buttonID === "Increment") {
         newNumber = this.increment(
           num,
           unitInUsePTR,
@@ -556,7 +553,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
           minVal,
           maxVal
         );
-      } else if (buttonID === 'Decrement') {
+      } else if (buttonID === "Decrement") {
         newNumber = this.decrement(
           num,
           unitInUsePTR,
@@ -618,10 +615,10 @@ class QInput extends Component<IQInputProps, IQInputState> {
    * this function feeds new values to the parent component
    * @param {String} value - this.state.value is passed to this function
    */
-  populateToParent(value: any) {
+  populateToParent(value: NumberOrString) {
     let populate: onPopulate = {
-      value: '-',
-      message: '',
+      value: "-",
+      message: "",
       valid: this.state.isValid,
     };
     if (!this.props.onUpdate) {
@@ -635,14 +632,14 @@ class QInput extends Component<IQInputProps, IQInputState> {
 
     let numberValue: number = this.getNumber(`${value}`);
     populate.value =
-      value === '' || value === '-' || value === undefined
-        ? '-'
+      value === "" || value === "-" || value === undefined
+        ? "-"
         : this.convertValueToBaseUnit(
             numberValue,
             this.state.unitInUsePTR,
             this.props.unitConfig
           );
-    if (!this.props.passValueAsNumbersOnly && populate.value !== '-') {
+    if (!this.props.passValueAsNumbersOnly && populate.value !== "-") {
       let unit: string = this.props.unitConfig[0].unit;
       populate.value = `${populate.value} ${unit}`;
     }
@@ -651,7 +648,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
   addUnit() {
     if (
       this.state.isValid &&
-      this.state.value !== '' &&
+      this.state.value !== "" &&
       !isNaN(this.state.value as number)
     ) {
       this.setState({
@@ -664,18 +661,18 @@ class QInput extends Component<IQInputProps, IQInputState> {
   render() {
     const NumberInput = (
       <div>
-        <label className='bx--label'>QInput v1.0</label>
-        <div className='bx--form-item bx--text-input-wrapper'>
-          <div className='bx--number bx--number--helpertext'>
-            <div className='bx--text-input__field-outer-wrapper'>
+        <label className="bx--label">QInput v1.0</label>
+        <div className="bx--form-item bx--text-input-wrapper">
+          <div className="bx--number bx--number--helpertext">
+            <div className="bx--text-input__field-outer-wrapper">
               <div
-                className='bx--text-input__field-wrapper'
+                className="bx--text-input__field-wrapper"
                 data-invalid={!this.state.isValid || null}
               >
                 <input
-                  className='bx--text-input bx--text__input'
-                  type='text'
-                  aria-label='Numeric input field with increment and decrement buttons'
+                  className="bx--text-input bx--text__input"
+                  type="text"
+                  aria-label="Numeric input field with increment and decrement buttons"
                   placeholder={this.props.placeholder}
                   value={this.state.value}
                   onChange={this.onChange}
@@ -683,82 +680,82 @@ class QInput extends Component<IQInputProps, IQInputState> {
                 />
                 <svg
                   opacity={this.state.isValid ? 0 : 1}
-                  focusable='false'
-                  preserveAspectRatio='xMidYMid meet'
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='currentColor'
-                  width='16'
-                  height='16'
-                  viewBox='0 0 16 16'
-                  aria-hidden='true'
-                  className='bx--number__invalid'
+                  focusable="false"
+                  preserveAspectRatio="xMidYMid meet"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="currentColor"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  aria-hidden="true"
+                  className="bx--number__invalid"
                 >
-                  <path d='M8,1C4.2,1,1,4.2,1,8s3.2,7,7,7s7-3.1,7-7S11.9,1,8,1z M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2    c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z'></path>
+                  <path d="M8,1C4.2,1,1,4.2,1,8s3.2,7,7,7s7-3.1,7-7S11.9,1,8,1z M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2    c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z"></path>
                   <path
-                    d='M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8    c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z'
-                    data-icon-path='inner-path'
-                    opacity='0'
+                    d="M7.5,4h1v5h-1C7.5,9,7.5,4,7.5,4z M8,12.2c-0.4,0-0.8-0.4-0.8-0.8s0.3-0.8,0.8-0.8    c0.4,0,0.8,0.4,0.8,0.8S8.4,12.2,8,12.2z"
+                    data-icon-path="inner-path"
+                    opacity="0"
                   ></path>
                 </svg>
-                <div className='bx--number__controls'>
+                <div className="bx--number__controls">
                   <button
-                    className='bx--number__control-btn up-icon'
-                    type='button'
-                    title='Increment number'
-                    aria-label='Increment number'
-                    aria-live='polite'
-                    aria-atomic='true'
-                    id='incrementButton'
+                    className="bx--number__control-btn up-icon"
+                    type="button"
+                    title="Increment number"
+                    aria-label="Increment number"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    id="incrementButton"
                     onMouseDown={() =>
                       this.onClick(
-                        'Increment',
+                        "Increment",
                         this.state.unitInUsePTR,
                         this.props.unitConfig
                       )
                     }
                   >
                     <svg
-                      focusable='false'
-                      preserveAspectRatio='xMidYMid meet'
-                      style={{ willChange: 'transform' }}
-                      xmlns='http://www.w3.org/2000/svg'
-                      width='8'
-                      height='4'
-                      viewBox='0 0 8 4'
-                      aria-hidden='true'
-                      className='up-icon'
+                      focusable="false"
+                      preserveAspectRatio="xMidYMid meet"
+                      style={{ willChange: "transform" }}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="8"
+                      height="4"
+                      viewBox="0 0 8 4"
+                      aria-hidden="true"
+                      className="up-icon"
                     >
-                      <path d='M0 4l4-4 4 4z'></path>
+                      <path d="M0 4l4-4 4 4z"></path>
                     </svg>
                   </button>
                   <button
-                    className='bx--number__control-btn down-icon'
-                    type='button'
-                    title='Decrement number'
-                    aria-label='Decrement number'
-                    aria-live='polite'
-                    aria-atomic='true'
-                    id='decrementButton'
+                    className="bx--number__control-btn down-icon"
+                    type="button"
+                    title="Decrement number"
+                    aria-label="Decrement number"
+                    aria-live="polite"
+                    aria-atomic="true"
+                    id="decrementButton"
                     onMouseDown={() =>
                       this.onClick(
-                        'Decrement',
+                        "Decrement",
                         this.state.unitInUsePTR,
                         this.props.unitConfig
                       )
                     }
                   >
                     <svg
-                      focusable='false'
-                      preserveAspectRatio='xMidYMid meet'
-                      style={{ willChange: 'transform' }}
-                      xmlns='http://www.w3.org/2000/svg'
-                      width='8'
-                      height='4'
-                      viewBox='0 0 8 4'
-                      aria-hidden='true'
-                      className='down-icon'
+                      focusable="false"
+                      preserveAspectRatio="xMidYMid meet"
+                      style={{ willChange: "transform" }}
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="8"
+                      height="4"
+                      viewBox="0 0 8 4"
+                      aria-hidden="true"
+                      className="down-icon"
                     >
-                      <path d='M8 0L4 4 0 0z'></path>
+                      <path d="M8 0L4 4 0 0z"></path>
                     </svg>
                   </button>
                 </div>
@@ -766,8 +763,8 @@ class QInput extends Component<IQInputProps, IQInputState> {
             </div>
           </div>
         </div>
-        <div className='bx--form__helper-text'></div>
-        <div className='bx--form__helper-text' style={{ color: '#da1e28' }}>
+        <div className="bx--form__helper-text"></div>
+        <div className="bx--form__helper-text" style={{ color: "#da1e28" }}>
           {this.state.message}
         </div>
       </div>
