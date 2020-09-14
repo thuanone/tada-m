@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Memory_1 } from "./units";
 import invaltxt from "./invalidText.json";
 
+
 interface IQInputProps {
   value?: NumberOrString;
   unitConfig: Unit[];
@@ -836,12 +837,13 @@ class QInput extends Component<IQInputProps, IQInputState> {
                   </button>
                 </div>
               </div>
+              <div className="bx--form__helper-text" style={{ color: "#da1e28" }}>
+                {this.state.message}
+              </div>
             </div>
           </div>
         </div>
-        <div className="bx--form__helper-text" style={{ color: "#da1e28" }}>
-          {this.state.message}
-        </div>
+        
       </div>
     );
     return NumberInput;
