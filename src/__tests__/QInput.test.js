@@ -2,7 +2,6 @@ import React from "react";
 import Enzyme, { shallow, mount } from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 import QInput from "../components/QInput";
-import QInputPage from "../content/QInputPage";
 import { vCPU as vCPUFromUnits } from "../components/QInput/units";
 import { Memory_1 as MemoryFromUnits } from "../components/QInput/units";
 import { noUnit as noUnitFromUnits } from "../components/QInput/units";
@@ -59,7 +58,6 @@ describe("functions as is", () => {
       });
       it(`"123 asdf -123 => 123`, () => {
         let num = instance.getNumber("123 asdf -123");
-        console.log(num);
         expect(instance.getNumber("123 asdf -123")).toBe(123);
       });
       it(`"-12.3 asdf 123 => -12.3123`, () => {
@@ -76,16 +74,16 @@ describe("functions as is", () => {
       });
     });
     describe("misc", () => {
-      it(`"." => throw Error `, () => {
+      it(`"." => NaN `, () => {
         expect(instance.getNumber(".")).toBe(NaN);
       });
-      it(`"//%?" => throw Error `, () => {
+      it(`"//%?" => NaN `, () => {
         expect(instance.getNumber("//%?")).toBe(NaN);
       });
-      it(`null => throw Error `, () => {
+      it(`null => NaN `, () => {
         expect(instance.getNumber(null)).toBe(NaN);
       });
-      it(`undefined => throw Error `, () => {
+      it(`undefined => NaN `, () => {
         expect(instance.getNumber(null)).toBe(NaN);
       });  
     });
@@ -528,7 +526,6 @@ describe("functions as is", () => {
     describe("should be valid", () => {
       it("non string integers only", () => {
         let input = 22;
-        console.log(instance.validate(input, unitConfig, minVal, maxVal).message);
         expect(
           instance.validate(input, unitConfig, minVal, maxVal).isValid
         ).toBe(true);

@@ -51,11 +51,11 @@ class QInput extends Component<IQInputProps, IQInputState> {
     /**
      * optional: the minimal value, by default set to 0
      */
-    minVal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    minVal: PropTypes.string,
     /**
      * optional: the maximum value, by default set to undefined
      */
-    maxVal: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    maxVal: PropTypes.string,
     /**
      * Define at which unit to start at
      *
@@ -86,12 +86,8 @@ class QInput extends Component<IQInputProps, IQInputState> {
   constructor(props) {
     super(props);
     this.state = {
-      //actively used properties
-      value: props.value || "", // if no unit -> handle as bytes and calculate the best unit
-      // if number -> handle as bytes and calculate the best unit
-      // if string incl unit -> handle as-is
-      // if undefined -> print '-'
-      unitInUsePTR: props.defaultUnit || 0, // change this to this.unitMatch(minVal.match(/[a-z]+/gi).join(''), this.props) (doesnt work yet)
+      value: props.value || "",
+      unitInUsePTR: props.defaultUnit || 0,
       message: "",
       isValid: true,
     };
@@ -104,7 +100,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
     this.addUnit = this.addUnit.bind(this);
   }
   /**
-   * this function makes sure that on the initial render default values are fed to the parent component
+   * this function makes sure that on the initial render, default values are fed to the parent component
    */
   componentDidMount() {
     this.validate(
@@ -117,10 +113,11 @@ class QInput extends Component<IQInputProps, IQInputState> {
   }
 
   /**
-   * this functions takes a number and current unit pointer and converts it down to its base unit
-   * @param {Number} number - number to convert
-   * @param {Number} unitPTR - corresponding unit pointer
-   * @param {Number} unitConfig - unit object array to traverse
+   * this functions takes a number and the current unit pointer and converts it down to its base unit
+   * by iterating until Unit[0] and multiplying the passed number with any convertUpAt's along the way
+   * @param {Number} num - number to convert
+   * @param {Number} unitPTR - corresponding unit pointer to num
+   * @param {Unit[]} unitConfig - unit object array to traverse
    */
 
   convertValueToBaseUnit(
@@ -143,6 +140,9 @@ class QInput extends Component<IQInputProps, IQInputState> {
    * this function takes a number with its corresponding unit pointer and checks whether or not it is within min/maxVal borders
    * - if so returns number and pointer as is
    * - if not returns maxVal Value or minVal Value with their corresponding unit pointer
+   *
+   * NOTE: Setting minVal to any quantity of zero (e.g 0 MiB) will set minVal to 0 of the smallest unit
+   * because 0 MiB <=> 0 Byte
    * @param {Number} num - value to check if within min max
    * @param {String} minVal - minVal String in form '[Number] [Unit]'
    * @param {String} maxVal - maxVal String in form '[Number] [Unit]'
@@ -156,6 +156,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
     unitPTR: number,
     unitConfig: Unit[]
   ) {
+    //this is the return object
     let checked = {
       num: num,
       message: "",
@@ -168,6 +169,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
     const minValUnit = minValUnitMatch ? minValUnitMatch.join("") : "";
     const maxValUnit = maxValUnitMatch ? maxValUnitMatch.join("") : "";
 
+    //input, min and max are converted to a quantity of the smallest unit for the sake of comparison
     let minValBase: number = this.convertValueToBaseUnit(
       this.getNumber(minVal),
       this.unitMatch(minValUnit, unitConfig),
@@ -183,10 +185,10 @@ class QInput extends Component<IQInputProps, IQInputState> {
       unitPTR,
       unitConfig
     );
+
     if (minValBase <= inputBase && inputBase <= maxValBase) {
       return checked;
     }
-
     if (inputBase < minValBase) {
       checked.num = this.getNumber(minVal);
       checked.message = "minVal reached";
@@ -225,14 +227,18 @@ class QInput extends Component<IQInputProps, IQInputState> {
     minVal: string,
     maxVal: string
   ) {
+    //this is the return object
     let newNumber: any = {
       num,
-      message: "",
       unit: unitConfig[unitInUsePTR].unit,
       unitPTR: unitInUsePTR,
+      message: "",
     };
 
     if (num === "-") {
+      /**
+       * incrementing "-" results in the minimum value
+       */
       const minValUnitMatch = minVal.match(/[a-z]+/gi);
       const minValUnit = minValUnitMatch ? minValUnitMatch.join("") : "";
       let unit: string =
@@ -241,20 +247,22 @@ class QInput extends Component<IQInputProps, IQInputState> {
         num: this.getNumber(minVal),
         unit: unit,
         unitPTR: this.unitMatch(minValUnit, unitConfig),
+        message: "",
       };
     }
 
-    let stepsize: number = unitConfig[unitInUsePTR].standardStepSize;
+    //passed number is incremented and then passed through conversion
+    let stepsize: number = unitConfig[unitInUsePTR].standardStepSize; //let assignment is not necessary
     newNumber.num = (num as number) + stepsize;
-
     let convertedNumber: any = this.convert(
       newNumber.num,
       unitInUsePTR,
       newNumber.unit,
       unitConfig
-    ); //converting
-
+    );
     newNumber.unitPTR = convertedNumber.unitPTR;
+
+    //checks if value is within min/max borders
     let checked: any = this.checkMinMax(
       convertedNumber.num,
       minVal,
@@ -263,6 +271,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
       unitConfig
     );
 
+    //if number is not within min/max borders, min/max value will be returned instead of the incremented number
     newNumber.unitPTR = checked.unitPTR;
     newNumber.unit = checked.unit;
     newNumber.num = checked.num;
@@ -291,13 +300,18 @@ class QInput extends Component<IQInputProps, IQInputState> {
     minVal: string,
     maxVal: string
   ) {
+    //this is the return object
     let newNumber: any = {
       num: num,
       message: "",
       unit: unitConfig[unitInUsePTR].unit,
       unitPTR: unitInUsePTR,
     };
+
     if (num === "-") {
+      /**
+       * decrementing "-" results in the minimum value
+       */
       const minValUnitMatch = minVal.match(/[a-z]+/gi);
       const minValUnit = minValUnitMatch ? minValUnitMatch.join("") : "";
       let unit: string =
@@ -309,18 +323,18 @@ class QInput extends Component<IQInputProps, IQInputState> {
       };
     }
 
-    let stepsize: number = unitConfig[unitInUsePTR].standardStepSize;
+    //passed number is incremented and then passed through conversion
+    let stepsize: number = unitConfig[unitInUsePTR].standardStepSize; //let assignment is not necessary
     newNumber.num = (num as number) - stepsize;
-
     let convertedNumber: any = this.convert(
       newNumber.num,
       unitInUsePTR,
       newNumber.unit,
       unitConfig
     );
-
     newNumber.unitPTR = convertedNumber.unitPTR;
 
+    //checks if value is within min/max borders
     let checked: any = this.checkMinMax(
       convertedNumber.num,
       minVal,
@@ -328,6 +342,8 @@ class QInput extends Component<IQInputProps, IQInputState> {
       convertedNumber.unitPTR,
       unitConfig
     );
+
+    //if number is not within min/max borders, min/max value will be returned instead of the incremented number
     newNumber.unitPTR = checked.unitPTR;
     newNumber.unit = checked.unit;
     newNumber.num = checked.num;
@@ -346,8 +362,12 @@ class QInput extends Component<IQInputProps, IQInputState> {
    * @param {Array} unitConfig - array of unit objects
    */
   convert(num: number, unitInUsePTR: number, unit: string, unitConfig: Unit[]) {
+    //this is the return object
     let convertedNumber: any = { num, unit, unitPTR: unitInUsePTR };
 
+    /** upward conversion
+     * - converts up until conversion condition is not met (num >= convertUp)
+     */
     if (
       num >= unitConfig[unitInUsePTR].convertUpAt &&
       unitConfig[unitInUsePTR + 1] !== undefined
@@ -359,13 +379,17 @@ class QInput extends Component<IQInputProps, IQInputState> {
       ) {
         convertedNumber.num =
           Math.round(
-            (convertedNumber.num * 10) /
-              unitConfig[convertedNumber.unitPTR].convertUpAt
-          ) / 10; // round 0.00 (2 digits)
+              (convertedNumber.num * 10) / unitConfig[convertedNumber.unitPTR].convertUpAt
+            ) / 10;
+
         convertedNumber.unitPTR = convertedNumber.unitPTR + 1;
       }
       convertedNumber.unit = unitConfig[convertedNumber.unitPTR].unit;
     }
+
+    /** downward conversion; POSSIBLE UX COMPROMISE
+     * - converts any value below 1 to (smallerUnit.convertUpAt - smallerUnit.stepsize)
+     */
     if (num < 1 && unitConfig[unitInUsePTR - 1] !== undefined) {
       convertedNumber.num =
         unitConfig[unitInUsePTR - 1].convertUpAt -
@@ -386,38 +410,39 @@ class QInput extends Component<IQInputProps, IQInputState> {
    */
   getNumber(input: NumberOrString) {
     const numbersOnly = /-?[0-9]|\.?/gm;
-    let numbersMatch;
-    let num;
+    let numbersMatch, num;
+
     numbersMatch = `${input}`.match(numbersOnly);
     num =
       input === ""
-        ? 0 //minVal would be best I guess?
+        ? 0 //minVal would be better I believe: Number( ${this.props.minVal}.match(/[0-9]+/).join("") );
         : input === "-"
         ? "-"
         : parseFloat(numbersMatch.join("")); //if numbersMatch is a number return that number
     if (isNaN(num) && num !== "-") {
       return NaN;
-      /*
-      throw new Error(
-        `${input} passed into function is neither number or "-"`
-      );
-      */
     }
     return num;
   }
 
   /**
    * takes a String and an Array of unit Objects and compares the String with the unit names
-   * if it matches returns index of matched unit
-   * if it does not match returns (number) -1
+   * - if the String matches a unit the function returns the index of the matched unit
+   * - if not it returns (number) -1
    * @param {String} string
    * @param {Array} unitConfig
    */
   unitMatch(string: string, unitConfig: Unit[]): number {
     if (!string) {
-      //null / undefined '', falsy
+      //for any string === null / undefined '', falsy
       return -1;
     }
+
+    /**
+     * this for loop iterates over the an Array from units.tsx and does a caseinsensitive comparison of
+     * - the passed string and
+     * - every elements' unit and shortUnit attribute (which stores the name of a unit)
+     */
     var i: number;
     for (
       i = 0;
@@ -453,6 +478,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
     const stringRX = /[a-z]+/gi;
     const numbersAfterUnit = /.[a-z]+.[0-9]+/gi;
 
+    //this is the returned object
     let report: any = {
       message: " ",
       isValid: true,
@@ -467,10 +493,19 @@ class QInput extends Component<IQInputProps, IQInputState> {
       checked: any;
 
     try {
+      /**
+       * this tryCatch was initially intended to catch errors resulting from null/undefined.MATCH()
+       * but due to not limiting default values to strings we had to typecast any incoming input to a string
+       * rendering this try catch useless
+       *
+       * otherChars: regex match to identify error
+       * matchNumberAfterUnit: likewise
+       * word: in this context is any combination of letters, and will be checked if it corresponds to a unit
+       */
       otherChars = `${userInput}`.match(anythingButNumsLetters);
       matchNumberAfterUnit = `${userInput}`.match(numbersAfterUnit);
       wordMatch = `${userInput}`.match(stringRX);
-      
+
       word = wordMatch ? wordMatch.join("") : "";
       num = this.getNumber(userInput);
     } catch {
@@ -479,39 +514,51 @@ class QInput extends Component<IQInputProps, IQInputState> {
       return report;
     }
     if (userInput === "-" || userInput === "") {
+      //"-" and empty strings are accepted as valid values
+      //POTENTIAL COMPROMISE OF UX: "-" is valid while "- " is not; input has to be "-" exact to be seen valid
       report.isValid = true;
       return report;
     }
     if (otherChars) {
+      //returns invalid for any non-number/letter character matched
       report.message = `${invaltxt.inValidCharsUsed} '${otherChars}'`;
       report.isValid = false;
       return report;
     }
     if (matchNumberAfterUnit) {
+      //returns invalid for [Unit] [Number] formats
       report.message = `${invaltxt.wrongFormat}`;
       report.isValid = false;
       return report;
     }
     if (isNaN(num)) {
+      //returns invalid for no numbers recognized (dependency on function getNumber)
       report.message = `${userInput} ${invaltxt.noNumber}`;
       report.isValid = false;
       return report;
     }
 
+    /**
+     * this block below computes a new unitInUsePTR for this.state
+     */
     indexOfMatchedUnit = this.unitMatch(word, unitConfig);
-
     if (indexOfMatchedUnit === -1 && word !== "") {
       report.message = `${word} ${invaltxt.notUnit}`;
       report.isValid = false;
       return report;
     }
     if (word === "") {
+      //"forced" unitInUsePTR assignement to props.defaultUnit because numbers without units are also accepted
       report.isValid = true;
       indexOfMatchedUnit = this.props.defaultUnit;
-      word = unitConfig[this.props.defaultUnit].unit; // neccessary for checkMinMax
+      word = unitConfig[this.props.defaultUnit].unit;
     }
-    report.message = `recognized unit: ${word}`;
     report.unitPTR = indexOfMatchedUnit;
+    //until here
+
+    /**
+     * final check if the number is within minMax bounds and
+     */
     checked = this.checkMinMax(
       num,
       minVal,
@@ -520,13 +567,18 @@ class QInput extends Component<IQInputProps, IQInputState> {
       unitConfig
     );
     if (checked.message === "") {
+      //input is valid, no message thrown
       return report;
     }
+
+    //"default" is invalid with min/max boundary message
+    //arriving here means that the input is valid besides crossing min/max
+    report.isValid = false;
     report.message =
-      checked.message === "minVal reached"
+      checked.message === "minVal reached" //this is a hardcoded string in checkMinMax()
         ? `${userInput} ${invaltxt.valueBelowMinVal}`
         : `${userInput} ${invaltxt.valueAboveMaxVal}`;
-    report.isValid = false;
+
     return report;
   }
 
@@ -541,32 +593,41 @@ class QInput extends Component<IQInputProps, IQInputState> {
    */
   onClick(buttonID: string, unitInUsePTR: number, unitConfig: Unit[]) {
     if (
-      this.state.isValid ||
-      (!this.state.isValid &&
-        (this.state.message.match(invaltxt.valueBelowMinVal) ||
-          this.state.message.match(invaltxt.valueAboveMaxVal)))
+      this.state.isValid 
+      || (!this.state.isValid 
+        && (this.state.message.match(invaltxt.valueBelowMinVal) || this.state.message.match(invaltxt.valueAboveMaxVal)))
     ) {
+      /**
+       * this case is only entered when 
+       * - this.state.value is valid (1)
+       * - or invalid due to crossing min/max borders (2)
+       * 
+       * NOTE: empty else can be moved upwards with 
+       * if(!this.state.isValid 
+       * && !(this.state.message.match(invaltxt.valueBelowMinVal) || this.state.message.match(invaltxt.valueBelowMinVal)){
+       * 
+       * } else {...}
+       */
       let num: number = this.getNumber(this.state.value);
-      let newNumber: any = { num: num, message: "" };
 
-      let minVal: string = this.props.minVal;
-      let maxVal: string = this.props.maxVal;
+      //this is the "return" object, I made an effort to make it look like increment()/decrements() return
+      let newNumber: any = { num: num, unit: undefined, unitPTR: undefined , message: "" };
 
       if (buttonID === "Increment") {
         newNumber = this.increment(
           num,
           unitInUsePTR,
           unitConfig,
-          minVal,
-          maxVal
+          this.props.minVal,
+          this.props.maxVal
         );
       } else if (buttonID === "Decrement") {
         newNumber = this.decrement(
           num,
           unitInUsePTR,
           unitConfig,
-          minVal,
-          maxVal
+          this.props.minVal,
+          this.props.maxVal
         );
       }
       this.setState(
@@ -596,6 +657,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
    */
   onChange(event) {
     let userInput: any = event.target.value;
+
     let report: any = this.validate(
       userInput,
       this.props.unitConfig,
@@ -623,14 +685,17 @@ class QInput extends Component<IQInputProps, IQInputState> {
    * @param {String} value - this.state.value is passed to this function
    */
   populateToParent(value: NumberOrString) {
+    if (!this.props.onUpdate) {
+      return;
+    }
+    //this object is passed to the parent component
     let populate: onPopulate = {
       value: "-",
       message: "",
       valid: this.state.isValid,
     };
-    if (!this.props.onUpdate) {
-      return;
-    }
+    
+    //populates "-" instead of invalid values
     if (!this.state.isValid) {
       populate.message = this.state.message;
       this.props.onUpdate(populate);
@@ -650,6 +715,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
       let unit: string = this.props.unitConfig[0].unit;
       populate.value = `${populate.value} ${unit}`;
     }
+
     this.props.onUpdate(populate);
   }
   /**
@@ -773,7 +839,6 @@ class QInput extends Component<IQInputProps, IQInputState> {
             </div>
           </div>
         </div>
-        <div className="bx--form__helper-text"></div>
         <div className="bx--form__helper-text" style={{ color: "#da1e28" }}>
           {this.state.message}
         </div>
@@ -782,15 +847,5 @@ class QInput extends Component<IQInputProps, IQInputState> {
     return NumberInput;
   }
 }
-/*
-QInput.defaultProps = {
-  minVal: '1023 KiB',
-  maxVal: '10 TiB',
-  unitConfig: Memory_1,
-  passValueAsNumbersOnly: false,
-  defaultUnit: 1,
-  placeholder:'e.g. 1 MiB',
-};
-*/
 
 export default QInput;
