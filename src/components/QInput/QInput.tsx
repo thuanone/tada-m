@@ -104,7 +104,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
     this.addUnit = this.addUnit.bind(this);
   }
   /**
-   * this function makes sure that default values are fed to the parent component
+   * this function makes sure that on the initial render default values are fed to the parent component
    */
   componentDidMount() {
     this.validate(
@@ -162,10 +162,10 @@ class QInput extends Component<IQInputProps, IQInputState> {
       unit: unitConfig[unitPTR].unit,
       unitPTR: unitPTR,
     };
-
     const minValUnitMatch = minVal.match(/[a-z]+/gi);
-    const minValUnit = minValUnitMatch ? minValUnitMatch.join("") : "";
     const maxValUnitMatch = maxVal.match(/[a-z]+/gi);
+
+    const minValUnit = minValUnitMatch ? minValUnitMatch.join("") : "";
     const maxValUnit = maxValUnitMatch ? maxValUnitMatch.join("") : "";
 
     let minValBase: number = this.convertValueToBaseUnit(
@@ -510,7 +510,6 @@ class QInput extends Component<IQInputProps, IQInputState> {
       indexOfMatchedUnit = this.props.defaultUnit;
       word = unitConfig[this.props.defaultUnit].unit; // neccessary for checkMinMax
     }
-    console.log(indexOfMatchedUnit);
     report.message = `recognized unit: ${word}`;
     report.unitPTR = indexOfMatchedUnit;
     checked = this.checkMinMax(
@@ -544,8 +543,8 @@ class QInput extends Component<IQInputProps, IQInputState> {
     if (
       this.state.isValid ||
       (!this.state.isValid &&
-        (this.state.message.match("minVal") ||
-          this.state.message.match("maxVal")))
+        (this.state.message.match(invaltxt.valueBelowMinVal) ||
+          this.state.message.match(invaltxt.valueAboveMaxVal)))
     ) {
       let num: number = this.getNumber(this.state.value);
       let newNumber: any = { num: num, message: "" };

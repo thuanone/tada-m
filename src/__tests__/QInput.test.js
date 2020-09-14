@@ -45,8 +45,8 @@ describe("functions as is", () => {
       });
     });
     describe("strings (+ numbers)", () => {
-      it(`"asdf => throw Error`, () => {
-        expect(() => {instance.getNumber("asdf");}).toThrow(Error);
+      it(`"asdf => NaN`, () => {
+        expect(instance.getNumber("asdf")).toBe(NaN);
       });
       it(`"123 asdf" => 123`, () => {
         expect(instance.getNumber("123 asdf")).toBe(123);
@@ -77,16 +77,16 @@ describe("functions as is", () => {
     });
     describe("misc", () => {
       it(`"." => throw Error `, () => {
-        expect(() => {instance.getNumber(".");}).toThrow(Error);
+        expect(instance.getNumber(".")).toBe(NaN);
       });
       it(`"//%?" => throw Error `, () => {
-        expect(() => {instance.getNumber("//%?");}).toThrow(Error);
+        expect(instance.getNumber("//%?")).toBe(NaN);
       });
       it(`null => throw Error `, () => {
-        expect(() => {instance.getNumber(null);}).toThrow(Error);
+        expect(instance.getNumber(null)).toBe(NaN);
       });
       it(`undefined => throw Error `, () => {
-        expect(() => {instance.getNumber(null);}).toThrow(Error);
+        expect(instance.getNumber(null)).toBe(NaN);
       });  
     });
   });
