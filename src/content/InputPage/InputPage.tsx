@@ -4,7 +4,15 @@ import { Tile } from "carbon-components-react";
 import QInput from "../../components/QInput/QInput";
 import { Memory_1, vCPU, Time, Memory_2 } from "../../components/QInput/units";
 
-class InputPage extends React.Component {
+type NumberOrString = number | string
+
+interface onPopulate {
+  value: NumberOrString,
+  message: string,
+  valid: boolean,
+}
+
+class InputPage extends React.Component<{}, { RAM1: string, MEMORY1: string, CPU1: string, TIME1: string }>{
   constructor(props) {
     super(props);
     this.state = {
@@ -16,7 +24,9 @@ class InputPage extends React.Component {
     this.onChange = this.onChange.bind(this);
   }
 
-  onChange(ID, populate) {
+
+
+  onChange(ID: string, populate: onPopulate) {
     if (ID === "RAM") {
       this.setState({
         RAM1: `Value: ${populate.value} Message: ${populate.message} Valid: ${populate.valid}`,
@@ -60,7 +70,7 @@ class InputPage extends React.Component {
               placeholder="e.g. 1 MiB"
               onUpdate={this.onChange.bind(this, "RAM")}
               value={this.state.RAM1}
-              defaultUnit={1}
+              defaultUnit={2}
             />
           </label>
 
@@ -85,7 +95,7 @@ class InputPage extends React.Component {
               maxVal={"10 year"}
               placeholder="e.g. 1s"
               onUpdate={this.onChange.bind(this, "TIME")}
-              value={this.state.TIME}
+              value={this.state.TIME1}
               defaultUnit={0}
             />
           </label>

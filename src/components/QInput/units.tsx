@@ -1,5 +1,5 @@
 ///
-const vCPU = [
+const vCPU/*: number[]*/ = [
   {
     unit: "m",
     shortUnit: "m",
