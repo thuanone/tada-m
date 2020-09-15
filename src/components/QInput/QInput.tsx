@@ -355,7 +355,7 @@ class QInput extends Component<IQInputProps, IQInputState> {
 
   /**
    * this function receives a number, a corresponding unit with its pointer and an array of unit objects and returns
-   * - a converted number
+   * - a converted number (a quantity in a different unit)
    * - a corresponding unit with its corresponding pointer
    * @param {Number} num - number to be converted into a new unit
    * @param {Number} unitInUsePTR - pointer for current unit in use
