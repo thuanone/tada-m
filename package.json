@@ -11,7 +11,7 @@
     "carbon-components-react": "7.3.0",
     "carbon-icons": "7.0.7",
     "enzyme-to-json": "^3.5.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
